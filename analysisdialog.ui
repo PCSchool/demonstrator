@@ -1,17 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>AnalysisDialog</class>
- <widget name="AnalysisDialog" class="QDialog">
+ <widget class="QDialog" name="AnalysisDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>466</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>200</width>
+    <height>75</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>290</y>
+     <width>200</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>175</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnBear">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>350</y>
+     <width>201</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>175</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnGenerate">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>170</y>
+     <width>201</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>175</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>Generate test recording</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnSelectRecording">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>230</y>
+     <width>200</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>select recording</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnReadBinaryFile">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>110</y>
+     <width>200</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>Read test binary file</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

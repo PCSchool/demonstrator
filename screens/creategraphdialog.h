@@ -14,6 +14,12 @@ class CreateGraphDialog : public QDialog
 public:
     explicit CreateGraphDialog(QWidget *parent = 0);
     ~CreateGraphDialog();
+signals:
+    void createGraphSignal(double frequency, double amplitude, QString graph, QString sensor, int duration);
+
+private slots:
+    void on_btnCreateGraph_clicked();
+    void on_btnCancel_clicked();
 
 private:
     Ui::CreateGraphDialog *ui;

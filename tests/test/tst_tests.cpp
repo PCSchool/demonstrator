@@ -23,7 +23,7 @@ Tests::Tests()
 
 Tests::~Tests()
 {
-
+    //delete all
 }
 
 void Tests::test_case1()
@@ -32,5 +32,3 @@ void Tests::test_case1()
 }
 
 QTEST_MAIN(Tests)
-
-#include "tst_tests.moc"

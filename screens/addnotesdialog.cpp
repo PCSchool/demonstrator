@@ -12,3 +12,14 @@ AddNotesDialog::~AddNotesDialog()
 {
     delete ui;
 }
+
+void AddNotesDialog::on_buttonBox_accepted()
+{
+    emit(textToNotes(ui->tbText->text()));
+}
+
+void AddNotesDialog::on_buttonBox_rejected()
+{
+    delete ui;
+}
+
