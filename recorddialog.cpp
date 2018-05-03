@@ -20,7 +20,7 @@ RecordDialog::RecordDialog(QWidget *parent) :
     running = false;
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
-    recording;
+    recording;// = new Recording();
     shared_buffer = new QByteArray[1024];
 }
 
@@ -100,7 +100,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
 
         connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        connect(writeBuffer, SIGNAL(writeData(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        connect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
 
         //ensure the recording file gets written to the right directory
         writeBuffer->setUserDir(this->userDir);

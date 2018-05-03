@@ -42,20 +42,27 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      data.x = xAxis;
      data.y = yAxis;
 
+     std::cout << qbuffer.buffer().size() << " ";
+
+
      //'lock' thread
      EnterCriticalSection(&shared_buffer_lock);
+     qbuffer.buffer().resize(sizeof(&data));
      qbuffer.buffer().prepend(reinterpret_cast<char *>(&data));
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
      qbuffer.close();
-
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
-     numUsedBytes++; //struct Data is 16 bytes
+     numUsedBytes = numUsedBytes + 16; //struct Data is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
 
-     //std::cout << sizeof(qbuffer) << " : ";
+     std::cout << qbuffer.size();
 
-     if(bufferSize <= sizeof(qbuffer)){
+     if(bufferSize < numUsedBytes){
+
+         std::cout << QString::number(numUsedBytes).toLocal8Bit().constData() << " : " << endl;
+         std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
+
          //signal buffer is full + parameter with qByteArray
          //bufferIsFull.wakeAll();
          std::cout << "signal BinaryWriter -> endl";
@@ -64,6 +71,8 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
          emit bufferFull(qbuffer.buffer());             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
          //bufferDoneWriteFile.wait(&mutex);
+     }else{
+         std::cout << QString::number(0).toLocal8Bit().constData();
      }
 }
 

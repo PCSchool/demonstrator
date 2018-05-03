@@ -38,14 +38,9 @@ void Recording::addRecording(QCustomPlot *plot, double frequency, double amplitu
     this->duration = duration;
 }
 
-Recording::Types Recording::getType(){
+/*Recording::Types Recording::getType(){
     return type;
-}
-
-
-void Recording::setType(QString type){
-    this->type = selectTypes(type.toLocal8Bit().constData());
-}
+}*/
 
 Recording::Types Recording::selectTypes(std::string _s){
     transform(_s.begin(), _s.end(), _s.begin(), toupper);
@@ -67,44 +62,4 @@ Recording::Sensors Recording::selectSensor(std::string _s){
     return invalidsensor;
 }
 
-QString Recording::getPauze(){
-    return this->pauze;
-}
 
-//getters / setters for properties
-void Recording::setPauze(QString text){
-    this->pauze = text;
-}
-
-Recording::Sensors Recording::getSensors(){
-    return sensor;
-}
-
-void Recording::setSensors(QString sensors){
-    this->sensor = selectSensor(sensors.toLocal8Bit().constData());
-}
-
-QCustomPlot* Recording::getPlot(){
-    return plot;
-}
-
-QSize Recording::getSize(){
-    return size;
-}
-void Recording::setSize(QSize size){
-    this->size = size;
-}
-
-double Recording::getAmplitude(){
-    return amplitude;
-}
-void Recording::setAmplitude(double amplitude){
-    this->amplitude = amplitude;
-}
-
-double Recording::getFrequency(){
-    return frequency;
-}
-void Recording::setFrequency(double frequency){
-    this->frequency = frequency;
-}

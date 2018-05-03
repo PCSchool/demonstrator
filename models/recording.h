@@ -23,20 +23,7 @@ class Recording{
     QTimer* dataTimer;
     BinaryWriter* writerBuffer;
     BinaryWriter* writerFile;
-    // getters/setters for properties
-    Types getType();
-    void setType(QString type);
-    Sensors getSensors();
-    void setSensors(QString sensors);
-    QCustomPlot* getPlot();
-    QSize getSize();
-    void setSize(QSize size);
-    double getAmplitude();
-    void setAmplitude(double amplitude);
-    double getFrequency();
-    void setFrequency(double frequency);
-    void setPauze(QString text);
-    QString getPauze();
+
 
   public slots:
     void changeSize(int width, int height);
