@@ -76,3 +76,5 @@ FORMS += \
     screens/devicedialog.ui \
     analysisdialog.ui \
     screens/addnotesdialog.ui
+
+DISTFILES +=
