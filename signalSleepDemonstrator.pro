@@ -64,7 +64,8 @@ HEADERS += \
     models/exporting.h \
     binaryreader.h \
     globals.h \
-    screens/addnotesdialog.h
+    screens/addnotesdialog.h \
+    models/binarypatient.h
 
 FORMS += \
         mainwindow.ui \

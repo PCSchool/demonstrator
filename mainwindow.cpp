@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->gbInfoPatient->setVisible(false);
     system = new System();
+    system->loadCrypt32();
 }
 
 MainWindow::~MainWindow()

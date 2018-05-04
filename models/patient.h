@@ -18,9 +18,14 @@ public:
     void changeProfile(QString newInfo, QString variable);
     void writeToNote(QString addToNote);
 
+    QString pathNotes;
+    QString pathPersonalInfo;
+
     //getters / setters
     bool getPresent();
     void setPresent(bool present);
+    double getWeight();
+    double getHeight();
 
 private:
     //methods
@@ -32,8 +37,7 @@ private:
     double height;
     double bmi;
     QDir directory;
-    QString pathNotes;
-    QString pathPersonalInfo;
+
     bool present;
     std::map<Recording, int> recordings;
 };

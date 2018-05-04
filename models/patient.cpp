@@ -67,24 +67,6 @@ bool Patient::createDirectory(){
 
         QString fixpath = QString(dir.path() + "/info.dat");
         pathPersonalInfo = fixpath;
-        /*std::ofstream fout(fixpath.toLocal8Bit().constData(), std::ios::out | std::ios::binary);
-        fout.write((char *)this, sizeof(this));
-        fout.write((char *)&id, sizeof(int));
-        std::string sname = name.toLocal8Bit().constData();
-        fout.write((char *)&sname, sizeof(std::string));
-        fout.write((char *)&gender, sizeof(char));
-        std::string sstreet = street.toLocal8Bit().constData();
-        fout.write((char *)&sstreet, sizeof(std::string));
-        std::string shousenr = housenr.toLocal8Bit().constData();
-        fout.write((char *)&shousenr, sizeof(std::string));
-        std::string szipcode = zipcode.toLocal8Bit().constData();
-        fout.write((char *)&szipcode, sizeof(std::string));
-        fout.write((char *)&homePhone, sizeof(int));
-        std::string semail = email.toLocal8Bit().constData();
-        fout.write((char *)&semail, sizeof(std::string));
-        std::string sdate = date.toString("dd.MM.yyyy").toLocal8Bit().constData();
-        fout.write((char *)&sdate, sizeof(std::string));
-        fout.close();*/
 
         //create notes.txt
         fixpath = QString(dir.path()) + "/notes.txt";
@@ -104,4 +86,12 @@ bool Patient::getPresent(){
 }
 void Patient::setPresent(bool present){
     this->present = present;
+}
+
+double Patient::getWeight(){
+    return this->weight;
+}
+
+double Patient::getHeight(){
+    return this->height;
 }

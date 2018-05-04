@@ -8,7 +8,7 @@
 #include <binarywriter.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <stdio.h> //library crypt32 missing
+#include <stdio.h>      //library crypt32 missing
 #include <wincrypt.h>
 #include <windows.h>
 #include <QLibrary>
@@ -61,7 +61,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
 
     //CertCreateCertificateContext(PKCS_7_ASN_ENCODING,
     //                             reinterpret_cast<BYTE*>(&data[0]),
-     //                               static_cast<DWORD>(data.size()));
+    //                               static_cast<DWORD>(data.size()));
 
     //QFile file("C:/Users/Onera/Documents/SignalSleepDemonstrator/testerFile.bin");
     //file.open(QIODevice::ReadOnly);

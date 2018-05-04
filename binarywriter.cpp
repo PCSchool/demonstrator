@@ -53,6 +53,7 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
      qbuffer.close();
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
+     //std::cout << QString::number(qbuffer.buffer().size()) << " - ";
      numUsedBytes = numUsedBytes + 16; //struct Data is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
 
