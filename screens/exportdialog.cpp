@@ -36,6 +36,7 @@ void ExportDialog::updateDialog(QDir userDir, QDir exportDir){
 }
 
 void ExportDialog::updateListBox(QStringList items){
+    ui->lbListItems->clear();
     ui->lbListItems->addItems(items);
 }
 
@@ -51,6 +52,7 @@ void ExportDialog::on_btnSelectPatient_clicked()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), path, QFileDialog::ShowDirsOnly);
     exporting->cleanUserDir(path, dir);
     exporting->cleanListbox();
+
 }
 
 void ExportDialog::on_btnSelectExportFiles_clicked()
@@ -64,7 +66,7 @@ void ExportDialog::on_btnSelectExportFiles_clicked()
 void ExportDialog::on_btnExport_clicked()
 {
     //export selected files to exportDir
-
+    ui->lbListItems->clear();
     //if export results are successfull
     QString result = "All files have been succesfully been transported.";
     QMessageBox messageBox;

@@ -12,11 +12,12 @@ class Patient : public User
 public:
     //constructor
     Patient();
-    Patient(int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date, double weight, double height);
+    Patient(bool exist, int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date, double weight, double height);
 
     //methods
     void changeProfile(QString newInfo, QString variable);
     void writeToNote(QString addToNote);
+    bool writeProfileToBinary();
 
     QString pathNotes;
     QString pathPersonalInfo;

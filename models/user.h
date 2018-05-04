@@ -33,8 +33,7 @@ public:
     int getHomePhone();
     QString getEmail();
     QDate getBirthDate();
-
-private:
+protected:
     //methods
 
     //fields
@@ -46,5 +45,8 @@ private:
     int homePhone;
     QString email;
     QDate date;
+
+private:
+
 };
 #endif // USER_H

@@ -3,22 +3,33 @@
 #include <iostream>
 #include <time.h>
 #include <cstdio>
+#include <models/binarypatient.h>
 
 using namespace std;
 
-//constructor
-Patient::Patient(int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date, double weight, double height) : User(id, email, gender, street, housenr, zipcode, homePhone, name, date){
+//constructor - for new patients
+Patient::Patient(bool exist, int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date, double weight, double height) : User(id, email, gender, street, housenr, zipcode, homePhone, name, date){
     this->weight = weight;
     this->height = height;    
     calculateBMI(weight, height);
 
     //create new directory for the patient, directory can be recognised with id, since no database connect
     //check if there is already a directory with the id
-    while(true){
-        this->id++;
-        if(!createDirectory()){
-            break;
+    if(!exist){
+        while(true){
+            this->id++;
+            if(!createDirectory()){
+                break;
+            }
         }
+    }else{
+        QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));
+        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));//QString::number(id)));
+        QString fixpath = QString(dir.path() + "/info.dat");
+        pathPersonalInfo = fixpath;
+        fixpath = QString(dir.path()) + "/notes.txt";
+        pathNotes = fixpath;
+        this->userDir = dir;
     }
 }
 
@@ -36,7 +47,6 @@ void Patient::writeToNote(QString addToNote){
     //write to .txt file in patients directory
     time_t raw;
     time (&raw);
-
 
     ofstream file;
     file.open(pathNotes.toLocal8Bit().constData(), std::ofstream::out | std::ofstream::app);
@@ -78,6 +88,25 @@ bool Patient::createDirectory(){
         this->userDir = dir;
     }
     return false; //path doesnt exist
+}
+
+bool Patient::writeProfileToBinary(){
+    BinaryPatient one;
+    one.id = id;
+    one.gender = gender;
+    strcpy(one.name, name.toLocal8Bit().constData());
+    strcpy(one.email, email.toLocal8Bit().constData());
+    strcpy(one.street, street.toLocal8Bit().constData());
+    strcpy(one.housenr, housenr.toLocal8Bit().constData());
+    strcpy(one.zipcode, zipcode.toLocal8Bit().constData());
+    strcpy(one.birthDate, date.toString("dd/MM/yyyy").toLocal8Bit().constData());
+    one.weight = weight;
+    one.height = height;
+
+    std::string path = pathPersonalInfo.toLocal8Bit().constData();
+    std::ofstream ofs(path.c_str(), ios::binary);
+    ofs.write((char *)&one, sizeof(one));
+    ofs.close();
 }
 
 //getters / setters properties

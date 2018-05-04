@@ -56,26 +56,11 @@ void UserDialog::on_btnRegister_clicked()
     if(error == ""){  //geen errors, valid is goed
         // current solution to prevent runtime error caused by the validation?
         int homephone = ui->tbHouseNr->text().toInt();
-        Patient* patient = new Patient(id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
-        emit newPatient(patient);
-        messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
-        BinaryPatient one;
-        one.id = id;
-        one.gender = gender;
-        strcpy(one.name, patient->getName().toLocal8Bit().constData());
-        strcpy(one.email, patient->getEmail().toLocal8Bit().constData());
-        strcpy(one.street, patient->getStreet().toLocal8Bit().constData());
-        strcpy(one.housenr, patient->getHousenr().toLocal8Bit().constData());
-        strcpy(one.zipcode, patient->getZipcode().toLocal8Bit().constData());
-        strcpy(one.birthDate, patient->getBirthDate().toString("dd MM yyyy").toLocal8Bit().constData());
-        one.weight = patient->getWeight();
-        one.height = patient->getHeight();
+        Patient* patient = new Patient(false, id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
 
-        QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/one.bin"));
-
-        std::cout << dir.currentPath().toStdString();
-        std::ofstream ofs("dir.bin", ios::binary);
-        ofs.write((char *)&one, sizeof(one));
+        if(patient->writeProfileToBinary())
+            messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
+            emit newPatient(patient);
 
         on_btnCancel_clicked();
     }else{
@@ -196,17 +181,20 @@ void UserDialog::on_btnSelectPatient_clicked()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
                                                 path, QFileDialog::DontUseNativeDialog);
 
-    cout << dir.toLocal8Bit().constData() << endl;
-    //QString infopath = dir + "/info.bin";
+    std::string pathInfo = dir.toLocal8Bit().constData();
+    pathInfo = pathInfo + "/info.dat";
+    cout << pathInfo << endl;
+    //QString infopath = dir + "/info.dat";
     //std::string s = infopath.toLocal8Bit().constData();
-    std::ifstream fin("dir.bin", ios::out | ios::binary);
+    std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
-        //cout << "opening file failed "<< s.c_str() << "  " << endl;
+        cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
     }else{
         BinaryPatient two;
         fin.read((char *)&two, sizeof(two));
         QDate date = QDate::fromString(QString::fromUtf8(two.birthDate), "dd/MM/yyyy");
-        Patient* pp = new Patient(two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
+        Patient* pp = new Patient(true, two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
         emit newPatient(pp);
+        on_btnCancel_clicked();
     }
 }
