@@ -18,7 +18,7 @@ class UserDialog : public QDialog
 
 public:
     //enum
-    enum controlType{email, characters, number, names, zipcodes, phone};
+    enum controlType{email, number, names, zipcodes, phone, housenr};
 
     //constructor
     explicit UserDialog(QWidget *parent = 0);

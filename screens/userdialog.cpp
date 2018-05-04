@@ -37,7 +37,7 @@ void UserDialog::on_btnRegister_clicked()
     if(!validation(ui->tbStreet->text(), names)){
         error = "Street invalid. Please enter only the streetname.";
     }
-    if(!validation(ui->tbHouseNr->text(), characters)){    //nr can be 12a, 13b
+    if(!validation(ui->tbHouseNr->text(), housenr)){    //nr can be 12a, 13b
         error = "House nr invalid. Please re-enter the house nr.";
     }
     if(!validation(ui->tbHomephone->text(), phone)){
@@ -82,8 +82,16 @@ bool UserDialog::validation(QString control, controlType type){
 
     // 2. control if QString contains all necessary characters
     switch (type) {
-    case characters:   //all characters allowed
+    case housenr:   //example 135a, 14b, 123c, last letter is allowed to be char
     {
+        for(int i = 0; i < control.length() -1; i++){
+            if(!control[i].isDigit()){
+                return false;
+            }
+        }
+        //if(control[control.length() - 1].isLetter()){
+        //    return false;
+        //}
         break;
     }
         break;
@@ -99,13 +107,8 @@ bool UserDialog::validation(QString control, controlType type){
     }
     case names:  //only non-digit characters included _ wi
     {
-        QRegExp re("[A-Za-z]+\\s*");
-        QRegExp regexp("^\\s+");
-
+        QRegExp re("[A-Za-z ]*$");
         if(!re.exactMatch(control)){    //when control doesnt match with
-            if(regexp.exactMatch(control)){
-                std::cout << "White spaces approval";
-            }
             return false;
         }
         break;
