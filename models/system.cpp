@@ -18,7 +18,7 @@ System::System()
         makedir.mkpath(path + "/patients");
     }
     this->setDir(path);
-    this->setPatientDir(QDir(path + "/patients"));
+    this->setPatientDir(QDir(path + "/patients/"));
 }
 
 //methods

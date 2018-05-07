@@ -7,6 +7,9 @@
 #include <screens/devicedialog.h>
 #include <screens/addnotesdialog.h>
 #include <analysisdialog.h>
+#include <iostream>
+#include <fstream>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,6 +45,7 @@ void MainWindow::on_btnOpenPatientDialog_clicked()
 {
     UserDialog* userDialog = new UserDialog(this);
     connect(userDialog, SIGNAL(newPatient(Patient*)), this, SLOT(patientSelected(Patient*)));
+    userDialog->dir = system->getPatientDir();
     userDialog->setModal(true);
     userDialog->exec();
 }
@@ -101,4 +105,9 @@ void MainWindow::on_btnnAddNotes_clicked()
 
 void MainWindow::addTextToNotes(QString text){
     system->selectedPatient->writeToNote(text);
+}
+
+void MainWindow::openNotes(){
+    std::ifstream fin;
+    fin.open(system->selectedPatient->pathNotes.toLocal8Bit().constData());
 }

@@ -32,6 +32,7 @@ private:
     //methods
     void calculateBMI(double weight, double height);
     bool createDirectory();
+    void addRecording();
 
     //fields
     double weight;

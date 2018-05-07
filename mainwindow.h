@@ -31,6 +31,7 @@ private slots:
     void userDeselected();
     void deviceSelected(Device device);
     void addTextToNotes(QString text);
+    void openNotes();
 
     void on_btnOpenPatientDialog_clicked();
     void on_btnOpenDeviceDialog_clicked();

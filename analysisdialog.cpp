@@ -36,28 +36,32 @@ AnalysisDialog::~AnalysisDialog()
 //read out binary file
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
 {
-    //QByteArray* array = new QByteArray[1024];
+    struct Axis{
+        double x, y;
+    } axis;
 
     //open file for binary reading
-    std::ifstream fin("C:/Users/Onera/Documents/SleepSignalDemonstrator/testerFile.bin", std::ios_base::in | std::ios_base::binary);
+    std::ifstream fin("testerFile.bin", std::ios_base::in | std::ios_base::binary);
     if(!fin.is_open()){
         std::cout << "NOT OPEN";
+    }else{
+        //get the length of the file
+        fin.seekg(0, ios::end);
+
+        size_t fileSize = fin.tellg();
+        fin.seekg(0, ios::beg);
+
+        //create  a <vector> to hold all the bytes in the file
+        std::vector<byte> data(fileSize, 0);
+
+        //read the file
+        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+
+        //close the file
+        fin.close();
+
+        std::cout << data.size();
     }
-    //get the length of the file
-    fin.seekg(0, ios::end);
-
-    size_t fileSize = fin.tellg();
-    fin.seekg(0, ios::beg);
-
-    //create  a <vector> to hold all the bytes in the file
-    std::vector<byte> data(fileSize, 0);
-
-    //read the file
-    fin.read(reinterpret_cast<char*>(&data[0]), fileSize);
-
-    //close the file
-    fin.close();
-
 
     //CertCreateCertificateContext(PKCS_7_ASN_ENCODING,
     //                             reinterpret_cast<BYTE*>(&data[0]),
@@ -131,6 +135,43 @@ void AnalysisDialog::realtimeDataSlot(){
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
+    struct Axis{
+        double x, y;
+    } axis;
+
+    std::ifstream fin("testerFile.bin", std::ios_base::in | std::ios_base::binary);
+    if(!fin.is_open()){
+        std::cout << "NOT OPEN";
+    }else{
+        //get the length of the file
+        fin.seekg(0, ios::end);
+
+        size_t fileSize = fin.tellg();
+        fin.seekg(0, ios::beg);
+
+        //create  a <vector> to hold all the bytes in the file
+        std::vector<byte> data(fileSize, 0);
+
+
+        //read the file
+        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+
+        //loop in buffer
+        ifstream is;
+        std::vector<Axis> entry;
+        std::size_t entry_size = 0;
+        is.read(reinterpret_cast<char*>(&entry_size), sizeof(entry_size));
+        entry.resize(entry_size);
+        for(std::size_t i = 0; i < entry_size; i++){
+
+            Axis x;
+            //is.read(reinterpret_cast<byte>(16), sizeof(ax));
+        }
+        //close the file
+        fin.close();
+
+        std::cout << data.size();
+    }
     std::cout << " open dialog and select recording of choice." << endl;
 }
 

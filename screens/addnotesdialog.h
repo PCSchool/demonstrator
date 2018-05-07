@@ -19,8 +19,11 @@ private slots:
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
 
+    void on_btnOpenNotes_clicked();
+
 signals:
     void textToNotes(QString text);
+    void openNotes();
 
 private:
     Ui::AddNotesDialog *ui;

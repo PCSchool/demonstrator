@@ -16,11 +16,8 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
     //create new directory for the patient, directory can be recognised with id, since no database connect
     //check if there is already a directory with the id
     if(!exist){
-        while(true){
-            this->id++;
-            if(!createDirectory()){
-                break;
-            }
+        if(createDirectory()){
+
         }
     }else{
         QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));
@@ -63,30 +60,27 @@ void Patient::changeProfile(QString newInfo, QString variable){
 //create directory must be in user due to possible changes to the id
 //return true when directory already exists, return false if directory is succesfully created
 bool Patient::createDirectory(){
-    QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));
+    QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email)); //QString::number(id)
 
-    if(dir.exists()){
-        return true;  //path exists already
-    }else{
-        //create directory for user/patient
-        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));//QString::number(id)));
-        //create directory for recordings
-        QDir dirRecordings(dir.path() + "/recordings");
-        dirRecordings.mkpath(dir.path() + "/recordings");
-        recordingDir.setPath(dir.path() + "/recordings");
+    //create directory for user/patient
+    dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));//QString::number(id)));
+    //create directory for recordings
+    QDir dirRecordings(dir.path() + "/recordings");
+    dirRecordings.mkpath(dir.path() + "/recordings");
+    recordingDir.setPath(dir.path() + "/recordings");
 
-        QString fixpath = QString(dir.path() + "/info.dat");
-        pathPersonalInfo = fixpath;
+    QString fixpath = QString(dir.path() + "/info.dat");
+    pathPersonalInfo = fixpath;
 
-        //create notes.txt
-        fixpath = QString(dir.path()) + "/notes.txt";
-        std::ofstream fout2(fixpath.toLocal8Bit().constData(), std::ios::out);
-        fout2 << "notes: " << endl;
-        fout2.close();
+    //create notes.txt
+    fixpath = QString(dir.path()) + "/notes.txt";
+    std::ofstream fout2(fixpath.toLocal8Bit().constData(), std::ios::out);
+    fout2 << "notes: " << endl;
+    fout2.close();
 
-        pathNotes = fixpath;
-        this->userDir = dir;
-    }
+    pathNotes = fixpath;
+    this->userDir = dir;
+
     return false; //path doesnt exist
 }
 

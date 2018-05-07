@@ -20,6 +20,7 @@ public:
     //enum
     enum controlType{email, number, names, zipcodes, phone, housenr};
 
+    QDir dir;
     //constructor
     explicit UserDialog(QWidget *parent = 0);
     ~UserDialog();

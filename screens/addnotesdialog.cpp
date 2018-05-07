@@ -23,3 +23,8 @@ void AddNotesDialog::on_buttonBox_rejected()
     delete ui;
 }
 
+
+void AddNotesDialog::on_btnOpenNotes_clicked()
+{
+    emit(openNotes());
+}

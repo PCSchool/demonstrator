@@ -54,23 +54,30 @@ void UserDialog::on_btnRegister_clicked()
     messageBox.setFixedSize(500,200);
 
     if(error == ""){  //geen errors, valid is goed
-        // current solution to prevent runtime error caused by the validation?
-        int homephone = ui->tbHouseNr->text().toInt();
-        Patient* patient = new Patient(false, id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
+        if(QDir().mkdir(dir.path() + ui->tbEmail->text())){
 
-        if(patient->writeProfileToBinary())
-            messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
-            emit newPatient(patient);
+            //directory does not exist -> ready to make new account for that directory
+            // current solution to prevent runtime error caused by the validation?
+            int homephone = ui->tbHouseNr->text().toInt();
+            Patient* patient = new Patient(false, id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
 
-        on_btnCancel_clicked();
+            if(patient->writeProfileToBinary())
+                messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
+                emit newPatient(patient);
+
+            on_btnCancel_clicked();
+        }else{
+            messageBox.critical(0, "Error", "There already exists an account with this email addres.");
+            //directory does exists -> not valid registeration, change email patient
+        }
     }else{
         if(emptyError != ""){
             messageBox.critical(0, "Error", emptyError);
         }else{
             messageBox.critical(0,"Error",error);
         }
-        messageBox.show();
     }
+    messageBox.show();
 }
 
 bool UserDialog::validation(QString control, controlType type){
