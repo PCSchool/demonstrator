@@ -26,10 +26,8 @@ private slots:
 
     void on_btnGenerate_clicked();
 
-    //for testing data reading
-    void realtimeDataSlot();
-
     void on_btnSelectRecording_clicked();
+
 
 private:
     //for testing data reading

@@ -33,6 +33,7 @@ public:
     int getHomePhone();
     QString getEmail();
     QDate getBirthDate();
+
 protected:
     //methods
 

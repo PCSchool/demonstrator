@@ -13,6 +13,7 @@
 #include <windows.h>
 #include <QLibrary>
 
+
 using namespace std;
 
 AnalysisDialog::AnalysisDialog(QWidget *parent) :
@@ -23,7 +24,7 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
     xAxis = 0;
     counter = 0;
 
-    int bufferSize = 1000;
+    int bufferSize = 1024;
     QByteArray* array = new QByteArray[bufferSize];
     qbuffer.setBuffer(array);
 }
@@ -60,7 +61,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
         //close the file
         fin.close();
 
-        std::cout << data.size();
+
     }
 
     //CertCreateCertificateContext(PKCS_7_ASN_ENCODING,
@@ -72,7 +73,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     //QDataStream fileStream(&file);
     //fileStream.readRawData(reinterpret_cast<char*>&);
 
-    std::cout << "reading results " << endl;
+    //std::cout << data.size() << " reading results " << endl;
 }
 
 void AnalysisDialog::on_btnGenerate_clicked()
@@ -120,19 +121,6 @@ void AnalysisDialog::on_btnGenerate_clicked()
     std::cout << "done writing , start reading" << endl;
 }
 
-void AnalysisDialog::realtimeDataSlot(){
-    double newX = xAxis;
-    xAxis++;
-
-    double newY = counter;
-    counter++;
-    if(counter >= 100){
-        counter =0;
-    }
-
-    emit writeNewData(newY, newX);
-}
-
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
     struct Axis{
@@ -152,21 +140,26 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
         //create  a <vector> to hold all the bytes in the file
         std::vector<byte> data(fileSize, 0);
 
-
         //read the file
         fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
 
         //loop in buffer
-        ifstream is;
-        std::vector<Axis> entry;
-        std::size_t entry_size = 0;
-        is.read(reinterpret_cast<char*>(&entry_size), sizeof(entry_size));
-        entry.resize(entry_size);
-        for(std::size_t i = 0; i < entry_size; i++){
-
-            Axis x;
-            //is.read(reinterpret_cast<byte>(16), sizeof(ax));
+        //option 1. loop const
+        for (auto i : data){
+            std::cout << i << " - ";
+            Axis a;
+            //memcpy(&axis, data, sizeof(Axis));
+            //assert(data.size() == sizeof(Axis));
+            memcpy(&a, &data, std::min(data.size(), sizeof(Axis)));
+            std::cout << a.x;
         }
+        std::cout << " Done writing";
+
+        //option 2. for loop and byte[16]
+
+
+        //option 3. ?
+
         //close the file
         fin.close();
 
