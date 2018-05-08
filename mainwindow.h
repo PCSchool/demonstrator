@@ -41,6 +41,8 @@ private slots:
     void on_btnSelectDirPatient_clicked();
     void on_btnnAddNotes_clicked();
 
+    void on_btnChangePatient_clicked();
+
 private:
     Ui::MainWindow *ui;
     User *user;

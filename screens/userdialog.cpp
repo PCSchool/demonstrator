@@ -193,9 +193,7 @@ void UserDialog::on_btnSelectPatient_clicked()
 
     std::string pathInfo = dir.toLocal8Bit().constData();
     pathInfo = pathInfo + "/info.dat";
-    cout << pathInfo << endl;
-    //QString infopath = dir + "/info.dat";
-    //std::string s = infopath.toLocal8Bit().constData();
+
     std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
         cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;

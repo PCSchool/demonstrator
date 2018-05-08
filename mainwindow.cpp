@@ -9,7 +9,10 @@
 #include <analysisdialog.h>
 #include <iostream>
 #include <fstream>
+#include <exception>
+#include <models/binarypatient.h>
 
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -88,13 +91,18 @@ QDir MainWindow::getHomeDirectory(){
     return system->getDir();
 }
 
-void MainWindow::on_btnSelectDirPatient_clicked()
-{
-    QString path = system->getPatient()->getUserDir().path();
+void MainWindow::on_btnSelectDirPatient_clicked(){
+    std::string path = system->selectedPatient->getRecordingDir().path().toLocal8Bit().constData();
+    std::cout << path;
+    std::ifstream fin(path, ios::out | ios::binary);
+    if(!fin.is_open()){
+        cout << "opening file failed " << endl;
+    }else{
+        cout << "i like the rain " << endl;
+    }
 }
 
-void MainWindow::on_btnnAddNotes_clicked()
-{
+void MainWindow::on_btnnAddNotes_clicked(){
     if(!system->selectedPatient->getName().isNull()){
         AddNotesDialog* addNoteDialog = new AddNotesDialog(this);
         connect(addNoteDialog, SIGNAL(textToNotes(QString)), this, SLOT(addTextToNotes(QString)));
@@ -110,4 +118,25 @@ void MainWindow::addTextToNotes(QString text){
 void MainWindow::openNotes(){
     std::ifstream fin;
     fin.open(system->selectedPatient->pathNotes.toLocal8Bit().constData());
+}
+
+void MainWindow::on_btnChangePatient_clicked()
+{
+    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
+                                                path, QFileDialog::DontUseNativeDialog);
+
+    std::string pathInfo = dir.toLocal8Bit().constData();
+    pathInfo = pathInfo + "/info.dat";
+
+    std::ifstream fin(pathInfo, ios::out | ios::binary);
+    if(!fin.is_open()){
+        cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
+    }else{
+        BinaryPatient two;
+        fin.read((char *)&two, sizeof(two));
+        QDate date = QDate::fromString(QString::fromUtf8(two.birthDate), "dd/MM/yyyy");
+        Patient* pp = new Patient(true, two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
+        patientSelected(pp);
+    }
 }

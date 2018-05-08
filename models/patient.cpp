@@ -20,13 +20,14 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
 
         }
     }else{
-        QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));
-        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + QString::number(id)));//QString::number(id)));
+        QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
+        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email)); //QString::number(id)));
         QString fixpath = QString(dir.path() + "/info.dat");
         pathPersonalInfo = fixpath;
         fixpath = QString(dir.path()) + "/notes.txt";
         pathNotes = fixpath;
         this->userDir = dir;
+        this->recordingDir = QString(dir.path()) + "/recordings/";
     }
 }
 
