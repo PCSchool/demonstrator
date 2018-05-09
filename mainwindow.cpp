@@ -72,6 +72,7 @@ void MainWindow::on_btnOpenRecordingDialog_clicked()
 void MainWindow::on_btnOpenAnalysisDialog_clicked()
 {
     AnalysisDialog* analysisDialog = new AnalysisDialog(this);
+    analysisDialog->setDir(system->getPatientDir());
     analysisDialog->setModal(true);
     analysisDialog->exec();
 }
@@ -98,7 +99,7 @@ void MainWindow::on_btnSelectDirPatient_clicked(){
     if(!fin.is_open()){
         cout << "opening file failed " << endl;
     }else{
-        cout << "i like the rain " << endl;
+        cout << "opening file succes " << endl;
     }
 }
 

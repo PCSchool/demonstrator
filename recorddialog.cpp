@@ -142,3 +142,21 @@ void RecordDialog::realtimeDataSlot(){
     ui->widget->xAxis->setRange(xAxis + 5, 20, Qt::AlignRight);
     ui->widget->replot();
 }
+
+void RecordDialog::on_btnStop_clicked()
+{
+    if(running){
+        disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
+        disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
+
+        disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
+        disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        running = false;
+    }
+
+}
+
+void RecordDialog::on_btnReadBuffer_clicked()
+{
+    writeBuffer->testRead();
+}

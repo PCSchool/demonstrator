@@ -35,6 +35,9 @@ private slots:
     void showContextMenu(const QPoint& pos);
     void realtimeDataSlot();
     void on_btnDummyGraph_clicked();
+    void on_btnStop_clicked();
+
+    void on_btnReadBuffer_clicked();
 
 private:
     Ui::RecordDialog *ui;

@@ -26,6 +26,7 @@ public:
     QWaitCondition bufferNotEmpty;
     QMutex mutex;                               //QMutex mutex, can be used to lock or unlock certain parts of threads
 
+    QBuffer qbuffer;
     QArrayData tester;                          //test QArrayData
     int numberFile;                             //default 0
 signals:
@@ -41,6 +42,7 @@ public slots:
     //add new data to buffer
     void writeData(double newdata, double key);
     void writeToFile();
+    void testRead();
 
 private slots:
 
@@ -48,7 +50,7 @@ private:
     QMutexLocker* mutexLocker;                   //QMutexLocker mutexLocker, can be used to lock or unlock certain
     QReadWriteLock* readWriteLock;              //QReadWriteLock readWriteLock, can be used to lock for read, writing purposes
     //QFile file;                                 //QFile file, used
-    QBuffer qbuffer;
+
     QByteArray qarray;
     QByteArray byteArray;
     QDir dir;                                   //directory used
