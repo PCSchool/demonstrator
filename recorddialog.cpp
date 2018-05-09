@@ -20,7 +20,7 @@ RecordDialog::RecordDialog(QWidget *parent) :
     running = false;
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
-    recording;
+    recording;// = new Recording();
     shared_buffer = new QByteArray[1024];
 }
 
@@ -100,7 +100,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
 
         connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        connect(writeBuffer, SIGNAL(writeData(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        connect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
 
         //ensure the recording file gets written to the right directory
         writeBuffer->setUserDir(this->userDir);
@@ -141,4 +141,22 @@ void RecordDialog::realtimeDataSlot(){
     // make key axis range scroll with the data (at a constant range size of 20):
     ui->widget->xAxis->setRange(xAxis + 5, 20, Qt::AlignRight);
     ui->widget->replot();
+}
+
+void RecordDialog::on_btnStop_clicked()
+{
+    if(running){
+        disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
+        disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
+
+        disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
+        disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        running = false;
+    }
+
+}
+
+void RecordDialog::on_btnReadBuffer_clicked()
+{
+    writeBuffer->testRead();
 }
