@@ -22,6 +22,7 @@ public:
     void addDevice(Device device);
     QLinkedList<Device> getDevices();
     void removeDevice(Device device);
+    void loadCrypt32();
 
     //getters / setters for properties
     QDir getDir();
@@ -32,13 +33,7 @@ public:
     void setSelectedDevice(const Device device);
     QDir getPatientDir();
     void setPatientDir(QDir dir);
-    //static methods
-    // 1. createDirectory(const QString path)
-    // 2. createFile(const QString path, QString namefile)
-    // ** return true if creating directory/file has succesfully been created
-    // *** return false if creating directory/file failed or file/directory already existed
-    static bool createDirectory(const QString path, QString namedirectory);
-    static bool createFile(const QString path, QString namefile);
+
 
 public slots:
 

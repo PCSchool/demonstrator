@@ -8,8 +8,7 @@
 #include <QStandardPaths>
 
 //constructor 1 default
-User::User()
-{
+User::User(){
 }
 
 //constructor 2

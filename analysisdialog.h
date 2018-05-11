@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QBuffer>
+#include <QDir>
 
 namespace Ui {
 class AnalysisDialog;
@@ -16,7 +17,7 @@ public:
     explicit AnalysisDialog(QWidget *parent = 0);
     ~AnalysisDialog();
 
-
+    void setDir(QDir dir);
 
 signals:
     writeNewData(double newdata, double key);
@@ -26,10 +27,8 @@ private slots:
 
     void on_btnGenerate_clicked();
 
-    //for testing data reading
-    void realtimeDataSlot();
-
     void on_btnSelectRecording_clicked();
+
 
 private:
     //for testing data reading
@@ -40,7 +39,7 @@ private:
     QThread* threadWriteBuffer;
     QThread* threadWriteFile;
     void randomize();
-
+    QDir dir;
     Ui::AnalysisDialog *ui;
 };
 

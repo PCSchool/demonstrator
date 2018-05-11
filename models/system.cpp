@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <mainwindow.h>
 
+typedef int (__cdecl *MYPROC)(LPWSTR);
 using namespace std;
 
 System::System()
@@ -17,7 +18,7 @@ System::System()
         makedir.mkpath(path + "/patients");
     }
     this->setDir(path);
-    this->setPatientDir(QDir(path + "/patients"));
+    this->setPatientDir(QDir(path + "/patients/"));
 }
 
 //methods
@@ -58,26 +59,28 @@ QLinkedList<Device> System::getDevices(){
     return this->devices;
 }
 
-//create new directory
-bool System::createDirectory(const QString path, QString namedirectory){
-    QString newpath =  QString(path + "/" + namedirectory);
-    QDir makedir(newpath);
-    if(!makedir.exists()){
-        makedir.mkpath(newpath);
-        return true;
-    }
-    return false;
-}
+//dynamically linke crypt32.dll --> doing this using Win32 API functions LoadLibrary + GetProcAddress
+void System::loadCrypt32(){
+    HINSTANCE hinstLib;
+    MYPROC procAdd;
+    BOOL fFreeResult, fRunTimeLinkSucces = FALSE;
+    //C:\Users\Onera\Documents\SignalSleepDemonstrator
+    hinstLib = LoadLibrary(TEXT("crypt32.dll"));
+    if (hinstLib != NULL){
+        procAdd = (MYPROC) GetProcAddress(hinstLib, "crypt32.dll");
 
-//create new file
-bool System::createFile(const QString path, QString namefile){
-    QString newpath = QString(path + "/" + namefile);
-    QDir makedir(newpath);
-    if(!makedir.exists()){
-        makedir.mkpath(newpath);
-        return true;
+        if(procAdd != NULL){
+            fRunTimeLinkSucces = TRUE;
+            (procAdd) (L"Message sent to the DLL function\n");
+        }
+
+        fFreeResult = FreeLibrary(hinstLib);
+
     }
-    return false;
+
+    if(! fRunTimeLinkSucces)
+        printf("Message printed from executable\n");
+
 }
 
 

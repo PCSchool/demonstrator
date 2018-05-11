@@ -31,6 +31,7 @@ private slots:
     void userDeselected();
     void deviceSelected(Device device);
     void addTextToNotes(QString text);
+    void openNotes();
 
     void on_btnOpenPatientDialog_clicked();
     void on_btnOpenDeviceDialog_clicked();
@@ -39,6 +40,8 @@ private slots:
     void on_btnOpenExportDialog_clicked();
     void on_btnSelectDirPatient_clicked();
     void on_btnnAddNotes_clicked();
+
+    void on_btnChangePatient_clicked();
 
 private:
     Ui::MainWindow *ui;

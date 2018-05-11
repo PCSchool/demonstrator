@@ -7,7 +7,7 @@
 #include <cctype>
 #include <regex>
 #include <qstandardpaths.h>
-#include <qfiledialog.h>
+#include <models/binarypatient.h>
 #include <models/system.h>
 
 using namespace std;
@@ -37,7 +37,7 @@ void UserDialog::on_btnRegister_clicked()
     if(!validation(ui->tbStreet->text(), names)){
         error = "Street invalid. Please enter only the streetname.";
     }
-    if(!validation(ui->tbHouseNr->text(), characters)){    //nr can be 12a, 13b
+    if(!validation(ui->tbHouseNr->text(), housenr)){    //nr can be 12a, 13b
         error = "House nr invalid. Please re-enter the house nr.";
     }
     if(!validation(ui->tbHomephone->text(), phone)){
@@ -54,20 +54,30 @@ void UserDialog::on_btnRegister_clicked()
     messageBox.setFixedSize(500,200);
 
     if(error == ""){  //geen errors, valid is goed
-        // current solution to prevent runtime error caused by the validation?
-        int homephone = ui->tbHouseNr->text().toInt();
-        Patient* patient = new Patient(id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
-        emit newPatient(patient);
-        messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
-        on_btnCancel_clicked();
+        if(QDir().mkdir(dir.path() + ui->tbEmail->text())){
+
+            //directory does not exist -> ready to make new account for that directory
+            // current solution to prevent runtime error caused by the validation?
+            int homephone = ui->tbHouseNr->text().toInt();
+            Patient* patient = new Patient(false, id, ui->tbEmail->text(), gender, ui->tbStreet->text(), ui->tbHouseNr->text(), ui->tbZipcode->text(), homephone, ui->tbName->text(), ui->tbBirthDate->date(), ui->spWeight->value(), ui->spHeight->value());
+
+            if(patient->writeProfileToBinary())
+                messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
+                emit newPatient(patient);
+
+            on_btnCancel_clicked();
+        }else{
+            messageBox.critical(0, "Error", "There already exists an account with this email addres.");
+            //directory does exists -> not valid registeration, change email patient
+        }
     }else{
         if(emptyError != ""){
             messageBox.critical(0, "Error", emptyError);
         }else{
             messageBox.critical(0,"Error",error);
         }
-        messageBox.show();
     }
+    messageBox.show();
 }
 
 bool UserDialog::validation(QString control, controlType type){
@@ -79,8 +89,16 @@ bool UserDialog::validation(QString control, controlType type){
 
     // 2. control if QString contains all necessary characters
     switch (type) {
-    case characters:   //all characters allowed
+    case housenr:   //example 135a, 14b, 123c, last letter is allowed to be char
     {
+        for(int i = 0; i < control.length() -1; i++){
+            if(!control[i].isDigit()){
+                return false;
+            }
+        }
+        //if(control[control.length() - 1].isLetter()){
+        //    return false;
+        //}
         break;
     }
         break;
@@ -96,13 +114,8 @@ bool UserDialog::validation(QString control, controlType type){
     }
     case names:  //only non-digit characters included _ wi
     {
-        QRegExp re("[A-Za-z]+\\s*");
-        QRegExp regexp("^\\s+");
-
+        QRegExp re("[A-Za-z ]*$");
         if(!re.exactMatch(control)){    //when control doesnt match with
-            if(regexp.exactMatch(control)){
-                std::cout << "White spaces approval";
-            }
             return false;
         }
         break;
@@ -175,19 +188,21 @@ void UserDialog::on_btnCancel_clicked()
 void UserDialog::on_btnSelectPatient_clicked()
 {
     QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                path, QFileDialog::ShowDirsOnly);
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
+                                                path, QFileDialog::DontUseNativeDialog);
 
-    cout << dir.toLocal8Bit().constData() << endl;
-    QString infopath = dir + "/info.bin";
-    std::string s = infopath.toLocal8Bit().constData();
-    std::ifstream fin(s.c_str(), ios::out | ios::binary);
+    std::string pathInfo = dir.toLocal8Bit().constData();
+    pathInfo = pathInfo + "/info.dat";
+
+    std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
-        cout << "opening file failed "<< s.c_str() << "  " << endl;
+        cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
     }else{
-        User user;
-        fin.read((char *)&user, sizeof(user));
-        ui->btnCancel->setText(user.getEmail());
-        fin.close();
+        BinaryPatient two;
+        fin.read((char *)&two, sizeof(two));
+        QDate date = QDate::fromString(QString::fromUtf8(two.birthDate), "dd/MM/yyyy");
+        Patient* pp = new Patient(true, two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
+        emit newPatient(pp);
+        on_btnCancel_clicked();
     }
 }

@@ -158,6 +158,7 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
 
         std::string str(len, '\o');
         array = reinterpret_cast<QByteArray*>(&len);
+        
 
         //option 1. loop const
         /*for (auto i : data){
