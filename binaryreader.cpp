@@ -46,34 +46,46 @@ void BinaryReader::setUserDir(QDir dir){
 }*/
 
 //write buffer to binary file
-void BinaryReader::writeBufferToFile(QByteArray array){
-    struct Data{
-        double x, y;
-    } data;
-
+void BinaryReader::writeBufferToFile(QByteArray array, vector vectorData){
     std::string path = dir.path().toLocal8Bit().constData();
     path = path + "/recording_" + std::to_string(numberFile) + ".bin";
 
     EnterCriticalSection(&shared_buffer_lock);
-
     //option 1. write whole QByteArray to file
     //std::ofstream fout(path, std::ios::binary | std::ios_base::app);
     //fout.write(reinterpret_cast<char *>(&array), sizeof(array));
     //fout.close();
 
-    QByteArray qq;
-    BYTE * pByte = reinterpret_cast<byte*>(array.data());
-    std::cout <<pByte;
+    QFile f("recording_0.bin");   //<-- change later on to path
+    f.setFileName("recording_0.bin");
+    if(!f.open(QIODevice::WriteOnly)) return;
 
-    //option 2.
-    //QByteArray, to write data correctly to data write each row individually
-    //FILE *file = fopen("recording__0.bin", "wb");
-    //for(int i = 0; i < array.size(); i++){
-        //fwrite(array[i], sizeof(data), 16, file);
-    //}
-    //fclose(file);
+    //BYTE * pByte = reinterpret_cast<byte*>(array.data();
 
-    //option 3.
+    QByteArray arrayNew = array.chopped(16);
+    Data* d = reinterpret_cast<Data*>(arrayNew.data());
+    std::cout << "coordinates Data{x = "<< d->x << ", y = " << d->y << "} \n" ;
+
+    for(auto i : vectorData){
+        std::cout << "VectorData: " << i << endl;
+    }
+
+    /*QDataStream dataStream(&f);
+    dataStream.setByteOrder(QDataStream::LittleEndian);
+    while(!dataStream.atEnd()){
+
+        //dataStream << x;
+        result.push_back(x);
+        f.write(reinterpret_cast<char*>(&x), sizeof(Data));
+    }
+    f.close();*?
+
+    FILE *file = fopen("recording__0.bin", "wb");
+    for(int i = 0; i < array.size(); i++){
+        fwrite(array[i], sizeof(data), 16, file);
+    }
+    fclose(file);
+
     //std::size_t entry_size = array.size();
     //out.write(reinterpret_cast<const char*>(&entry_size), sizeof(entry_size));
     //for(int i = 0; i < array.size(); i++){
@@ -87,5 +99,10 @@ void BinaryReader::writeBufferToFile(QByteArray array){
 
     LeaveCriticalSection(&shared_buffer_lock);
 
-    //bufferDoneWriteFile.wakeAll();
+    //bufferDoneWriteFile.wakeAll();*/
+}
+
+QDataStream &operator<<(QDataStream &out, const Data &data){
+    out << data.x << data.y;
+    return out;
 }

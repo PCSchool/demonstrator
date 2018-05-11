@@ -7,6 +7,7 @@
 #include <QString>
 #include <models/recording.h>
 #include <binaryreader.h>
+#include <globals.h>
 
 extern CRITICAL_SECTION shared_buffer_lock;
 
@@ -38,6 +39,8 @@ private slots:
     void on_btnStop_clicked();
 
     void on_btnReadBuffer_clicked();
+
+    void on_save_clicked();
 
 private:
     Ui::RecordDialog *ui;

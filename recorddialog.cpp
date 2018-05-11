@@ -5,7 +5,6 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QDir>
-#include <globals.h>
 
 using namespace std;
 
@@ -100,7 +99,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
 
         connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        connect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        connect(writeBuffer, SIGNAL(bufferFull(QByteArray, std::vector)), writeFile, SLOT(writeBufferToFile(QByteArray, std::vector)));
 
         //ensure the recording file gets written to the right directory
         writeBuffer->setUserDir(this->userDir);
@@ -159,4 +158,19 @@ void RecordDialog::on_btnStop_clicked()
 void RecordDialog::on_btnReadBuffer_clicked()
 {
     writeBuffer->testRead();
+}
+
+void RecordDialog::on_save_clicked()
+{
+    Data xx;
+    xx.x = 1.9;
+    xx.y = 3.5;
+    std::cout << "data info : x = " << xx.x << " " << xx.y << endl;
+
+    QByteArray arr;
+    arr.append(reinterpret_cast<char *>(&xx));  //append prepend
+    Data* ax2 = reinterpret_cast<Data*>(arr.data());
+    ax2 = reinterpret_cast<Data*>(arr.data());
+    std::cout << "NEW data info : ax = " << ax2->x << " " << ax2->y << endl;
+
 }

@@ -17,9 +17,7 @@
 #include <mutex>
 #include <recorddialog.h>
 
-struct Data{
-    double x, y;
-} data;
+using namespace std;
 
 BinaryWriter::BinaryWriter()
 {
@@ -29,6 +27,7 @@ BinaryWriter::BinaryWriter()
     numUsedBytes = 1;
     QByteArray* array = new QByteArray[bufferSize];
     qbuffer.setBuffer(array);
+    vectorData = new std::vector<Data>;
 }
 
 void BinaryWriter::setUserDir(QDir dir){
@@ -40,22 +39,29 @@ void BinaryWriter::setUserDir(QDir dir){
 //fill the buffer
 void BinaryWriter::writeData(double xAxis, double yAxis){
      //write new data to buffer
+     struct Data{
+         double x, y;
+     } data;
+     data.x = xAxis;
+     data.y = yAxis;
+
      EnterCriticalSection(&shared_buffer_lock);
+     vectorData.push_back(data);
      qbuffer.buffer().resize(sizeof(&data));
-     qbuffer.buffer().prepend(reinterpret_cast<char *>(&data));
+     qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
-     qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
+     qbuffer.write(reinterpret_cast<char *>(&data), std::ios::binary);
      qbuffer.close();
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
      numUsedBytes = numUsedBytes + 16; //struct Data is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
-     //std::cout << numUsedBytes << " ! ";
+
      if(bufferSize < numUsedBytes){
          std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
 
          //signal buffer is full + parameter with qByteArray
          std::cout << "signal BinaryWriter" << endl;
-         emit bufferFull(qbuffer.buffer());             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
+         emit bufferFull(qbuffer.buffer(), vectorData);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
          numUsedBytes = 0;
      }else{

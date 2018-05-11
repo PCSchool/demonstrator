@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QBuffer>
 #include <QDir>
+#include <globals.h>
 
 namespace Ui {
 class AnalysisDialog;

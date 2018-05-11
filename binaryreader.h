@@ -11,6 +11,8 @@
 #include <QReadWriteLock>
 #include <QReadLocker>
 #include <windows.h>
+#include <globals.h>
+#include <vector>
 
 class BinaryReader : public QObject
 {
@@ -40,7 +42,7 @@ signals:
     void setDir(QDir dir);                  //setDirectory
 
 public slots:
-    void writeBufferToFile(QByteArray array);   //add new data to buffer
+    void writeBufferToFile(QByteArray array, vector vectorData);   //add new data to buffer
 
 private slots:
 

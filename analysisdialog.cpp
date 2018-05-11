@@ -121,61 +121,59 @@ void AnalysisDialog::on_btnGenerate_clicked()
     std::cout << "done writing , start reading" << endl;
 }
 
+QDataStream &operator >>(QDataStream &in, Data &data){
+
+    return in;
+}
+
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-    struct Axis{
-        double x, y;
-    } axis;
-
     //recording_0  <-- real recording file, contains 16KB, 16444 bytes
     //testerFile   <-- fake testing file contains 8 bytes
-    std::ifstream fin("recording_0.bin", std::ios_base::in | std::ios_base::binary);
-    if(!fin.is_open()){
+    //std::ifstream fin("recording_0.bin", std::ios_base::in | std::ios_base::binary);
+    QFile file("recording_0.bin");
+
+    if(!file.open(QIODevice::ReadOnly)){
         std::cout << "File couldnt be found nor opened.";
+        return;
     }else{
-        //get the length of the file
-        fin.seekg(0, ios::end);
-
-        size_t fileSize = fin.tellg();
-        fin.seekg(0, ios::beg);
-
-        //create  a <vector> to hold all the bytes in the file
-        std::vector<byte> data(fileSize, 0);
-
-        //read the file
-        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
-
-        Axis a;
-        //loop in buffer
         int counter = 0;
         QByteArray *array;
         char b[sizeof(array)];
-
-        //read exactly 5 bytes == size bytearray into file and then uh
-
         uint_fast16_t len;
-        fin.read((char*)&len, 2);
 
+        file.seek(0);
+        QByteArray bytes = file.readAll();
+
+        QDataStream dataStream(&file);
+        dataStream.setByteOrder(QDataStream::LittleEndian);
+        QVector<Data> result;
+        while(!dataStream.atEnd()){
+            Data x;
+            dataStream >> x;
+            result.append(x);
+        }
+
+
+        //loop through QByteArray
+
+        /*
+        file.seek(0);
+        size_t fileSize = fin.tellg();
+        fin.seekg(0, ios::beg);
+        std::vector<byte> data(fileSize, 0);
+        //read the file
+        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+        Axis a;
+        fin.read((char*)&len, 2);
         std::string str(len, '\o');
         array = reinterpret_cast<QByteArray*>(&len);
-
-        //option 1. loop const
-        /*for (auto i : data){
-            std::size_t entry_size = 0;
-
-            reinterpret_cast<char*>(&data[i], sizeof(i));
-            //memcpy(&array, b, sizeof(array));
-            counter++;
-            //convert back to struct Axis
-        }*/
-
-        std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
-        //close the file
+        //loop in buffer
         fin.close();
 
-        //std::cout << sizeof(data) << " bits ";    // sizeof(data) == 12 bits
-        //std::cout << sizeof(Axis) << " bits ";  // sizeof(Axis) == 16 bits
-        //std::cout << data.size() << " size ";   //sizeof(fileSize) == 4 bits
+        std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
+        //fin.close*/
+
     }
 }
 
