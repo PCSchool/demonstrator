@@ -47,45 +47,46 @@ void BinaryReader::setUserDir(QDir dir){
 
 //write buffer to binary file
 void BinaryReader::writeBufferToFile(QByteArray array){
-    struct Data{
-        double x, y;
-    } data;
 
     std::string path = dir.path().toLocal8Bit().constData();
     path = path + "/recording_" + std::to_string(numberFile) + ".bin";
 
+    size_t sizeData = sizeof(TimePointer);
+    size_t sizeArray = sizeof(array);
+
     EnterCriticalSection(&shared_buffer_lock);
 
-    //option 1. write whole QByteArray to file
-    //std::ofstream fout(path, std::ios::binary | std::ios_base::app);
-    //fout.write(reinterpret_cast<char *>(&array), sizeof(array));
-    //fout.close();
+    //convert QByteArray to Vector and write each row within vector to file
+    //must write the content of vector itself &vector[0]
 
-    QByteArray qq;
+    QVector<TimePointer> vector;
+    QFile file("recording_5.bin");
+    file.open(QIODevice::WriteOnly);
+    QDataStream stream(array);
     BYTE * pByte = reinterpret_cast<byte*>(array.data());
-    std::cout <<pByte;
 
-    //option 2.
-    //QByteArray, to write data correctly to data write each row individually
-    //FILE *file = fopen("recording__0.bin", "wb");
-    //for(int i = 0; i < array.size(); i++){
-        //fwrite(array[i], sizeof(data), 16, file);
+    //FILE *file = fopen("recording_x", "wb");
+    //pass argument by const reference
+    //for (const auto& value : vector){
+    //    fwrite(value, sizeof(TimePointer), sizeData, file);
     //}
     //fclose(file);
 
-    //option 3.
-    //std::size_t entry_size = array.size();
-    //out.write(reinterpret_cast<const char*>(&entry_size), sizeof(entry_size));
-    //for(int i = 0; i < array.size(); i++){
-        //out.write(reinterpret_cast<const char*>(&array[i]), sizeof(16));
-    //}
+    /*FILE *file = fopen("recording__0.bin", "wb");
+    for(int i = 0; i < array.sizeData(); i++){
+        fwrite(array[i], sizeof(data), 16, file);
+    }
+    fclose(file);*/
 
-    //fout.close();
+    //ofstream fout2("recording_1.bin", std::ios_base::app | ios::binary);
+    //fout2.write(array.data(), array.size() * sizeof(TimePointer));
+    //std::cout << " array size " << array.data();
+    //fout2.close();
 
-    // the writing from buffer to file is done, set the new conditions up and unlock
-    //bufferDoneWriteFile.wakeAll();
+    //previouw method
+    std::ofstream fout("recording_2.bin", std::ios::binary | std::ios_base::app);
+    fout.write(reinterpret_cast<char *>(array.data()), sizeof(array) *array.size());
+    fout.close();
 
     LeaveCriticalSection(&shared_buffer_lock);
-
-    //bufferDoneWriteFile.wakeAll();
 }

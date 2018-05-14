@@ -15,9 +15,9 @@ public:
     Patient *selectedPatient;
 
     //methods
-    bool hasPatient();  //returns true if a patient is selected, false otherwise
-    bool hasDevice();   //return true if a device is selected, false otherwise
-    bool hasDir();      //return true if a directory is selected, false otherwise
+    bool hasPatient;  //returns true if a patient is selected, false otherwise
+    bool hasDevice;   //return true if a device is selected, false otherwise
+    bool hasDir;      //return true if a directory is selected, false otherwise
 
     void addDevice(Device device);
     QLinkedList<Device> getDevices();

@@ -10,6 +10,10 @@ using namespace std;
 
 System::System()
 {
+    hasDevice = false;
+    hasPatient = false;
+    hasDir = false;
+
     QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator");
     QDir makedir(path);
     if(!makedir.exists()){
@@ -19,32 +23,10 @@ System::System()
     }
     this->setDir(path);
     this->setPatientDir(QDir(path + "/patients/"));
+
 }
 
 //methods
-//returns true if a patient is selected, false otherwise
-bool System::hasPatient(){
-    if(selectedPatient->getName().isEmpty()){
-        return false;
-    }
-    return true;
-}
-
-//return true if a device is selected, false otherwise
-bool System::hasDevice(){
-    if(selectedDevice.getName().isEmpty()){
-        return false;
-    }
-    return true;
-}
-//return true if a directory is selected, false otherwise
-bool System::hasDir(){
-    if(dir.path().isEmpty()){
-        return false;
-    }
-    return true;
-}
-
 void System::addDevice(Device device){
     devices << device;
 }
@@ -98,6 +80,7 @@ QDir System::getDir(){
 }
 void System::setDir(const QString path){
     this->dir.setPath(path);
+    hasDir = true;
 }
 
 Patient* System::getPatient(){
@@ -105,6 +88,7 @@ Patient* System::getPatient(){
 }
 void System::setPatient(Patient* patient){
     selectedPatient = patient;
+    hasPatient = true;
 }
 
 Device System::getSelectedDevice(){
@@ -113,5 +97,6 @@ Device System::getSelectedDevice(){
 
 void System::setSelectedDevice(Device device){
     selectedDevice = device;
+    hasDevice = true;
 }
 

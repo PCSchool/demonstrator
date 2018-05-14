@@ -11,6 +11,7 @@
 #include <QReadWriteLock>
 #include <QReadLocker>
 #include <windows.h>
+#include <globals.h>
 
 class BinaryReader : public QObject
 {

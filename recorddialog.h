@@ -7,6 +7,7 @@
 #include <QString>
 #include <models/recording.h>
 #include <binaryreader.h>
+#include <globals.h>
 
 extern CRITICAL_SECTION shared_buffer_lock;
 

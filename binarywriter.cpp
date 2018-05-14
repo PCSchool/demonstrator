@@ -16,10 +16,7 @@
 #include <QApplication>
 #include <mutex>
 #include <recorddialog.h>
-
-struct Data{
-    double x, y;
-} data;
+#include <globals.h>
 
 BinaryWriter::BinaryWriter()
 {
@@ -39,49 +36,41 @@ void BinaryWriter::setUserDir(QDir dir){
 
 //fill the buffer
 void BinaryWriter::writeData(double xAxis, double yAxis){
+     TimePointer data;
+     data.x = xAxis;
+     data.y = yAxis;
+     //std::cout << data.x << " " << data.y << " ";
+     numberFile++;
+     // std::cout << numberFile << " - ";
      //write new data to buffer
      EnterCriticalSection(&shared_buffer_lock);
-     qbuffer.buffer().resize(sizeof(&data));
-     qbuffer.buffer().prepend(reinterpret_cast<char *>(&data));
+     //qbuffer.buffer().resize(sizeof(&data));
+     qbuffer.buffer().append(reinterpret_cast<char *>(&data));  //prepend
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
+     char *empt = reinterpret_cast<char *>(&data);
+
+     std::cout <<"|" << empt << " " << data.x << " " << data.y << " -- ";
+     memcpy(&data, empt, sizeof(TimePointer));
+     std::cout << " " << data.x << " " << data.y << " | \n";
      qbuffer.close();
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
-     numUsedBytes = numUsedBytes + 16; //struct Data is 16 bytes
+     numUsedBytes = numUsedBytes + 16; //struct TimePointer is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
-     //std::cout << numUsedBytes << " ! ";
+
+     //check if ready to write to file
      if(bufferSize < numUsedBytes){
          std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
 
          //signal buffer is full + parameter with qByteArray
-         std::cout << "signal BinaryWriter" << endl;
          emit bufferFull(qbuffer.buffer());             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
-         qbuffer.buffer().clear();                      //empty the buffers
+         std::cout << "\n emit signal " << numberFile << " ";
+         qbuffer.buffer().clear();
+         //empty the buffers
          numUsedBytes = 0;
-     }else{
-         //std::cout << QString::number(0).toLocal8Bit().constData();
      }
 }
 
-void BinaryWriter::testRead(){
-    struct Data{
-        double x, y;
-    } data;
+void BinaryWriter::readBuffer(){
 
-    std::cout << "comes here";
-
-    int count  = 0;
-    //read values within qbuffer
-    //for(auto it = qbuffer.buffer().begin(); it != qbuffer.buffer().end(); ++it){
-
-    std::cout << "BinaryWriter::testRead() -> " << count;
-}
-
-void BinaryWriter::writeToFile(){
-    bufferDoneWriteFile.wait(&mutex);
-
-    //write buffer to file
-    std::cout << "BinaryWriter::writeToFile() -> ";
-
-    bufferIsFull.wakeAll();
 }

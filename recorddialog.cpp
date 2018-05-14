@@ -5,7 +5,6 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QDir>
-#include <globals.h>
 
 using namespace std;
 
@@ -158,5 +157,5 @@ void RecordDialog::on_btnStop_clicked()
 
 void RecordDialog::on_btnReadBuffer_clicked()
 {
-    writeBuffer->testRead();
+
 }

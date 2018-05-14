@@ -71,10 +71,16 @@ void MainWindow::on_btnOpenRecordingDialog_clicked()
 
 void MainWindow::on_btnOpenAnalysisDialog_clicked()
 {
-    AnalysisDialog* analysisDialog = new AnalysisDialog(this);
-    analysisDialog->setDir(system->getPatientDir());
-    analysisDialog->setModal(true);
-    analysisDialog->exec();
+    if(system->hasPatient){
+        AnalysisDialog* analysisDialog = new AnalysisDialog(this);
+        analysisDialog->setDir(system->selectedPatient->getRecordingDir());
+        analysisDialog->setModal(true);
+        analysisDialog->exec();
+    }else{
+        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+        msgBox.exec();
+    }
+
 }
 
 void MainWindow::on_btnOpenExportDialog_clicked()

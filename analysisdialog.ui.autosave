@@ -73,7 +73,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Create graph</string>
+    <string>dont click here</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnReadBinaryFile">
@@ -105,7 +105,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>PrintResult</string>
+    <string>Print Result</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnSelectRecording_2">

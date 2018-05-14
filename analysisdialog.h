@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QBuffer>
 #include <QDir>
+#include <globals.h>
+#include <models/analysis.h>
 
 namespace Ui {
 class AnalysisDialog;
@@ -16,7 +18,7 @@ class AnalysisDialog : public QDialog
 public:
     explicit AnalysisDialog(QWidget *parent = 0);
     ~AnalysisDialog();
-
+    Analysis analysis;
     void setDir(QDir dir);
 
 signals:
@@ -29,6 +31,12 @@ private slots:
 
     void on_btnSelectRecording_clicked();
 
+
+    void on_btnCancel_clicked();
+
+    void on_btnSelectRecording_2_clicked();
+
+    void on_btnPrintResult_clicked();
 
 private:
     //for testing data reading

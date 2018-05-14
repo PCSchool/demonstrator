@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QReadWriteLock>
 #include <windows.h>
+#include <globals.h>
 
 class BinaryWriter : public QObject
 {
@@ -40,9 +41,8 @@ signals:
 
 public slots:
     //add new data to buffer
-    void writeData(double newdata, double key);
-    void writeToFile();
-    void testRead();
+    void writeData(double xAxis, double yAxis);
+    void readBuffer();
 
 private slots:
 

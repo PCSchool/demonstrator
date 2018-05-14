@@ -6,6 +6,9 @@
 const int DataSize = 100000;
 const int BufferSize = 1024;
 
+extern struct TimePointer{
+    double x, y;
+} pointer;
 
 extern char buffer[BufferSize];
 

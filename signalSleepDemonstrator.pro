@@ -43,7 +43,8 @@ SOURCES += \
     analysisdialog.cpp \
     models/exporting.cpp \
     binaryreader.cpp \
-    screens/addnotesdialog.cpp
+    screens/addnotesdialog.cpp \
+    models/analysis.cpp
 
 HEADERS += \
     screens/creategraphdialog.h \
@@ -65,7 +66,8 @@ HEADERS += \
     binaryreader.h \
     globals.h \
     screens/addnotesdialog.h \
-    models/binarypatient.h
+    models/binarypatient.h \
+    models/analysis.h
 
 FORMS += \
         mainwindow.ui \
