@@ -13,9 +13,10 @@ void Analysis::setRecordingDir(QDir dir){
 QDir Analysis::getRecordingDir(){
     return this->recordingDir;
 }
-void Analysis::setRecordingFile(QFile file){
-    this->recordingFile = file;
+void Analysis::setRecordingFilePath(QString filepath){
+    recordingFilePath = filepath;
+    recordingFile.setFileName(filepath);
 }
-QFile Analysis::getRecordingFile(){
-    return recordingFile;
+QString Analysis::getRecordingFilePath(){
+    recordingFilePath;
 }

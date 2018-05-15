@@ -14,12 +14,13 @@ public:
 
 
     void setRecordingDir(QDir dir);
-    void setRecordingFile(QFile file);
+    void setRecordingFilePath(QString filepath);
     QDir getRecordingDir();
-    QFile getRecordingFile();
+    QString getRecordingFilePath();
 
 private:
     QDir recordingDir;
+    QString recordingFilePath;
     QFile recordingFile;
 
 signals:

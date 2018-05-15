@@ -82,7 +82,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         dataTimer = new QTimer();
         connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
-        dataTimer->start(20); // Interval 0 means to refresh as fast as possible
+        dataTimer->start(25); // Interval 0 means to refresh as fast as possible
 
         threadWriteBuffer = new QThread();
         writeBuffer = new BinaryWriter();
@@ -126,7 +126,7 @@ void RecordDialog::realtimeDataSlot(){
       //double newY = qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843);
       double yAxis = counter;
       counter++;
-      if(counter >= 200){
+      if(counter >= 250){
           counter =0;
       }
       ui->widget->graph(0)->addData(xAxis, yAxis);

@@ -22,7 +22,6 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
     ui->setupUi(this);
     xAxis = 0;
     counter = 0;
-    Analysis = new Analysis();
     int bufferSize = 1024;
     QByteArray* array = new QByteArray[bufferSize];
     qbuffer.setBuffer(array);
@@ -37,37 +36,89 @@ AnalysisDialog::~AnalysisDialog()
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
 {
     TimePointer d1, d2;
-    QByteArray array;
-    //open file for binary reading
-    std::ifstream fin("testerFile.bin", std::ios_base::in | std::ios_base::binary);
-    if(!fin.is_open()){
-        std::cout << "NOT OPEN";
-    }else{
-        /*fin.close();
-        char buff[1024];
-        FILE * file = fopen("recording_2.bin", "rb");
-        int bytes_read = fread(buff, sizeof(128), 1024, file);
+    QByteArray fillArray, array;
+    QString pathfile = "recording_1.bin";
 
-        std::ifstream in("recording_2.bin", std::ios_base::in | std::ios_base::binary);
-        fin.read(buff, 1024);
+     //1 - FILE
+    char buff[1024];
+    FILE * file = fopen(pathfile.toLocal8Bit().constData(), "rb");
+    int bytes_read = fread(buff, sizeof(256), 1024, file);
+
+    std::cout << " 1 : FILE - " <<bytes_read << endl;
+
+    // 2 - std::ifstream
+    std::ifstream fin(pathfile.toLocal8Bit().constData(), std::ios_base::in | std::ios_base::binary);
+    if(!fin.is_open()){
+        std::cout << "File couldnt be found nor opened.";
+    }else{
+        //get the length of the file
+        fin.seekg(0, ios::end);
+
+        size_t fileSize = fin.tellg();
+        fin.seekg(0, ios::beg);
+
+        std::vector<byte> vector(fileSize, 0);
+
+        //create  a <vector> to hold all the bytes in the file
+        fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
+
+        //read the file
+        char temp[fileSize];
+        //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+
+        TimePointer d1;
+        d1.x = 0;
+        d1.y = 0;
+
+        /*fin.read(temp, 0-128);
+        memcpy(&d1, temp, sizeof(TimePointer));
+        std::cout << "test d1: " << d1.x << " - " << d1.y << " \n";*/
+
+        std::cout << " 2 : std::ifstream - " << vector.size()<<  endl;
         fin.close();
-         */
     }
 
+    // 3 - QFile
+    QFile file4(pathfile);
+    file4.open(QIODevice::ReadOnly);
+    fillArray = file4.readAll();
+    std::cout << " 3 : QFile - " << fillArray.size() << " " << endl;
 
-    QFile file("C:/Users/Onera/Documents/SignalSleepDemonstrator/testerFile.bin");
-    file.open(QIODevice::ReadOnly);
+    fillArray.clear();
 
-    QDataStream fileStream(&file);
+    // 4
+    QDataStream fileStream(&file4);
+    fileStream.setVersion(QDataStream::Qt_5_10);
     fileStream.setByteOrder(QDataStream::LittleEndian);
+    char *temp = new char[sizeof(fileStream)];
+    fileStream.readRawData((temp),sizeof(fileStream));
+    size_t tt = sizeof(fileStream);
+    array.append(temp, tt);
+    char *buf = (char *)malloc(sizeof(temp) * tt);
+    TimePointer *test = (TimePointer *) buf;
+    //std::cout << test->x << " - " << test->y << " " <<endl;
+    std::cout << " 4 : QDataStream - " << sizeof(fileStream) << endl;
 
-    char *temp = new char[1024];
-    fileStream.readRawData(reinterpret_cast<char*>(temp), 1024);
-    array.append(temp, 1024);
+    //file4.open(QIODevice::WriteOnly | QIODevice::Append);
+    //QDataStream in(&file4);
+    //in.setVersion(QDataStream::Qt_5_10);
+    //in.setByteOrder(QDataStream::LittleEndian);
+   // char *raw = new char[sizeof(in)];
 
-    delete temp;
+    //in.readRawData((temp),sizeof(in));
+    //in.readBytes((raw), sizeof(in));
+    //array.append((raw), sizeof(in));
+    //out.readBytes(file4.)
+    //out.readRawData(array.constData(), array.length());
 
-    std::cout << "done " << array.size() << " p-- " << sizeof(array);
+    //TimePointer* tp = reinterpret_cast<TimePointer*>(array.data());
+    //memcpy(&d1, temp, sizeof(TimePointer));
+    //std::cout << "test d1: " << d1.x << " - " << d1.y << " \n";
+
+
+    file4.close();
+
+    std::cout << "real bytes : 577 " <<endl ;
 }
 
 void AnalysisDialog::on_btnGenerate_clicked()
@@ -119,42 +170,30 @@ void AnalysisDialog::on_btnGenerate_clicked()
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-    //recording_0  <-- real recording file, contains 16KB, 16444 bytes
-    //testerFile   <-- fake testing file contains 8 bytes
-    std::ifstream fin("recording_2.bin", std::ios_base::in | std::ios_base::binary);
-    if(!fin.is_open()){
-        std::cout << "File couldnt be found nor opened.";
-    }else{
-        //get the length of the file
-        fin.seekg(0, ios::end);
+    //get QByteArray from file
+    QFile file("recording_1.bin");
+    if(!file.open(QIODevice::ReadOnly))
+        return;
+    QByteArray array = file.readAll();
 
-        size_t fileSize = fin.tellg();
-        fin.seekg(0, ios::beg);
+    std::cout << "recording_1.bin - " << array.size() << endl;
 
-        //create  a <vector> to hold all the bytes in the file
-        std::vector<byte> vector(fileSize, 0);
+    //create QDataStream and start reading from it to get all TimePointers
+    QDataStream readstream(&array, QIODevice::ReadOnly);
 
-        //read the file
-        fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
 
-        //loop in buffer
-        int counter = 0;
-        QByteArray *array;
-        char b[sizeof(array)];
+}
 
-        uint_fast16_t len;
-        fin.read((char*)&len, 2);
+//write to file
+QDataStream& operator <<(QDataStream& stream, const TimePointer& tp){
 
-        std::string str(len, '\o');
-        array = reinterpret_cast<QByteArray*>(&len);
-        int length = vector.size();
-
-        QFile myfile("recording_2.bin");
-        myfile.setFileName("recording_2.bin");
-        //if(!myfile.open(QIODevice::ReadOnly)) return;
-
-        std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << " \n array_size" << array->size() << "\n data size : " << vector.size() << endl;
-    }
+}
+//read from file
+QDataStream& operator >>(QDataStream& stream, TimePointer& tp){
+    QFile file("recording_1.bin");
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+    in >> tp;
 }
 
 void AnalysisDialog::setDir(QDir dir){
@@ -204,20 +243,23 @@ void AnalysisDialog::on_btnCancel_clicked()
         memcpy(&d1, temp, sizeof(TimePointer));
         std::cout << "test d3: " << d1.x << " - " << d1.y << " \n";
         //each character pointer on the system in 4-bytes long
-
     }
 }
 
 void AnalysisDialog::on_btnSelectRecording_2_clicked()
 {
-    //dir.path() = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()));
-    QString path = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                dir.path(), QFileDialog::ShowDirsOnly);
+    const QString path =  QFileDialog::getOpenFileName(
+                this,
+                "Open Document",
+                dir.path(),
+                "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
     analysis.setRecordingDir(QDir(path));
-    analysis.setRecordingFile(QFile(path));
+    QFile file;
+    analysis.setRecordingFilePath(path);
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked()
 {
-    //1. read recording -> get all TimerPoints of recording -> put them in list(?) -> create customplot based of recording
+
+
 }

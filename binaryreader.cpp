@@ -60,11 +60,29 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     //must write the content of vector itself &vector[0]
 
     QVector<TimePointer> vector;
-    QFile file("recording_5.bin");
-    file.open(QIODevice::WriteOnly);
-    QDataStream stream(array);
-    BYTE * pByte = reinterpret_cast<byte*>(array.data());
+    //BYTE * pByte = reinterpret_cast<byte*>(array.data());
 
+    // 1. recording_1.bin  QDataStream    // save the QFile directoy??
+    QFile file("recording_1.bin");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_5_10);
+    out.setByteOrder(QDataStream::LittleEndian);
+    out.writeRawData(array.constData(), array.length());
+    //out.writeRawData(array.constData(), array.length());
+    file.close();
+
+    // 2. recording_2.bin  std::ofstream
+    std::ofstream fout("recording_2.bin", std::ios::binary | std::ios_base::app);
+    fout.write(reinterpret_cast<char *>(array.data()), sizeof(array) *array.size());
+    fout.close();
+
+    //ofstream fout2("recording_1.bin", std::ios_base::app | ios::binary);
+    //fout2.write(array.data(), array.size() * sizeof(TimePointer));
+    //std::cout << " array size " << array.data();
+    //fout2.close();
+
+    // 3. recording_3.bin  FILE
     //FILE *file = fopen("recording_x", "wb");
     //pass argument by const reference
     //for (const auto& value : vector){
@@ -77,16 +95,6 @@ void BinaryReader::writeBufferToFile(QByteArray array){
         fwrite(array[i], sizeof(data), 16, file);
     }
     fclose(file);*/
-
-    //ofstream fout2("recording_1.bin", std::ios_base::app | ios::binary);
-    //fout2.write(array.data(), array.size() * sizeof(TimePointer));
-    //std::cout << " array size " << array.data();
-    //fout2.close();
-
-    //previouw method
-    std::ofstream fout("recording_2.bin", std::ios::binary | std::ios_base::app);
-    fout.write(reinterpret_cast<char *>(array.data()), sizeof(array) *array.size());
-    fout.close();
 
     LeaveCriticalSection(&shared_buffer_lock);
 }
