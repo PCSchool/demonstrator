@@ -99,22 +99,9 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     //std::cout << test->x << " - " << test->y << " " <<endl;
     std::cout << " 4 : QDataStream - " << sizeof(fileStream) << endl;
 
-    //file4.open(QIODevice::WriteOnly | QIODevice::Append);
-    //QDataStream in(&file4);
-    //in.setVersion(QDataStream::Qt_5_10);
-    //in.setByteOrder(QDataStream::LittleEndian);
-   // char *raw = new char[sizeof(in)];
-
-    //in.readRawData((temp),sizeof(in));
-    //in.readBytes((raw), sizeof(in));
-    //array.append((raw), sizeof(in));
-    //out.readBytes(file4.)
-    //out.readRawData(array.constData(), array.length());
-
     //TimePointer* tp = reinterpret_cast<TimePointer*>(array.data());
     //memcpy(&d1, temp, sizeof(TimePointer));
     //std::cout << "test d1: " << d1.x << " - " << d1.y << " \n";
-
 
     file4.close();
 
@@ -179,21 +166,26 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     std::cout << "recording_1.bin - " << array.size() << endl;
 
     //create QDataStream and start reading from it to get all TimePointers
-    QDataStream readstream(&array, QIODevice::ReadOnly);
+    TimePointer tp;
+    QList<TimePointer> tpList;
 
+    QDataStream readstream(array);
+    readstream >> tp;
+    std::cout << tp.x << " " << tp.y;
+ }
 
-}
+/*QDataStream& FromRawBytesToTimePointer(unsigned char* rawBytes){
+    return *(TimePointer*)rawBytes;
+}*/
 
 //write to file
-QDataStream& operator <<(QDataStream& stream, const TimePointer& tp){
-
-}
+//QDataStream& operator <<(QDataStream& stream, const TimePointer& tp)
+//}
 //read from file
 QDataStream& operator >>(QDataStream& stream, TimePointer& tp){
     QFile file("recording_1.bin");
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
-    in >> tp;
 }
 
 void AnalysisDialog::setDir(QDir dir){
