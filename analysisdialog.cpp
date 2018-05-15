@@ -166,22 +166,27 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     std::cout << "recording_1.bin - " << array.size() << endl;
 
     //create QDataStream and start reading from it to get all TimePointers
-    TimePointer tp;
+    TimePointer tp, tp2, tp3;
     QList<TimePointer> tpList;
 
     QDataStream readstream(array);
-    readstream >> tp;
-    std::cout << tp.x << " " << tp.y;
+    readstream.setVersion(QDataStream::Qt_5_10);
+
+    //readstream >> tp;
+    //std::cout << tp.x << " " << tp.y;
  }
 
-/*QDataStream& FromRawBytesToTimePointer(unsigned char* rawBytes){
-    return *(TimePointer*)rawBytes;
-}*/
+/*QDataStream &TimePointer::operator<<(QDataStream &out,const TimePointer &tp){
+    out << tp.x << tp.y;
+    return out;
+}
 
-//write to file
-//QDataStream& operator <<(QDataStream& stream, const TimePointer& tp)
-//}
-//read from file
+QDataStream &TimePointer::operator>>(QDataStream &in,TimePointer &tp){
+    tp = TimePointer;
+    in >> tp.x >> tp.y;
+    return in;
+}
+*/
 QDataStream& operator >>(QDataStream& stream, TimePointer& tp){
     QFile file("recording_1.bin");
     file.open(QIODevice::ReadOnly);

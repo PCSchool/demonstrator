@@ -21,6 +21,11 @@ public:
     Analysis analysis;
     void setDir(QDir dir);
 
+    QDataStream &TimePointer::operator<<(QDataStream &out,const TimePointer &tp)();
+    QDataStream &TimePointer::operator>>(QDataStream &in,TimePointer &tp)();
+
+
+
 signals:
     writeNewData(double newdata, double key);
 
