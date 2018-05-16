@@ -6,6 +6,8 @@
 #include <QDir>
 #include <globals.h>
 #include <models/analysis.h>
+#include <qdatastream.h>
+#include <QDataStream>
 
 namespace Ui {
 class AnalysisDialog;
@@ -21,10 +23,22 @@ public:
     Analysis analysis;
     void setDir(QDir dir);
 
-    QDataStream &TimePointer::operator<<(QDataStream &out,const TimePointer &tp)();
-    QDataStream &TimePointer::operator>>(QDataStream &in,TimePointer &tp)();
+    /*QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
+        out << (quint64)tp.x;
+        out << (quint64)tp.y;
+        return out;
+    }
 
+    QDataStream &operator>>(QDataStream &in,TimePointer &tp){
+        tp = TimePointer;
+        in >> (quint64)tp.x;
+        in >> (quint64)tp.y;
+        return in;
+    }*/
 
+    friend QDataStream &operator<<(QDataStream &out,const TimePointer &tp);
+    //read from file >> instream
+    friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
 
 signals:
     writeNewData(double newdata, double key);
