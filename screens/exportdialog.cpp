@@ -48,9 +48,12 @@ void ExportDialog::on_btnCancel_clicked()
 
 void ExportDialog::on_btnSelectPatient_clicked()
 {
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/patients");
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), path, QFileDialog::ShowDirsOnly);
-    exporting->cleanUserDir(path, dir);
+    const QString dir =  QFileDialog::getOpenFileName(
+                this,
+                "Open Document",
+                this->exporting->getUserDir().path(),
+                "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
+    exporting->cleanUserDir(dir, dir);
     exporting->cleanListbox();
 
 }
@@ -58,9 +61,12 @@ void ExportDialog::on_btnSelectPatient_clicked()
 void ExportDialog::on_btnSelectExportFiles_clicked()
 {
     //copy of on_btnselectpatient, will later be turned into a method probably
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()));
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),path, QFileDialog::ShowDirsOnly);
-    exporting->cleanExportDir(dir, path);
+    const QString path =  QFileDialog::getOpenFileName(
+                this,
+                "Open Document",
+                exporting->getExportDir().path(),
+                "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
+    exporting->cleanExportDir(path, path);
 }
 
 void ExportDialog::on_btnExport_clicked()
@@ -73,4 +79,9 @@ void ExportDialog::on_btnExport_clicked()
     messageBox.setFixedSize(500,200);
     messageBox.information(0, "Export succes", "The files have succesfully been exported.");
     messageBox.show();
+}
+
+void ExportDialog::prepare(QDir userPath, QDir exportPath){
+    exporting->setExportDir(exportPath);
+    exporting->setUserDir(userPath);
 }

@@ -195,9 +195,9 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     QDataStream readstream(&file);
     //readstream.setVersion(QDataStream::Qt_5_10);
 
-    TimePointer *tp1 = TimePointer();
+    TimePointer tp1 = TimePointer();
     char tmpChar[100];
-    char *tmp1[100];
+    char tmp1[100];
 
     //loop to gather the info of TimePointer
 
@@ -207,7 +207,6 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     //readstream.readBytes(tmp1, sizeof(TimePointer));
     //tp1 = (TimePointer *)tmp1;
 
-    readstream.
     readstream >> tp;
 
     file.close();

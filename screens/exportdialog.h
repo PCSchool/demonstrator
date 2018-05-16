@@ -19,6 +19,8 @@ public:
 
 public slots:
 
+    void prepare(QDir userPath, QDir exportPath);
+
 private slots:
     void updateDialog(QDir userDir, QDir exportDir);
 
@@ -31,6 +33,7 @@ private slots:
     void on_btnSelectExportFiles_clicked();
 
     void on_btnExport_clicked();
+
 
 private:
     Ui::ExportDialog *ui;

@@ -80,14 +80,19 @@ void MainWindow::on_btnOpenAnalysisDialog_clicked()
         QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
         msgBox.exec();
     }
-
 }
 
 void MainWindow::on_btnOpenExportDialog_clicked()
 {
-    ExportDialog* exportDialog = new ExportDialog(this);
-    exportDialog->setModal(true);
-    exportDialog->exec();
+    if(system->hasPatient){
+        ExportDialog* exportDialog = new ExportDialog(this);
+        exportDialog->prepare(system->getPatientDir(), system->selectedPatient->getUserDir());
+        exportDialog->setModal(true);
+        exportDialog->exec();
+    }else{
+        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::deviceSelected(Device device){
