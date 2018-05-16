@@ -11,10 +11,7 @@
 #include <QReadWriteLock>
 #include <windows.h>
 #include <globals.h>
-<<<<<<< HEAD
-=======
 #include <vector>
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
 
 class BinaryWriter : public QObject
 {
@@ -36,18 +33,13 @@ signals:
     void error(QString error);                  //debugging error, to show whats wrong
     void writeNewBufferToFile();                //ready for new buffer to be written
     void fileFull();
-    void bufferFull(QByteArray array, vector vectorData);
+    void bufferFull(QByteArray array);
     void setDir(QDir dir);
 
 public slots:
     //add new data to buffer
     void writeData(double xAxis, double yAxis);
-<<<<<<< HEAD
     void readBuffer();
-=======
-    void writeToFile();
-    void testRead();
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
 
 private slots:
 

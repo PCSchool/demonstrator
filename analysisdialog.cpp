@@ -155,7 +155,6 @@ void AnalysisDialog::on_btnGenerate_clicked()
     std::cout << "done writing , start reading" << endl;
 }
 
-<<<<<<< HEAD
 //write to file << outstream
 QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
     out << (quint64)tp.x;
@@ -171,29 +170,17 @@ QDataStream &operator>>(QDataStream &in,TimePointer &tp){
 
     QList<TimePointer> tpList;
     tp = TimePointer();
-    char tmpChar[100];
-    quint64 tmp64;
-    quint32 tmp32;
-    quint16 tmp16;
 
-    //loop to gather the info of TimePointer
-    //in >> tp.x;
-    // in >> tp.y;
-    //std::cout << tp.x << " " << tp.y << endl;
+    in >> tp.x;
+    in >> tp.y;
+    std::cout << tp.x << " " << tp.y << endl;
     //tpList.push_back(tp);
 
-    std::cout << "size  ----  " << tpList.count() << " " << endl;
-    std::cout << "info   ---- " << tpList.size() << " " << sizeof(tpList) << endl;
-=======
-QDataStream &operator >>(QDataStream &in, Data &data){
-
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
     return in;
 }
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-<<<<<<< HEAD
     //get QByteArray from file
     QFile file("recording_1.bin");
     if(!file.open(QIODevice::ReadOnly))
@@ -206,16 +193,29 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     TimePointer tp;
 
     QDataStream readstream(&file);
-    readstream.setVersion(QDataStream::Qt_5_10);
+    //readstream.setVersion(QDataStream::Qt_5_10);
 
+    TimePointer *tp1 = TimePointer();
+    char tmpChar[100];
+    char *tmp1[100];
+
+    //loop to gather the info of TimePointer
+
+    //TimePointer *p1 = (TimePointer *)tmpChar;
+    //std::cout << "test: " << p1->x << " " << p1->y << endl;
+
+    //readstream.readBytes(tmp1, sizeof(TimePointer));
+    //tp1 = (TimePointer *)tmp1;
+
+    readstream.
     readstream >> tp;
 
     file.close();
-    std::cout << "\n DONE";
- }
+    std::cout << "DONE " << endl;
+}
 
 void AnalysisDialog::setDir(QDir dir){
-    this->dir = dir; 
+    this->dir = dir;
 }
 
 void AnalysisDialog::randomize(){
@@ -223,19 +223,18 @@ void AnalysisDialog::randomize(){
     counter++;
 }
 
-void AnalysisDialog::on_btnCancel_clicked()
-{
+void AnalysisDialog::on_btnCancel_clicked(){
     //open file read constantly 16 bytes - 128 bits out
     std::ifstream fin("recording_4.bin", std::ios_base::in | std::ios_base::binary);
     if(!fin.is_open()){
-=======
+        return;
+    }
     //recording_0  <-- real recording file, contains 16KB, 16444 bytes
     //testerFile   <-- fake testing file contains 8 bytes
     //std::ifstream fin("recording_0.bin", std::ios_base::in | std::ios_base::binary);
     QFile file("recording_0.bin");
 
     if(!file.open(QIODevice::ReadOnly)){
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
         std::cout << "File couldnt be found nor opened.";
         return;
     }else{
@@ -250,12 +249,6 @@ void AnalysisDialog::on_btnCancel_clicked()
         QDataStream dataStream(&file);
         dataStream.setByteOrder(QDataStream::LittleEndian);
         QVector<Data> result;
-        while(!dataStream.atEnd()){
-            Data x;
-            dataStream >> x;
-            result.append(x);
-        }
-
 
         //loop through QByteArray
 
@@ -263,7 +256,6 @@ void AnalysisDialog::on_btnCancel_clicked()
         file.seek(0);
         size_t fileSize = fin.tellg();
         fin.seekg(0, ios::beg);
-<<<<<<< HEAD
 
         std::vector<byte> vector(fileSize, 0);
 
@@ -290,7 +282,7 @@ void AnalysisDialog::on_btnCancel_clicked()
         memcpy(&d1, temp, sizeof(TimePointer));
         std::cout << "test d3: " << d1.x << " - " << d1.y << " \n";
         //each character pointer on the system in 4-bytes long
-=======
+
         std::vector<byte> data(fileSize, 0);
         //read the file
         fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
@@ -303,8 +295,6 @@ void AnalysisDialog::on_btnCancel_clicked()
 
         std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
         //fin.close*/
-
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
     }
 }
 
@@ -322,6 +312,5 @@ void AnalysisDialog::on_btnSelectRecording_2_clicked()
 
 void AnalysisDialog::on_btnPrintResult_clicked()
 {
-
-
+    //print out all the values
 }

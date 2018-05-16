@@ -168,7 +168,7 @@ void RecordDialog::on_save_clicked()
     std::cout << "data info : x = " << xx.x << " " << xx.y << endl;
 
     QByteArray arr;
-    arr.append(reinterpret_cast<char *>(&xx));  //append prepend
+    arr.append(reinterpret_cast<char *>(arr.data()));  //append prepend
     Data* ax2 = reinterpret_cast<Data*>(arr.data());
     ax2 = reinterpret_cast<Data*>(arr.data());
     std::cout << "NEW data info : ax = " << ax2->x << " " << ax2->y << endl;

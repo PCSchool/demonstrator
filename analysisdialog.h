@@ -5,12 +5,9 @@
 #include <QBuffer>
 #include <QDir>
 #include <globals.h>
-<<<<<<< HEAD
 #include <models/analysis.h>
 #include <qdatastream.h>
 #include <QDataStream>
-=======
->>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
 
 namespace Ui {
 class AnalysisDialog;
@@ -25,22 +22,7 @@ public:
     ~AnalysisDialog();
     Analysis analysis;
     void setDir(QDir dir);
-
-    /*QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
-        out << (quint64)tp.x;
-        out << (quint64)tp.y;
-        return out;
-    }
-
-    QDataStream &operator>>(QDataStream &in,TimePointer &tp){
-        tp = TimePointer;
-        in >> (quint64)tp.x;
-        in >> (quint64)tp.y;
-        return in;
-    }*/
-
     friend QDataStream &operator<<(QDataStream &out,const TimePointer &tp);
-    //read from file >> instream
     friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
 
 signals:
