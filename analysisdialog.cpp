@@ -167,14 +167,11 @@ QDataStream &operator>>(QDataStream &in,TimePointer &tp){
     //resetting the stream is required. position is at then at the start
     in.resetStatus();
     in.device()->reset();
-
-    QList<TimePointer> tpList;
     tp = TimePointer();
 
     in >> tp.x;
     in >> tp.y;
     std::cout << tp.x << " " << tp.y << endl;
-    //tpList.push_back(tp);
 
     return in;
 }
@@ -311,5 +308,26 @@ void AnalysisDialog::on_btnSelectRecording_2_clicked()
 
 void AnalysisDialog::on_btnPrintResult_clicked()
 {
-    //print out all the values
+    // add two new graphs and set their look:
+    ui->widget->addGraph();
+    ui->widget->graph(0)->setPen(QPen(Qt::blue));
+    ui->widget->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
+    ui->widget->addGraph();
+    // generate some points of data (y0 for first, y1 for second graph):
+    QVector<double> X(50), Y(50);
+
+    for(double i = 0; i < tpList.count(); i++){
+        X[i] = tpList[i].x;
+        y[i] = tpList[i].y;
+    }
+
+    ui->widget->xAxis2->setVisible(true);
+    ui->widget->xAxis2->setTickLabels(false);
+    ui->widget->yAxis2->setVisible(true);
+    ui->widget->yAxis2->setTickLabels(false);
+    connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
+    ui->widget->graph(0)->setData(x, y0);
+    ui->widget->graph(0)->rescaleAxes(true);
+    ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
 }

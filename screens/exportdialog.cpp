@@ -84,4 +84,6 @@ void ExportDialog::on_btnExport_clicked()
 void ExportDialog::prepare(QDir userPath, QDir exportPath){
     exporting->setExportDir(exportPath);
     exporting->setUserDir(userPath);
+    ui->lblPathFile->setText(userPath.path());
+    ui->lblPathPatient->setText(exportPath.path());
 }

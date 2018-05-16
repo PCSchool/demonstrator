@@ -21,6 +21,7 @@ public:
     explicit AnalysisDialog(QWidget *parent = 0);
     ~AnalysisDialog();
     Analysis analysis;
+    QList<TimePointer> tpList;
     void setDir(QDir dir);
     friend QDataStream &operator<<(QDataStream &out,const TimePointer &tp);
     friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
