@@ -164,9 +164,25 @@ QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
 
 //read from file >> instream
 QDataStream &operator>>(QDataStream &in,TimePointer &tp){
+    //resetting the stream is required. position is at then at the start
+    in.resetStatus();
+    in.device()->reset();
+
+    QList<TimePointer> tpList;
     tp = TimePointer();
-    in >> tp.x;
-    in >> tp.y;
+    char tmpChar[100];
+    quint64 tmp64;
+    quint32 tmp32;
+    quint16 tmp16;
+
+    //loop to gather the info of TimePointer
+    //in >> tp.x;
+    // in >> tp.y;
+    //std::cout << tp.x << " " << tp.y << endl;
+    //tpList.push_back(tp);
+
+    std::cout << "size  ----  " << tpList.count() << " " << endl;
+    std::cout << "info   ---- " << tpList.size() << " " << sizeof(tpList) << endl;
     return in;
 }
 
@@ -178,31 +194,19 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
         return;
     QByteArray array = file.readAll();
 
-    std::cout << "recording_1.bin - " << array.size() << endl;
+    std::cout << "\n recording_1.bin - " << array.size() << endl;
 
     //create QDataStream and start reading from it to get all TimePointers
-    TimePointer tp, tp2, tp3, tp4;
-    QList<TimePointer> tpList;
+    TimePointer tp;
 
     QDataStream readstream(&file);
     readstream.setVersion(QDataStream::Qt_5_10);
 
-    tpList = new QList();
     readstream >> tp;
-    readstream >> tp2;
-    readstream >> tp3;
 
     file.close();
-    std::cout << tp.x << " " << tp.y << endl;
-    std::cout << tp2.x << " " << tp2.y << endl;
-    std::cout << tp3.x << " " << tp3.y;
+    std::cout << "\n DONE";
  }
-
-/*QDataStream& operator >>(QDataStream& stream, TimePointer& tp){
-    QFile file("recording_1.bin");
-    file.open(QIODevice::ReadOnly);
-    QDataStream in(&file);
-}*/
 
 void AnalysisDialog::setDir(QDir dir){
     this->dir = dir; 
