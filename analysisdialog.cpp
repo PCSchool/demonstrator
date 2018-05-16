@@ -155,6 +155,7 @@ void AnalysisDialog::on_btnGenerate_clicked()
     std::cout << "done writing , start reading" << endl;
 }
 
+<<<<<<< HEAD
 //write to file << outstream
 QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
     out << (quint64)tp.x;
@@ -183,11 +184,16 @@ QDataStream &operator>>(QDataStream &in,TimePointer &tp){
 
     std::cout << "size  ----  " << tpList.count() << " " << endl;
     std::cout << "info   ---- " << tpList.size() << " " << sizeof(tpList) << endl;
+=======
+QDataStream &operator >>(QDataStream &in, Data &data){
+
+>>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
     return in;
 }
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
+<<<<<<< HEAD
     //get QByteArray from file
     QFile file("recording_1.bin");
     if(!file.open(QIODevice::ReadOnly))
@@ -222,13 +228,42 @@ void AnalysisDialog::on_btnCancel_clicked()
     //open file read constantly 16 bytes - 128 bits out
     std::ifstream fin("recording_4.bin", std::ios_base::in | std::ios_base::binary);
     if(!fin.is_open()){
-        std::cout << "File couldnt be found nor opened.";
-    }else{
-        //get the length of the file
-        fin.seekg(0, ios::end);
+=======
+    //recording_0  <-- real recording file, contains 16KB, 16444 bytes
+    //testerFile   <-- fake testing file contains 8 bytes
+    //std::ifstream fin("recording_0.bin", std::ios_base::in | std::ios_base::binary);
+    QFile file("recording_0.bin");
 
+    if(!file.open(QIODevice::ReadOnly)){
+>>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
+        std::cout << "File couldnt be found nor opened.";
+        return;
+    }else{
+        int counter = 0;
+        QByteArray *array;
+        char b[sizeof(array)];
+        uint_fast16_t len;
+
+        file.seek(0);
+        QByteArray bytes = file.readAll();
+
+        QDataStream dataStream(&file);
+        dataStream.setByteOrder(QDataStream::LittleEndian);
+        QVector<Data> result;
+        while(!dataStream.atEnd()){
+            Data x;
+            dataStream >> x;
+            result.append(x);
+        }
+
+
+        //loop through QByteArray
+
+        /*
+        file.seek(0);
         size_t fileSize = fin.tellg();
         fin.seekg(0, ios::beg);
+<<<<<<< HEAD
 
         std::vector<byte> vector(fileSize, 0);
 
@@ -255,6 +290,21 @@ void AnalysisDialog::on_btnCancel_clicked()
         memcpy(&d1, temp, sizeof(TimePointer));
         std::cout << "test d3: " << d1.x << " - " << d1.y << " \n";
         //each character pointer on the system in 4-bytes long
+=======
+        std::vector<byte> data(fileSize, 0);
+        //read the file
+        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+        Axis a;
+        fin.read((char*)&len, 2);
+        std::string str(len, '\o');
+        array = reinterpret_cast<QByteArray*>(&len);
+        //loop in buffer
+        fin.close();
+
+        std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
+        //fin.close*/
+
+>>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
     }
 }
 

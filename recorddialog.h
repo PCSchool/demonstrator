@@ -40,6 +40,8 @@ private slots:
 
     void on_btnReadBuffer_clicked();
 
+    void on_save_clicked();
+
 private:
     Ui::RecordDialog *ui;
     QTimer* dataTimer;

@@ -5,9 +5,12 @@
 #include <QBuffer>
 #include <QDir>
 #include <globals.h>
+<<<<<<< HEAD
 #include <models/analysis.h>
 #include <qdatastream.h>
 #include <QDataStream>
+=======
+>>>>>>> 99352342c844220d4eb6fb8227db9ae0e0da1aab
 
 namespace Ui {
 class AnalysisDialog;
