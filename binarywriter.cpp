@@ -50,20 +50,14 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      data.y = yAxis;
 
      EnterCriticalSection(&shared_buffer_lock);
-     //qbuffer.buffer().resize(sizeof(&data));
-     qbuffer.buffer().append(reinterpret_cast<char *>(&data));  //prepend
+     qbuffer.buffer().resize(sizeof(&data));
+     //qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
-     char *empt = reinterpret_cast<char *>(&data);
 
      //std::cout <<"|" << data.x << " " << data.y << " -> " << empt  << " <- ";
      //memcpy(&data, empt, sizeof(TimePointer));
      //std::cout << " " << data.x << " " << data.y << " | \n";
-     //vectorData.push_back(data);
-     qbuffer.buffer().resize(sizeof(&data));
-     //qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
-     qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
-     qbuffer.write(reinterpret_cast<char *>(&data), std::ios::binary);
 
      qbuffer.close();
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived

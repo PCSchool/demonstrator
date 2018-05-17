@@ -57,7 +57,7 @@
     <string>Generate test recording</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnSelectRecording">
+  <widget class="QPushButton" name="btnTest">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -108,7 +108,7 @@
     <string>Print Result</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnSelectRecording_2">
+  <widget class="QPushButton" name="btnSelectRecording">
    <property name="geometry">
     <rect>
      <x>10</x>

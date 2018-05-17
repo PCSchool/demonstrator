@@ -34,14 +34,13 @@ private slots:
 
     void on_btnGenerate_clicked();
 
-    void on_btnSelectRecording_clicked();
-
-
     void on_btnCancel_clicked();
 
-    void on_btnSelectRecording_2_clicked();
+    void on_btnSelectRecording_clicked();
 
     void on_btnPrintResult_clicked();
+
+    void on_btnTest_clicked();
 
 private:
     //for testing data reading

@@ -106,16 +106,15 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     //fout.write(reinterpret_cast<char *>(&array), sizeof(array));
     //fout.close();
 
-    QFile f("recording_0.bin");   //<-- change later on to path
-    f.setFileName("recording_0.bin");
+    QFile f("recording_4.bin");   //<-- change later on to path
+    f.setFileName("recording_4.bin");
     if(!f.open(QIODevice::WriteOnly)) return;
 
     //BYTE * pByte = reinterpret_cast<byte*>(array.data();
 
-    QByteArray arrayNew = array.chopped(128);
+    QByteArray arrayNew = array.chopped(16);
     TimePointer* d = reinterpret_cast<TimePointer*>(arrayNew.data());
     std::cout << "coordinates Data{x = "<< d->x << ", y = " << d->y << "} \n" ;
-
 
     LeaveCriticalSection(&shared_buffer_lock);
 
