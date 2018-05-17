@@ -68,6 +68,7 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_5_10);
     out.setByteOrder(QDataStream::LittleEndian);
+    std::cout << array.size() << "??";
     out.writeRawData(array.constData(), array.length());
     //out.writeRawData(array.constData(), array.length());
     file.close();
@@ -96,13 +97,10 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     }
     fclose(file);*/
 
-    LeaveCriticalSection(&shared_buffer_lock);
-
     //void BinaryReader::writeBufferToFile(QByteArray array, vector vectorData){
     //std::string path = dir.path().toLocal8Bit().constData();
     //path = path + "/recording_" + std::to_string(numberFile) + ".bin";
 
-    EnterCriticalSection(&shared_buffer_lock);
     //option 1. write whole QByteArray to file
     //std::ofstream fout(path, std::ios::binary | std::ios_base::app);
     //fout.write(reinterpret_cast<char *>(&array), sizeof(array));
@@ -114,9 +112,12 @@ void BinaryReader::writeBufferToFile(QByteArray array){
 
     //BYTE * pByte = reinterpret_cast<byte*>(array.data();
 
-    QByteArray arrayNew = array.chopped(16);
-    Data* d = reinterpret_cast<Data*>(arrayNew.data());
+    QByteArray arrayNew = array.chopped(128);
+    TimePointer* d = reinterpret_cast<TimePointer*>(arrayNew.data());
     std::cout << "coordinates Data{x = "<< d->x << ", y = " << d->y << "} \n" ;
+
+
+    LeaveCriticalSection(&shared_buffer_lock);
 
     //for(auto i : vectorData){
     //    std::cout << "VectorData: " << i << endl;

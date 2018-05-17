@@ -56,12 +56,12 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
      char *empt = reinterpret_cast<char *>(&data);
 
-     std::cout <<"|" << empt << " " << data.x << " " << data.y << " -- ";
-     memcpy(&data, empt, sizeof(TimePointer));
-     std::cout << " " << data.x << " " << data.y << " | \n";
+     //std::cout <<"|" << data.x << " " << data.y << " -> " << empt  << " <- ";
+     //memcpy(&data, empt, sizeof(TimePointer));
+     //std::cout << " " << data.x << " " << data.y << " | \n";
      //vectorData.push_back(data);
      qbuffer.buffer().resize(sizeof(&data));
-     qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
+     //qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
      qbuffer.write(reinterpret_cast<char *>(&data), std::ios::binary);
 
@@ -70,18 +70,12 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      numUsedBytes = numUsedBytes + 16; //struct TimePointer is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
 
-
      //check if ready to write to file
      if(bufferSize < numUsedBytes){
          std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
 
          //signal buffer is full + parameter with qByteArray
          emit bufferFull(qbuffer.buffer());             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
-         std::cout << "\n emit signal " << numberFile << " ";
-         qbuffer.buffer().clear();
-         //empty the buffers
-         std::cout << "signal BinaryWriter" << endl;
-         //emit bufferFull(qbuffer.buffer(), vectorData);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
          numUsedBytes = 0;
      }

@@ -99,7 +99,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
 
         connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        connect(writeBuffer, SIGNAL(bufferFull(QByteArray, std::vector)), writeFile, SLOT(writeBufferToFile(QByteArray, std::vector)));
+        connect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
 
         //ensure the recording file gets written to the right directory
         writeBuffer->setUserDir(this->userDir);
