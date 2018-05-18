@@ -12,6 +12,7 @@
 #include <wincrypt.h>
 #include <windows.h>
 #include <QLibrary>
+#include <QDebug>
 
 using namespace std;
 
@@ -43,7 +44,6 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     char buff[1024];
     FILE * file = fopen(pathfile.toLocal8Bit().constData(), "rb");
     int bytes_read = fread(buff, sizeof(256), 1024, file);
-
     fwrite(&d1, sizeof(struct TimePointer), 1, file);
     std::cout << " 1 : FILE - " <<bytes_read << " -- " << d1.x << " " << d1.y <<  endl;
 
@@ -52,31 +52,24 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     if(!fin.is_open()){
         std::cout << "File couldnt be found nor opened.";
     }else{
-        //get the length of the file
-        fin.seekg(0, ios::end);
+        fin.seekg(0, ios::end);              //seekg() used for finding size file
         size_t fileSize = fin.tellg();
         fin.seekg(0, ios::beg);
         std::vector<byte> vector(fileSize, 0);
-        //create  a <vector> to hold all the bytes in the file
         fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
-        //read the file
         char temp[fileSize];
-        //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
         TimePointer d1;
         d1.x = 0;
         d1.y = 0;
-        /*fin.read(temp, 0-128);
-        memcpy(&d1, temp, sizeof(TimePointer));
-        std::cout << "test d1: " << d1.x << " - " << d1.y << " \n";*/
-        std::cout << " 2 : std::ifstream - " << vector.size()<<  endl;
         fin.close();
+        std::cout << " 2 : std::ifstream : - " << vector.size()<<  endl;
     }
 
     // 3 - QFile
     QFile qfile(pathfile);
     qfile.open(QIODevice::ReadOnly);
     fillArray = qfile.readAll();
-    std::cout << " 3 : QFile - " << fillArray.size() << " " << endl;
+    std::cout << " 3 : QFile : " << fillArray.size() << " " << endl;
     fillArray.clear();
 
     // 4
@@ -89,8 +82,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     array.append(temp, tt);
     char *buf = (char *)malloc(sizeof(temp) * tt);
     TimePointer *test = (TimePointer *) buf;
-    //std::cout << test->x << " - " << test->y << " " <<endl;
-    std::cout << " 4 : QDataStream - " << array.size() << endl;
+    std::cout << " 4 : QDataStream : " << array.size() << endl;
 
     //TimePointer* tp = reinterpret_cast<TimePointer*>(array.data());
     //memcpy(&d1, temp, sizeof(TimePointer));
@@ -101,35 +93,51 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
 
 void AnalysisDialog::on_btnGenerate_clicked()
 { 
+    //get QByteArray from file
+     QFile file("recording_1.bin");
+    if(!file.open(QIODevice::ReadOnly))
+        return;
 
-}
+    QString qstring = "";
+    QByteArray array = file.read(sizeof(TimePointer));
+    QDataStream readstream(array);
+    readstream.setVersion(QDataStream::Qt_5_10);
+    readstream.setByteOrder(QDataStream::LittleEndian);
+    readstream >> qstring;
 
-//write to file << outstream
-QDataStream &operator<<(QDataStream &out,const TimePointer &tp){
-    out << (quint64)tp.x;
-    out << (quint64)tp.y;
-    return out;
-}
+    //static_cast<char*>(static_cast<void*>(&data));
+    TimePointer* tpp = static_cast<TimePointer*>(static_cast<void*>(array.data()));
+    TimePointer* tp2 = static_cast<TimePointer*>(static_cast<void*>(array.data()));
+    QString ts = QString::number(tp2->x);
+    ui->btnCancel->setText(ts);
+    QString ty = QString::number(tp2->y);
+    ui->btnGenerate->setText(ty);
 
-//read from file >> instream
-QDataStream &operator>>(QDataStream &in,TimePointer &tp){
-    //resetting the stream is required. position is at then at the start
-    in.resetStatus();
-    //in.device()->reset();
-    tp = TimePointer();
+    //std::cout << "test cast : " << tpp->x << " - " << tpp->y << " \n";
+    //qDebug() << "  sdfsd  "<<  qstring << "   ";
+    //memcpy(&tpp, array, sizeof(TimePointer));
+    //std::cout << endl << "test memcpy : " << tpp->x << " - " << tpp->y << " \n";
 
-    in >> tp.x;
-    in >> tp.y;
-    std::cout << tp.x << " " << tp.y << " size tp : " << sizeof(TimePointer) << endl;
+    int length = sizeof(TimePointer);
+    int position = 0;
+    int size = sizeof(readstream);
 
-    char *empt = reinterpret_cast<char *>(&tp);
+    /*
+    while(readstream.atEnd()){
+        char *buf;
+        unsigned int ll = sizeof(quint64);
+        readstream.readBytes(buf,ll);
+        double cy;
+        sscanf(buf, "%1f", &cy);
+        std::cout << cy;
+    }
+    std::cout << "\n recording_2.bin - " << array.size() << endl;
 
-    //memcpy(newcopy, original, copy sizeof(char*) into newcopy);
-    memcpy(&tp, empt, sizeof(TimePointer));
-
-    std::cout <<"|" << tp.x << " " << tp.y << " -> ";
-
-    return in;
+    //create QDataStream and start reading from it to get all TimePointers
+    TimePointer tp;
+    char *temp = new char[length];
+    readstream.readRawData(temp, length);
+    array.append(temp, length);*/
 }
 
 void AnalysisDialog::setDir(QDir dir){
@@ -166,7 +174,7 @@ void AnalysisDialog::on_btnCancel_clicked(){
 
         QDataStream dataStream(&file);
         dataStream.setByteOrder(QDataStream::LittleEndian);
-        QVector<Data> result;
+        QVector<TimePointer> result;
 
         file.seek(0);
         size_t fileSize = fin.tellg();
@@ -174,12 +182,15 @@ void AnalysisDialog::on_btnCancel_clicked(){
 
         std::vector<byte> vector(fileSize, 0);
 
+        //.write(static_cast<char*>(static_cast<void*>(&data)), std::ios_base::app | std::ios::binary);
         //create  a <vector> to hold all the bytes in the file
-        fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
+        //fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
+        //fin.read(static_cast<char*>(static_cast<void*>(&vector[0])), sizeof(fileSize));
 
         //read the file
         char temp[fileSize];
         //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+        fin.read(static_cast<char*>(static_cast<void*>(&vector[0])), sizeof(fileSize));
 
         TimePointer d1;
         d1.x = 0;
@@ -200,11 +211,14 @@ void AnalysisDialog::on_btnCancel_clicked(){
 
         std::vector<byte> data(fileSize, 0);
         //read the file
-        fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+        //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
+        fin.read(static_cast<char*>(static_cast<void*>(&data[0])), sizeof(fileSize));
         //Axis a;
         fin.read((char*)&len, 2);
         std::string str(len, '\o');
-        array = reinterpret_cast<QByteArray*>(&len);
+        //array = static_cast<QByteArray*>(&len);
+        //array = reinterpret_cast<QByteArray*>(&len);
+        array = static_cast<QByteArray*>(static_cast<void*>(&len));
         //loop in buffer
 
         std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
@@ -224,24 +238,28 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked(){
-    //ui->widget->aadd two new graphs and set their look:
-    ui->widget->addGraph();
-    ui->widget->graph(0)->setPen(QPen(Qt::blue));
-    ui->widget->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
-    ui->widget->addGraph();
-
-    // generate some points of data (y0 for first, y1 for second graph):
+    /* generate some points of data (y0 for first, y1 for second graph):
     QVector<double> X(50), Y(50);
     for(double i = 0; i < tpList.count(); i++){
         X[i] = i;//tpList[i].x;
         Y[i] = 50;//tpList[i].y;
+    }*/
+    // add two new graphs and set their look:
+    ui->widget->addGraph();
+    ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
+    ui->widget->graph(0)->setBrush(Qt::red); // first graph will be filled with translucent blue
+    ui->widget->addGraph();
+    QVector<double> x(251), y0(251);
+    for (int i=0; i<251; ++i)
+    {
+      x[i] = i;
+      y0[i] = qExp(-i/150.0)*qCos(i/10.0); // exponentially decaying cosine         // exponential envelope
     }
     ui->widget->xAxis2->setVisible(true);
-    ui->widget->xAxis2->setTickLabels(false);
     ui->widget->yAxis2->setVisible(true);
-    ui->widget->yAxis2->setTickLabels(false);
     connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
-    ui->widget->graph(0)->setData(X, Y);
+    connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
+    ui->widget->graph(0)->setData(x, y0);
     ui->widget->graph(0)->rescaleAxes(true);
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 

@@ -55,10 +55,15 @@ void MainWindow::on_btnOpenPatientDialog_clicked()
 
 void MainWindow::on_btnOpenDeviceDialog_clicked()
 {
-    DeviceDialog* deviceDialog = new DeviceDialog(this);
-    connect(deviceDialog, SIGNAL(setSelectedDevice(Device)), this, SLOT(deviceSelected(Device)));
-    deviceDialog->setModal(true);
-    deviceDialog->exec();
+    if(system->hasPatient){
+        DeviceDialog* deviceDialog = new DeviceDialog(this);
+        connect(deviceDialog, SIGNAL(setSelectedDevice(Device)), this, SLOT(deviceSelected(Device)));
+        deviceDialog->setModal(true);
+        deviceDialog->exec();
+    }else{
+        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+        msgBox.exec();
+    }
 }
 
 void MainWindow::on_btnOpenRecordingDialog_clicked()

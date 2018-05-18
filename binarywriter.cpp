@@ -51,13 +51,14 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
 
      EnterCriticalSection(&shared_buffer_lock);
      qbuffer.buffer().resize(sizeof(&data));
-     //qbuffer.buffer().prepend(reinterpret_cast<char*>(&data));
+     //qbuffer.buffer().prepend(static_cast<char*>(&data));
      qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
-     qbuffer.write(reinterpret_cast<char *>(&data), std::ios_base::app | std::ios::binary);
-
-     //std::cout <<"|" << data.x << " " << data.y << " -> " << empt  << " <- ";
-     //memcpy(&data, empt, sizeof(TimePointer));
-     //std::cout << " " << data.x << " " << data.y << " | \n";
+     qbuffer.write(static_cast<char*>(static_cast<void*>(&data)), std::ios_base::app | std::ios::binary);
+     vector.push_back(data);
+     char *empt = static_cast<char*>(static_cast<void*>(&data));
+     std::cout <<"|" << data.x << " " << data.y << " -> " << empt  << " <- ";
+     memcpy(&data, empt, sizeof(TimePointer));
+     std::cout << " " << data.x << " " << data.y << " | \n";
 
      qbuffer.close();
      emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
@@ -69,7 +70,7 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
          std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
 
          //signal buffer is full + parameter with qByteArray
-         emit bufferFull(qbuffer.buffer());             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
+         emit bufferFull(qbuffer.buffer(), vector);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
          numUsedBytes = 0;
      }

@@ -12,7 +12,7 @@
 #include <QReadLocker>
 #include <windows.h>
 #include <globals.h>
-#include <vector>
+#include <QVector>
 
 class BinaryReader : public QObject
 {
@@ -38,11 +38,11 @@ signals:
     void error(QString error);
     void writeNewBufferToFile();
     void fileFull();
-    void bufferFull(QByteArray array);      //signal for binaryWriter, that the buffer
+    void bufferFull(QByteArray array, QVector<TimePointer> vector);      //signal for binaryWriter, that the buffer
     void setDir(QDir dir);                  //setDirectory
 
 public slots:
-    void writeBufferToFile(QByteArray array);   //add new data to buffer
+    void writeBufferToFile(QByteArray array, QVector<TimePointer> vector);   //add new data to buffer
 
 private slots:
 

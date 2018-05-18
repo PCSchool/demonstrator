@@ -20,6 +20,7 @@
 #include <globals.h>
 #include <windows.h>
 #include <recorddialog.h>
+#include <QVector>
 
 using namespace std;
 
@@ -46,7 +47,7 @@ void BinaryReader::setUserDir(QDir dir){
 }*/
 
 //write buffer to binary file
-void BinaryReader::writeBufferToFile(QByteArray array){
+void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vector){
 
     std::string path = dir.path().toLocal8Bit().constData();
     path = path + "/recording_" + std::to_string(numberFile) + ".bin";
@@ -59,10 +60,10 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     //convert QByteArray to Vector and write each row within vector to file
     //must write the content of vector itself &vector[0]
 
-    QVector<TimePointer> vector;
     //BYTE * pByte = reinterpret_cast<byte*>(array.data());
 
-    // 1. recording_1.bin  QDataStream    // save the QFile directoy??
+
+    /*1. recording_1.bin  QDataStream    // save the QFile directoy??
     QFile file("recording_1.bin");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QDataStream out(&file);
@@ -106,16 +107,27 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     //fout.write(reinterpret_cast<char *>(&array), sizeof(array));
     //fout.close();
 
-    QFile f("recording_4.bin");   //<-- change later on to path
-    f.setFileName("recording_4.bin");
-    if(!f.open(QIODevice::WriteOnly)) return;
+    //QFile f("recording_4.bin");   //<-- change later on to path
+    //f.setFileName("recording_4.bin");
+    //if(!f.open(QIODevice::WriteOnly)) return;
 
     //BYTE * pByte = reinterpret_cast<byte*>(array.data();
 
-    QByteArray arrayNew = array.chopped(16);
-    TimePointer* d = reinterpret_cast<TimePointer*>(arrayNew.data());
-    std::cout << "coordinates Data{x = "<< d->x << ", y = " << d->y << "} \n" ;
+    //QByteArray arrayNew = array.chopped(16);
+    //TimePointer* d = reinterpret_cast<TimePointer*>(arrayNew.data());
+    //std::cout << "coordinates Data{x = "<< d->x << ", y = " << d->y << "} \n" ;
 
+    QFile file("recording_1.bin");
+    file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_5_10);
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    for(int i = 0; i < vector.count(); ++i){
+        out << (quint64)vector[i].x;
+        out << (quint64)vector[i].y;
+    }
+    file.close();
     LeaveCriticalSection(&shared_buffer_lock);
 
     //for(auto i : vectorData){
@@ -152,9 +164,4 @@ void BinaryReader::writeBufferToFile(QByteArray array){
     LeaveCriticalSection(&shared_buffer_lock);
 
     //bufferDoneWriteFile.wakeAll();*/
-}
-
-QDataStream &operator<<(QDataStream &out, const Data &data){
-    out << data.x << data.y;
-    return out;
 }

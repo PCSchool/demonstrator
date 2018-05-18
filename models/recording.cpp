@@ -43,7 +43,7 @@ void Recording::addRecording(QCustomPlot *plot, double frequency, double amplitu
 }*/
 
 Recording::Types Recording::selectTypes(std::string _s){
-    transform(_s.begin(), _s.end(), _s.begin(), toupper);
+    transform(_s.begin(), _s.end(), _s.begin(), ::toupper);
     if(_s == "LINE") return line;
     else if(_s == "BAR") return bar;
     else if(_s == "HISTOGRAM") return histogram;
@@ -53,7 +53,7 @@ Recording::Types Recording::selectTypes(std::string _s){
 }
 
 Recording::Sensors Recording::selectSensor(std::string _s){
-    transform(_s.begin(), _s.end(), _s.begin(), toupper);
+    transform(_s.begin(), _s.end(), _s.begin(), ::toupper);
     if(_s == "HEARTRATE") return heartrate;
     else if(_s == "ACCELEROMETER") return accelerometer;
     else if(_s == "MICROPHONE") return microphone;

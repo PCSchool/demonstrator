@@ -54,7 +54,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Generate test recording</string>
+    <string>Try reading buffer/vector</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnTest">
@@ -73,7 +73,7 @@
     </size>
    </property>
    <property name="text">
-    <string>dont click here</string>
+    <string>Try reading chmcpy</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnReadBinaryFile">
@@ -92,7 +92,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Read test binary file</string>
+    <string>Try reading files with diff methods</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnPrintResult">

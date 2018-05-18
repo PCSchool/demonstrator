@@ -11,7 +11,7 @@
 #include <QReadWriteLock>
 #include <windows.h>
 #include <globals.h>
-#include <vector>
+#include <QVector>
 
 class BinaryWriter : public QObject
 {
@@ -25,7 +25,7 @@ public:
     QBuffer qbuffer;
     QArrayData tester;                          //test QArrayData
     int numberFile;                             //default 0
-    std::vector<Data> vectorData;
+    QVector<TimePointer> vector;
 
 signals:
     void start();                               //start thread
@@ -33,7 +33,7 @@ signals:
     void error(QString error);                  //debugging error, to show whats wrong
     void writeNewBufferToFile();                //ready for new buffer to be written
     void fileFull();
-    void bufferFull(QByteArray array);
+    void bufferFull(QByteArray array, QVector<TimePointer> vector);
     void setDir(QDir dir);
 
 public slots:
@@ -44,6 +44,7 @@ public slots:
 private slots:
 
 private:
+    TimePointer pointer;
     QByteArray qarray;
     QByteArray byteArray;
     QDir dir;                                   //directory used
