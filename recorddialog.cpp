@@ -157,18 +157,3 @@ void RecordDialog::on_btnReadBuffer_clicked()
 {
 
 }
-
-void RecordDialog::on_save_clicked()
-{
-    TimePointer xx;
-    xx.x = 1.9;
-    xx.y = 3.5;
-    std::cout << "data info : x = " << xx.x << " " << xx.y << endl;
-
-    QByteArray arr;
-    arr.append(reinterpret_cast<char *>(arr.data()));  //append prepend
-    TimePointer* ax2 = reinterpret_cast<TimePointer*>(arr.data());
-    ax2 = reinterpret_cast<TimePointer*>(arr.data());
-    std::cout << "NEW data info : ax = " << ax2->x << " " << ax2->y << endl;
-
-}

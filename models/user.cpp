@@ -44,8 +44,18 @@ QDir User::getRecordingDir(){
 QString User::getName() {
     return name;
 }
-char User::getGender(){
-    return this->gender;
+QString User::getGender(){
+    //possible genders: m = male, f = female, o = unknown
+    QString returnthis = "";
+    switch(this->gender){
+        case 'm': returnthis = "male";
+            break;
+        case 'f': returnthis = "female";
+            break;
+        default: returnthis = "unknown";
+            break;
+    }
+    return returnthis;
 }
 QString User::getStreet(){return this->street;
                          }

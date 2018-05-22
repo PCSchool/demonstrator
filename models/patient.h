@@ -27,6 +27,7 @@ public:
     void setPresent(bool present);
     double getWeight();
     double getHeight();
+    double getBMI();
 
 private:
     //methods

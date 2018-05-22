@@ -26,7 +26,7 @@ public:
     QDir getUserDir();
     QDir getRecordingDir();
     QString getName();
-    char getGender();
+    QString getGender();
     QString getStreet();
     QString getHousenr();
     QString getZipcode();

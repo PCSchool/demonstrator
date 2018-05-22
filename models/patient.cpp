@@ -112,6 +112,10 @@ void Patient::setPresent(bool present){
     this->present = present;
 }
 
+double Patient::getBMI(){
+    return this->bmi;
+}
+
 double Patient::getWeight(){
     return this->weight;
 }

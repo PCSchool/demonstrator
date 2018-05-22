@@ -32,9 +32,13 @@ MainWindow::~MainWindow()
 void MainWindow::patientSelected(Patient *patient){
     ui->gbInfoPatient->setVisible(true);
     ui->lblNamePatient->setText(patient->getName());
-    ui->lblGenderPatient->setText(QString(patient->getGender()));
+    ui->lblGenderPatient->setText(patient->getGender());
     ui->lblBirthDatePatient->setText(patient->getBirthDate().toString("dd.MM.yyyy"));
-    ui->lblTest->setText(patient->getRecordingDir().path());
+    ui->lblBMI->setText(QString::number(patient->getBMI()));
+    ui->lblHeight->setText(QString::number(patient->getHeight()));
+    ui->lblPhone->setText(QString::number(patient->getHomePhone()));
+    ui->lblWeight->setText(QString::number(patient->getWeight()));
+    ui->lblEmail->setText(patient->getEmail());
     this->system->setDir(patient->getRecordingDir().path());
     this->system->setPatient(patient);
 }
