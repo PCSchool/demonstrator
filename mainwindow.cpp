@@ -48,6 +48,7 @@ void MainWindow::on_btnOpenPatientDialog_clicked()
 {
     UserDialog* userDialog = new UserDialog(this);
     connect(userDialog, SIGNAL(newPatient(Patient*)), this, SLOT(patientSelected(Patient*)));
+    connect(userDialog, SIGNAL(removePatient(QString)), this, SLOT(removePatientSlot(QString)));
     userDialog->dir = system->getPatientDir();
     userDialog->setModal(true);
     userDialog->exec();
@@ -156,4 +157,8 @@ void MainWindow::on_btnChangePatient_clicked()
         Patient* pp = new Patient(true, two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
         patientSelected(pp);
     }
+}
+
+void MainWindow::removePatientSlot(QString path){
+    system->removePatient(path);
 }

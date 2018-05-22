@@ -29,6 +29,7 @@ public:
 signals:
     void newPatientCreated(Patient* patient);
     void newPatient(Patient* Patient);
+    void removePatient(QString path);
 
 private slots:
     void on_btnRegister_clicked();
@@ -42,6 +43,8 @@ private slots:
     void on_btnCancel_clicked();
 
     void on_btnSelectPatient_clicked();
+
+    void on_btnDeletePatient_clicked();
 
 private:
     Ui::UserDialog *ui;

@@ -206,3 +206,11 @@ void UserDialog::on_btnSelectPatient_clicked()
         on_btnCancel_clicked();
     }
 }
+
+void UserDialog::on_btnDeletePatient_clicked()
+{
+    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
+                                                path, QFileDialog::DontUseNativeDialog);
+    emit removePatient(dir);
+}

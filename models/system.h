@@ -35,8 +35,9 @@ public:
     void setPatientDir(QDir dir);
 
 
-public slots:
 
+public slots:
+    void removePatient(QString path);
 signals:
 
 private:

@@ -100,3 +100,15 @@ void System::setSelectedDevice(Device device){
     hasDevice = true;
 }
 
+void System::removePatient(QString path){
+    QDir removeDir(dir);
+    if(hasPatient){
+        if(selectedPatient->userDir.path() != path){
+            removeDir.removeRecursively();
+        }else{
+            std::cout << endl << "Error: cant remove current active patient.";
+        }
+    }else{
+        removeDir.removeRecursively();
+    }
+}

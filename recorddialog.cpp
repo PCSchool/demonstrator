@@ -130,8 +130,6 @@ void RecordDialog::realtimeDataSlot(){
           counter =0;
       }
       ui->widget->graph(0)->addData(xAxis, yAxis);
-      // rescale value (vertical) axis to fit the current data:
-      //ui->widget->graph(0)->rescaleValueAxis();
 
       //signal newData
       emit writeNewData(xAxis, yAxis);

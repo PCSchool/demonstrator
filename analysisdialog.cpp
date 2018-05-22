@@ -91,6 +91,11 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     qfile.close();
 }
 
+double AnalysisDialog::transfer(quint64 number){
+    int integer = number;
+    return static_cast<double>(integer);
+}
+
 void AnalysisDialog::on_btnGenerate_clicked()
 { 
     //get QByteArray from file
@@ -98,20 +103,28 @@ void AnalysisDialog::on_btnGenerate_clicked()
     if(!file.open(QIODevice::ReadOnly))
         return;
 
-    QString qstring = "";
-    QByteArray array = file.read(sizeof(TimePointer));
-    QDataStream readstream(array);
-    readstream.setVersion(QDataStream::Qt_5_10);
-    readstream.setByteOrder(QDataStream::LittleEndian);
-    readstream >> qstring;
-
     //static_cast<char*>(static_cast<void*>(&data));
-    TimePointer* tpp = static_cast<TimePointer*>(static_cast<void*>(array.data()));
-    TimePointer* tp2 = static_cast<TimePointer*>(static_cast<void*>(array.data()));
-    QString ts = QString::number(tp2->x);
-    ui->btnCancel->setText(ts);
-    QString ty = QString::number(tp2->y);
-    ui->btnGenerate->setText(ty);
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_5_10);
+    in.setByteOrder(QDataStream::LittleEndian);
+    //default -> in.setFloatingPointPrecision(QDataStream::floatingPointPrecision().DoublePrecision);
+
+    tpList.clear();
+    QList<TimePointer> list;
+    quint64 xo;
+    quint64 yo;
+    for(int i = 0; i < 150 ; ++i){
+        in >> xo;
+        in >> yo;
+        TimePointer tp;
+        tp.x = transfer(xo);
+        tp.y = transfer(yo);
+        list.push_back(tp);
+        std:: cout << endl << " xo = " << xo << " yo = " << yo << " ";
+    }
+    file.close();
+
+    tpList = list;
 
     //std::cout << "test cast : " << tpp->x << " - " << tpp->y << " \n";
     //qDebug() << "  sdfsd  "<<  qstring << "   ";
@@ -120,7 +133,7 @@ void AnalysisDialog::on_btnGenerate_clicked()
 
     int length = sizeof(TimePointer);
     int position = 0;
-    int size = sizeof(readstream);
+    //int size = sizeof(readstream);
 
     /*
     while(readstream.atEnd()){
@@ -238,28 +251,20 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked(){
-    /* generate some points of data (y0 for first, y1 for second graph):
-    QVector<double> X(50), Y(50);
-    for(double i = 0; i < tpList.count(); i++){
-        X[i] = i;//tpList[i].x;
-        Y[i] = 50;//tpList[i].y;
-    }*/
     // add two new graphs and set their look:
     ui->widget->addGraph();
     ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
-    ui->widget->graph(0)->setBrush(Qt::red); // first graph will be filled with translucent blue
     ui->widget->addGraph();
-    QVector<double> x(251), y0(251);
-    for (int i=0; i<251; ++i)
-    {
-      x[i] = i;
-      y0[i] = qExp(-i/150.0)*qCos(i/10.0); // exponentially decaying cosine         // exponential envelope
+    QVector<double> X(251), Y(251);
+    for(double i = 0; i < tpList.count(); i++){
+        X[i] = i; //tpList[i].x
+        Y[i] = tpList[i].y;
     }
     ui->widget->xAxis2->setVisible(true);
     ui->widget->yAxis2->setVisible(true);
     connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
     connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
-    ui->widget->graph(0)->setData(x, y0);
+    ui->widget->graph(0)->setData(X, Y);
     ui->widget->graph(0)->rescaleAxes(true);
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 

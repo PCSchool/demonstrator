@@ -22,7 +22,6 @@ public:
 
 signals:
 
-
 public slots:
     QDir getHomeDirectory();
 
@@ -31,6 +30,7 @@ private slots:
     void userDeselected();
     void deviceSelected(Device device);
     void addTextToNotes(QString text);
+    void removePatientSlot(QString text);
     void openNotes();
 
     void on_btnOpenPatientDialog_clicked();
