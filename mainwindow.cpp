@@ -159,6 +159,6 @@ void MainWindow::on_btnChangePatient_clicked()
     }
 }
 
-void MainWindow::removePatientSlot(QString path){
-    system->removePatient(path);
+void MainWindow::removePatientSlot(QString thispath){
+    system->removePatient(thispath);
 }

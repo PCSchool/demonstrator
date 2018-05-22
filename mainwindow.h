@@ -30,7 +30,7 @@ private slots:
     void userDeselected();
     void deviceSelected(Device device);
     void addTextToNotes(QString text);
-    void removePatientSlot(QString text);
+    void removePatientSlot(QString thispath);
     void openNotes();
 
     void on_btnOpenPatientDialog_clicked();

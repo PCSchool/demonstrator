@@ -101,7 +101,7 @@ void System::setSelectedDevice(Device device){
 }
 
 void System::removePatient(QString path){
-    QDir removeDir(dir);
+    QDir removeDir(path);
     if(hasPatient){
         if(selectedPatient->userDir.path() != path){
             removeDir.removeRecursively();
