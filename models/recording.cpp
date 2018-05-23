@@ -19,6 +19,15 @@ Recording::Recording(QCustomPlot *plot, double frequency, double amplitude, QStr
 }
 
 //methods
+int Recording::controlDir(QDir dir){
+    //control if the dir used for saving recording doesnt already exists
+    std::string path = dir.path().toLocal8Bit().constData();
+    //path = path + "/recording_" + std::to_string(numberFile) + ".bin";
+   //QString pathnow = QString::fromStdString(path);
+
+
+}
+
 void Recording::changePosition(double x, double y){
     this->xPosLayout = x;
     this->yPosLayout = y;

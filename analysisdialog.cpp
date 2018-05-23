@@ -218,8 +218,8 @@ void AnalysisDialog::on_btnPrintResult_clicked(){
         ui->widget->addGraph();
         ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
         ui->widget->addGraph();
-        QVector<double> X(251), Y(251);
-        int amount = 205;
+        QVector<double> X(tpList.count() + 1), Y(tpList.count() + 1);
+        int amount = tpList.count();
         for(double i = 0; i < amount; i++){
             X[i] = tpList[i].x;
             Y[i] = tpList[i].y;

@@ -22,8 +22,10 @@ RecordDialog::RecordDialog(QWidget *parent) :
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
     recording;// = new Recording();
     shared_buffer = new QByteArray[1024];
-
+    //check which file patient will use for like recording_1.bin or recording_2.bin if _1 already exists
 }
+
+
 
 //show right-click context menu + handles selection of the selecteditem of the menu
 void RecordDialog::showContextMenu(const QPoint& pos){

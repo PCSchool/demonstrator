@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <qcustomplot.h>
 #include <binarywriter.h>
+#include <QDir>
 
 class Recording{
   public:
@@ -18,6 +19,7 @@ class Recording{
     //methods
     void addRecording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor, int duration);
     void changePosition(double x, double y);
+    int controlDir(QDir dir);
 
     //public fields
     QTimer* dataTimer;

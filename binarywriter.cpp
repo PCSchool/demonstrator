@@ -42,12 +42,6 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
      TimePointer data;
      data.x = xAxis;
      data.y = yAxis;
-     //std::cout << data.x << " " << data.y << " ";
-     numberFile++;
-     // std::cout << numberFile << " - ";
-     //write new data to buffer
-     data.x = xAxis;
-     data.y = yAxis;
 
      EnterCriticalSection(&shared_buffer_lock);
      qbuffer.buffer().resize(sizeof(&data));
