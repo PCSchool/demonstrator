@@ -67,9 +67,6 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
          //signal buffer is full + parameter with qByteArray
          emit bufferFull(qbuffer.buffer(), vector);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
-         //std::cout << " buffer : " << qbuffer.buffer().size() << endl;
-         //std::cout << " vector : " << vector.size() << endl << vector.size() << " before clear ";
-         //std::cout << " " << vector.size() << " count= " << vector.count() << endl;
          qbuffer.reset();
          vector.clear();
          vector.count();
