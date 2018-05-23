@@ -16,11 +16,13 @@ RecordDialog::RecordDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     counter = 0;
+    readySignal = 0;
     running = false;
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
     recording;// = new Recording();
     shared_buffer = new QByteArray[1024];
+
 }
 
 //show right-click context menu + handles selection of the selecteditem of the menu
@@ -120,7 +122,7 @@ void RecordDialog::realtimeDataSlot(){
     double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
 
     static double lastPointKey = 0;
-    if (xAxis-lastPointKey > 0.020) // at most add point every 20 ms
+    if (xAxis-lastPointKey > 0.010) // at most add point every 20 ms
     {
       // add data to lines:
       //double newY = qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843);
@@ -129,10 +131,15 @@ void RecordDialog::realtimeDataSlot(){
       if(counter >= 250){
           counter =0;
       }
+      readySignal++;
+      if(readySignal >= 5){
+          emit writeNewData(xAxis, yAxis);
+          readySignal = 0;
+      }
       ui->widget->graph(0)->addData(xAxis, yAxis);
 
       //signal newData
-      emit writeNewData(xAxis, yAxis);
+
       lastPointKey = xAxis;
     }
     // make key axis range scroll with the data (at a constant range size of 20):

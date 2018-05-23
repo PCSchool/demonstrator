@@ -250,7 +250,7 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     analysis.setRecordingDir(QDir(path));
     analysis.setRecordingFilePath(path);*/  //correct code for on_btnSelectRecording_clicked()
 
-    FILE * fp = fopen("recording_1.bin", "rb");
+    FILE * fp = fopen("recordFinal.bin", "rb");
     int i, j;
     int swap = 0;
     char buffer[9];

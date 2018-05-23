@@ -27,7 +27,7 @@ public:
     static const QSemaphore semaphore;
     double counter;
     QByteArray *shared_buffer;
-
+    int readySignal;
 signals:
     void writeNewData(double xAxis, double yAxis);
     void stopTimer();

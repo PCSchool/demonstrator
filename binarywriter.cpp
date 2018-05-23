@@ -51,17 +51,12 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
 
      EnterCriticalSection(&shared_buffer_lock);
      qbuffer.buffer().resize(sizeof(&data));
-     //qbuffer.buffer().prepend(static_cast<char*>(&data));
-     qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate );
-     qbuffer.write(static_cast<char*>(static_cast<void*>(&data)), std::ios_base::app | std::ios::binary);
+     qbuffer.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Append );
+     qbuffer.write(static_cast<char*>(static_cast<void*>(&data)), std::ios::binary);
      vector.push_back(data);
-     char *empt = static_cast<char*>(static_cast<void*>(&data));
-     std::cout <<"|" << data.x << " " << data.y << " -> " << empt  << " <- ";
-     memcpy(&data, empt, sizeof(TimePointer));
-     std::cout << " " << data.x << " " << data.y << " | \n";
 
      qbuffer.close();
-     emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
+     //emit qbuffer.readyRead();  //always emit readyRead() when new data has arrived
      numUsedBytes = numUsedBytes + 16; //struct TimePointer is 16 bytes
      LeaveCriticalSection(&shared_buffer_lock);
 
@@ -72,6 +67,12 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
          //signal buffer is full + parameter with qByteArray
          emit bufferFull(qbuffer.buffer(), vector);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory
          qbuffer.buffer().clear();                      //empty the buffers
+         //std::cout << " buffer : " << qbuffer.buffer().size() << endl;
+         //std::cout << " vector : " << vector.size() << endl << vector.size() << " before clear ";
+         //std::cout << " " << vector.size() << " count= " << vector.count() << endl;
+         qbuffer.reset();
+         vector.clear();
+         vector.count();
          numUsedBytes = 0;
      }
 }
