@@ -120,7 +120,7 @@ void RecordDialog::realtimeDataSlot(){
     double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
 
     static double lastPointKey = 0;
-    if (xAxis-lastPointKey > 0.010) // at most add point every 10 ms
+    if (xAxis-lastPointKey > 0.020) // at most add point every 20 ms
     {
       // add data to lines:
       //double newY = qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843);
@@ -145,15 +145,8 @@ void RecordDialog::on_btnStop_clicked()
     if(running){
         disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
-
         disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
         disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
         running = false;
     }
-
-}
-
-void RecordDialog::on_btnReadBuffer_clicked()
-{
-
 }

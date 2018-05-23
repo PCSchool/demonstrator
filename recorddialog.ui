@@ -66,25 +66,6 @@
      <string>Start dummy data</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnReadBuffer">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>80</y>
-      <width>150</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>150</width>
-      <height>30</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>ReadBuffer</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnStop">
     <property name="geometry">
      <rect>

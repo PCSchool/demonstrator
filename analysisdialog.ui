@@ -73,7 +73,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Try reading chmcpy</string>
+    <string>btnTest</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnReadBinaryFile">

@@ -3,6 +3,7 @@
 #include <QBuffer>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <QMessageBox>
 #include <binaryreader.h>
 #include <binarywriter.h>
@@ -241,17 +242,45 @@ void AnalysisDialog::on_btnCancel_clicked(){
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-    const QString path =  QFileDialog::getOpenFileName(
+    /*const QString path =  QFileDialog::getOpenFileName(
                 this,
                 "Open Document",
                 dir.path(),
                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
     analysis.setRecordingDir(QDir(path));
-    analysis.setRecordingFilePath(path);
+    analysis.setRecordingFilePath(path);*/  //correct code for on_btnSelectRecording_clicked()
+
+    FILE * fp = fopen("recording_1.bin", "rb");
+    int i, j;
+    int swap = 0;
+    char buffer[9];
+    if(fp != NULL){
+        int read = 0;
+        while((read = fread(buffer, 1, 8, fp)) > 0){
+            for(i=0; i < read; i++){
+                //qDebug("%X ", buffer[i]);
+            }
+            for(j=0; j < read; j++){
+                //qDebug("%c", buffer[j]);
+            }
+            QByteArray test(buffer, 8);
+            if(test.size() == 8){
+                double xy;
+                memcpy(&xy, test, 8);
+                if(swap == 1){
+                    std::cout << " Y == " << xy << endl;
+                    swap = 0;
+                }else{
+                    std::cout << " X == " << xy ;
+                    swap++;
+                }
+            }
+        }
+        fclose(fp);
+    }
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked(){
-    // add two new graphs and set their look:
     ui->widget->addGraph();
     ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
     ui->widget->addGraph();
@@ -267,7 +296,6 @@ void AnalysisDialog::on_btnPrintResult_clicked(){
     ui->widget->graph(0)->setData(X, Y);
     ui->widget->graph(0)->rescaleAxes(true);
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-
 }
 
 

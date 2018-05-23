@@ -64,7 +64,6 @@ void UserDialog::on_btnRegister_clicked()
             if(patient->writeProfileToBinary())
                 messageBox.information(0, "Registration succes", "The Patient has succesfully been registered.");
                 emit newPatient(patient);
-
             on_btnCancel_clicked();
         }else{
             messageBox.critical(0, "Error", "There already exists an account with this email addres.");

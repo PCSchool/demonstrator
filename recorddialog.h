@@ -38,8 +38,6 @@ private slots:
     void on_btnDummyGraph_clicked();
     void on_btnStop_clicked();
 
-    void on_btnReadBuffer_clicked();
-
 private:
     Ui::RecordDialog *ui;
     QTimer* dataTimer;

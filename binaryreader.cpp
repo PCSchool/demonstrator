@@ -62,7 +62,6 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
 
     //BYTE * pByte = reinterpret_cast<byte*>(array.data());
 
-
     /*1. recording_1.bin  QDataStream    // save the QFile directoy??
     QFile file("recording_1.bin");
     file.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -79,18 +78,18 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     fout.write(reinterpret_cast<char *>(array.data()), sizeof(array) *array.size());
     fout.close();
 
-    //ofstream fout2("recording_1.bin", std::ios_base::app | ios::binary);
-    //fout2.write(array.data(), array.size() * sizeof(TimePointer));
-    //std::cout << " array size " << array.data();
-    //fout2.close();
+    ofstream fout2("recording_1.bin", std::ios_base::app | ios::binary);
+    fout2.write(array.data(), array.size() * sizeof(TimePointer));
+    std::cout << " array size " << array.data();
+    fout2.close();
 
     // 3. recording_3.bin  FILE
-    //FILE *file = fopen("recording_x", "wb");
-    //pass argument by const reference
-    //for (const auto& value : vector){
-    //    fwrite(value, sizeof(TimePointer), sizeData, file);
-    //}
-    //fclose(file);
+    FILE *file = fopen("recording_x", "wb");
+    pass argument by const reference
+    for (const auto& value : vector){
+       fwrite(value, sizeof(TimePointer), sizeData, file);
+    }
+    fclose(file);
 
     /*FILE *file = fopen("recording__0.bin", "wb");
     for(int i = 0; i < array.sizeData(); i++){
@@ -124,8 +123,8 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     out.setByteOrder(QDataStream::LittleEndian);
 
     for(int i = 0; i < vector.count(); ++i){
-        out << (quint64)vector[i].x;
-        out << (quint64)vector[i].y;
+        out << (double)vector[i].x;
+        out << (double)vector[i].y;
 
         std::cout << vector[i].x << " - " << (quint64)vector[i].x << " == " << vector[i].y << "  " << endl;
      }
