@@ -37,7 +37,9 @@ AnalysisDialog::~AnalysisDialog()
 //read out binary file
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
 {
-    FILE * fp = fopen("recordFinal.bin", "rb");
+    //FILE * fp = fopen("recordFinal.bin", "rb");
+    std::cout << endl << analysis.getRecordingFilePath().toLocal8Bit().constData() << " end file";
+    FILE * fp = fopen(analysis.getRecordingFilePath().toLocal8Bit().constData(), "rb");
     int i, j;
     int swap = 0;
     tpList.clear();
@@ -71,11 +73,9 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
         }
         fclose(fp);
     }
-    ui->btnCancel->setText(QString::number(xyList.count()));
-
-    for (auto const& i : xyList){
+    /*for (auto const& i : xyList){
         std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
-    }
+    }*/
 
     tpList = xyList;
 }
@@ -219,8 +219,9 @@ void AnalysisDialog::on_btnPrintResult_clicked(){
         ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
         ui->widget->addGraph();
         QVector<double> X(251), Y(251);
-        for(double i = 0; i < 100; i++){
-            X[i] = i; //tpList[i].x
+        int amount = 205;
+        for(double i = 0; i < amount; i++){
+            X[i] = tpList[i].x;
             Y[i] = tpList[i].y;
         }
         ui->widget->xAxis2->setVisible(true);
@@ -232,9 +233,9 @@ void AnalysisDialog::on_btnPrintResult_clicked(){
         ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     }
 }
+/*void QCustomPlot::showPointToolTip(QMouseEvent *event){
+    int x = this->xAxis->pixelToCoord(event->pos().x());
+    int y = this->yAxis->pixelToCoord(event->pos().y());
+    setToolTip(QString("%1 , %2").arg(x).arg(y));
+}*/
 
-
-void AnalysisDialog::on_btnTest_clicked()
-{
-
-}

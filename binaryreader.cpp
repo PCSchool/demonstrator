@@ -44,9 +44,10 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
 
     std::string path = dir.path().toLocal8Bit().constData();
     path = path + "/recording_" + std::to_string(numberFile) + ".bin";
+    QString pathnow = QString::fromStdString(path);
 
     EnterCriticalSection(&shared_buffer_lock);
-    QFile file("recordFinal.bin");
+    QFile file(pathnow);
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QDataStream out(&file);
     out.setVersion(QDataStream::Qt_5_10);

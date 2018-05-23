@@ -41,8 +41,6 @@ private slots:
 
     void on_btnPrintResult_clicked();
 
-    void on_btnTest_clicked();
-
 private:
     //for testing data reading
     QBuffer qbuffer;

@@ -47,6 +47,6 @@ void Analysis::setRecordingFilePath(QString filepath){
 }
 
 QString Analysis::getRecordingFilePath(){
-    recordingFilePath;
+    return recordingFilePath;
 }
 
