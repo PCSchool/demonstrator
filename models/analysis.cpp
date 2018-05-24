@@ -8,6 +8,14 @@ Analysis::Analysis()
 }
 
 //methods
+void Analysis::addRecordingDirList(QString path){
+    recordingPathList.append(path);
+}
+
+QList<QString> Analysis::getRecordingList(){
+    return recordingPathList;
+}
+
 void Analysis::addPointerList(TimePointer pointer){
     pointerList.push_back(pointer);
 }

@@ -22,6 +22,8 @@ public:
     QVector<double> getXaxis();
     QVector<double> getYaxis();
     void addToVector(double x, double y);
+    void addRecordingDirList(QString path);
+    QList<QString> getRecordingList();
 
 private:
     QDir recordingDir;
@@ -29,7 +31,7 @@ private:
     QFile recordingFile;
     QList<TimePointer> pointerList;
     QVector<double> Xaxis, yaxis;
-
+    QList<QString> recordingPathList;
 signals:
 
 };

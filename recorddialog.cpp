@@ -26,8 +26,6 @@ RecordDialog::RecordDialog(QWidget *parent) :
     shared_buffer = new QByteArray[1024];
 }
 
-
-
 //show right-click context menu + handles selection of the selecteditem of the menu
 void RecordDialog::showContextMenu(const QPoint& pos){
     QPoint globalPos = ui->widget->mapToGlobal(pos);

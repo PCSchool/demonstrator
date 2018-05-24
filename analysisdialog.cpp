@@ -38,7 +38,52 @@ AnalysisDialog::~AnalysisDialog()
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
 {
     //FILE * fp = fopen("recordFinal.bin", "rb");
-    std::cout << endl << analysis.getRecordingFilePath().toLocal8Bit().constData() << " end file";
+    //analysis.setRecordingDir(QDir(dir)); //path if using file
+    //analysis.setRecordingFilePath(dir);
+    int i, j;
+    int swap = 0;
+    tpList.clear();
+    QMap<double, double> xyMap;
+    QList<TimePointer> xyList;
+    double x,y;
+    char buffer[9];
+
+    QDirIterator it(analysis.getRecordingDir(), QDirIterator::NoIteratorFlags);
+    while(it.hasNext()){
+        analysis.addRecordingDirList(it.next());
+        FILE * fp = fopen(it.next().toLocal8Bit().constData(), "rb");
+
+        if(fp != NULL){
+            int read = 0;
+            while((read = fread(buffer, 1, 8, fp)) > 0){
+                for(i=0; i < read; i++){
+                    //qDebug("%X ", buffer[i]);
+                }
+                for(j=0; j < read; j++){
+                    //qDebug("%c", buffer[j]);
+                }
+                QByteArray test(buffer, 8);
+                if(test.size() == 8){
+                    if(swap == 1){
+                        memcpy(&y, test, 8);
+                        TimePointer tp;
+                        tp.x = x;
+                        tp.y = y;
+                        xyList.append(tp);
+                        swap = 0;
+                    }else{
+                        memcpy(&x, test, 8);
+                        swap++;
+                    }
+                }
+            }
+            fclose(fp);
+        }
+        /*for (auto const& i : xyList){
+            std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
+        }*/
+    }
+    /*std::cout << endl << analysis.getRecordingFilePath().toLocal8Bit().constData() << " end file";
     FILE * fp = fopen(analysis.getRecordingFilePath().toLocal8Bit().constData(), "rb");
     int i, j;
     int swap = 0;
@@ -100,9 +145,6 @@ void AnalysisDialog::on_btnCancel_clicked(){
     if(!fin.is_open()){
         return;
     }
-    //recording_0  <-- real recording file, contains 16KB, 16444 bytes
-    //testerFile   <-- fake testing file contains 8 bytes
-    //std::ifstream fin("recording_0.bin", std::ios_base::in | std::ios_base::binary);
     QFile file("recording_2.bin");
 
     if(!file.open(QIODevice::ReadOnly)){
@@ -173,20 +215,20 @@ void AnalysisDialog::on_btnCancel_clicked(){
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-    const QString path =  QFileDialog::getOpenFileName(
+    /*const QString path =  QFileDialog::getOpenFileName(
                 this,
                 "Open Document",
                 dir.path(),
                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
     analysis.setRecordingDir(QDir(path));
-    analysis.setRecordingFilePath(path);
+    analysis.setRecordingFilePath(path);*/
 
     // below for reading multiple files
-    /*QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
+    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
                                                 path, QFileDialog::DontUseNativeDialog);
     analysis.setRecordingDir(QDir(dir)); //path if using file
-    analysis.setRecordingFilePath(dir);*/
+    analysis.setRecordingFilePath(dir);
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked(){

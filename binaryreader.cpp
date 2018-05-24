@@ -27,6 +27,8 @@ using namespace std;
 BinaryReader::BinaryReader()
 {
     numberFile = 0;
+    sizeFile = 0;
+    upNumberFile = false;
     dataSize = 1024;
     bufferSize = 1024;
     numUsedBytes = 1;
@@ -50,6 +52,8 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     QFile file(pathnow);
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QDataStream out(&file);
+    std::cout << " coook " << file.size();
+    sizeFile = file.size();
     out.setVersion(QDataStream::Qt_5_10);
     out.setByteOrder(QDataStream::LittleEndian);
 
@@ -59,4 +63,10 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
      }
     file.close();
     LeaveCriticalSection(&shared_buffer_lock);
+
+    if(sizeFile > 4000){
+        std::cout << " COOK " << upNumberFile;
+        sizeFile = 0;
+        numberFile++;
+    }
 }

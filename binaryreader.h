@@ -30,8 +30,8 @@ public:
     QWaitCondition bufferDoneWriteFile;     //true when the buffer is done being written into the file, false when the buffer still aint completely written to the file
     QMutex mutex;                           //QMutex mutex, can be used to lock or unlock certain parts of threads
     QArrayData tester;
-    int numberFile;
-
+    int numberFile, sizeFile;
+    bool upNumberFile;
 signals:
     void start();
     void finished();

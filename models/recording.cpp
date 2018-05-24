@@ -30,7 +30,6 @@ QString Recording::controlDir(QDir dir){
     QString fullPath = dir.path() + "/" + path;
     if(!QDir(path).exists()){
         dir.mkdir(path);
-        QDir(fullPath).mkpath("recording_0.bin");
     }
 
     pathRecording = fullPath;

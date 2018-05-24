@@ -23,6 +23,8 @@ public:
     explicit UserDialog(QWidget *parent = 0);
     ~UserDialog();
     bool validation(QString control, controlType type);
+    bool fileFull;
+
 signals:
     void newPatientCreated(Patient* patient);
     void newPatient(Patient* Patient);
