@@ -33,8 +33,6 @@ signals:
 private slots:
     void on_btnReadBinaryFile_clicked();
 
-    void on_btnGenerate_clicked();
-
     void on_btnCancel_clicked();
 
     void on_btnSelectRecording_clicked();

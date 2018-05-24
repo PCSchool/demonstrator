@@ -56,8 +56,6 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     for(int i = 0; i < vector.count(); ++i){
         out << (double)vector[i].x;
         out << (double)vector[i].y;
-
-        //std::cout << vector[i].x << " == " << vector[i].y << "  " << endl;
      }
     file.close();
     LeaveCriticalSection(&shared_buffer_lock);

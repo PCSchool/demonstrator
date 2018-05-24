@@ -19,13 +19,10 @@ class Recording{
     //methods
     void addRecording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor, int duration);
     void changePosition(double x, double y);
-    int controlDir(QDir dir);
+    QString controlDir(QDir dir);
 
     //public fields
-    QTimer* dataTimer;
-    BinaryWriter* writerBuffer;
-    BinaryWriter* writerFile;
-
+    QString pathRecording;
 
   public slots:
     void changeSize(int width, int height);

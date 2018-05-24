@@ -38,25 +38,6 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnGenerate">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>201</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>175</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>Try reading buffer/vector</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btnTest">
    <property name="geometry">
     <rect>
@@ -73,7 +54,7 @@
     </size>
    </property>
    <property name="text">
-    <string>btnTest</string>
+    <string>test nmpcy method</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnReadBinaryFile">
@@ -92,7 +73,7 @@
     </size>
    </property>
    <property name="text">
-    <string>Try reading files with diff methods</string>
+    <string>Read Recording</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnPrintResult">

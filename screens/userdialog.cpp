@@ -54,8 +54,8 @@ void UserDialog::on_btnRegister_clicked()
     messageBox.setFixedSize(500,200);
 
     if(error == ""){  //geen errors, valid is goed
-        if(QDir().mkdir(dir.path() + ui->tbEmail->text())){
-
+        QDir dirCheckExists(dir.path() + "/" + ui->tbEmail->text());
+        if(!dirCheckExists.exists()){
             //directory does not exist -> ready to make new account for that directory
             // current solution to prevent runtime error caused by the validation?
             int homephone = ui->tbHouseNr->text().toInt();

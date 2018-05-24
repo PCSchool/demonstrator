@@ -5,6 +5,8 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QDir>
+#include <QTime>
+#include <QTextStream>
 
 using namespace std;
 
@@ -22,7 +24,6 @@ RecordDialog::RecordDialog(QWidget *parent) :
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
     recording;// = new Recording();
     shared_buffer = new QByteArray[1024];
-    //check which file patient will use for like recording_1.bin or recording_2.bin if _1 already exists
 }
 
 
@@ -44,8 +45,8 @@ void RecordDialog::showContextMenu(const QPoint& pos){
 }
 
 void RecordDialog::setUserDir(QDir dir){
-    userDir = dir;
-    ui->lblTest->setText(dir.path());
+    userDir = recording.controlDir(dir);
+    ui->lblTest->setText(userDir.path());
 }
 
 RecordDialog::~RecordDialog()

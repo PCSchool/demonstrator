@@ -19,13 +19,22 @@ Recording::Recording(QCustomPlot *plot, double frequency, double amplitude, QStr
 }
 
 //methods
-int Recording::controlDir(QDir dir){
-    //control if the dir used for saving recording doesnt already exists
-    std::string path = dir.path().toLocal8Bit().constData();
-    //path = path + "/recording_" + std::to_string(numberFile) + ".bin";
-   //QString pathnow = QString::fromStdString(path);
+QString Recording::controlDir(QDir dir){
+    //create new directory for new recording
+    // directory name contains of recording_date_time
+    // - date being the current date
+    // - time being the current time of creating the recording
+    QString date = QDateTime::currentDateTime().toString("dd-MM-yyyy");
+    QString time = QDateTime::currentDateTime().toString("hh-mm-ss");
+    QString path = "recording_" + date + "_" + time;
+    QString fullPath = dir.path() + "/" + path;
+    if(!QDir(path).exists()){
+        dir.mkdir(path);
+        QDir(fullPath).mkpath("recording_0.bin");
+    }
 
-
+    pathRecording = fullPath;
+    return fullPath;
 }
 
 void Recording::changePosition(double x, double y){

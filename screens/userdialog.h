@@ -19,13 +19,10 @@ class UserDialog : public QDialog
 public:
     //enum
     enum controlType{email, number, names, zipcodes, phone, housenr};
-
-    QDir dir;
     //constructor
     explicit UserDialog(QWidget *parent = 0);
     ~UserDialog();
     bool validation(QString control, controlType type);
-
 signals:
     void newPatientCreated(Patient* patient);
     void newPatient(Patient* Patient);
@@ -50,6 +47,7 @@ private:
     Ui::UserDialog *ui;
     QString error;
     QString emptyError;
+    QDir dir;
     char gender;
 };
 

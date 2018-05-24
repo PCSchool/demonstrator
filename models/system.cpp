@@ -18,12 +18,11 @@ System::System()
     QDir makedir(path);
     if(!makedir.exists()){
         makedir.mkpath(path); 
-        makedir.mkpath(path+ "/devices");
-        makedir.mkpath(path + "/patients");
+        makedir.mkpath(path+ "/devices/");
+        makedir.mkpath(path + "/patients/");
     }
     this->setDir(path);
     this->setPatientDir(QDir(path + "/patients/"));
-
 }
 
 //methods
@@ -62,7 +61,6 @@ void System::loadCrypt32(){
 
     if(! fRunTimeLinkSucces)
         printf("Message printed from executable\n");
-
 }
 
 

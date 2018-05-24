@@ -85,37 +85,6 @@ double AnalysisDialog::transfer(quint64 number){
     return static_cast<double>(integer);
 }
 
-void AnalysisDialog::on_btnGenerate_clicked()
-{ 
-    //get QByteArray from file
-     QFile file("recording_1.bin");
-    if(!file.open(QIODevice::ReadOnly))
-        return;
-
-    //static_cast<char*>(static_cast<void*>(&data));
-    QDataStream in(&file);
-    in.setVersion(QDataStream::Qt_5_10);
-    in.setByteOrder(QDataStream::LittleEndian);
-    //default -> in.setFloatingPointPrecision(QDataStream::floatingPointPrecision().DoublePrecision);
-
-    tpList.clear();
-    QList<TimePointer> list;
-    quint64 xo;
-    quint64 yo;
-    for(int i = 0; i < 150 ; ++i){
-        in >> xo;
-        in >> yo;
-        TimePointer tp;
-        tp.x = transfer(xo);
-        tp.y = transfer(yo);
-        list.push_back(tp);
-        std:: cout << endl << " xo = " << xo << " yo = " << yo << " ";
-    }
-    file.close();
-
-    tpList = list;
-}
-
 void AnalysisDialog::setDir(QDir dir){
     this->dir = dir;
 }
@@ -211,6 +180,13 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
     analysis.setRecordingDir(QDir(path));
     analysis.setRecordingFilePath(path);
+
+    // below for reading multiple files
+    /*QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
+                                                path, QFileDialog::DontUseNativeDialog);
+    analysis.setRecordingDir(QDir(dir)); //path if using file
+    analysis.setRecordingFilePath(dir);*/
 }
 
 void AnalysisDialog::on_btnPrintResult_clicked(){
