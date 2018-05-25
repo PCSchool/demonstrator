@@ -21,6 +21,16 @@ CreateGraphDialog::~CreateGraphDialog()
     delete ui;
 }
 
+CreateGraphDialog::setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int interval, QString graph, QString sensor){
+    this->ui->cbFrequency->setValue(frequency);
+    this->ui->cbAmplitude->setValue(amplitude);
+    this->ui->cbYAxisMax->setValue(yAxisMax);
+    this->ui->cbYAxisMin->setValue(yAxisMin);
+    this->ui->cbInterval->setValue(interval);
+    this->ui->cbTypeGraph->setCurrentIndex(ui->cbTypeGraph->findText(graph.toLower()));
+    this->ui->cbTypeSensor->setCurrentIndex(ui->cbTypeSensor->findText(sensor.toLower()));
+}
+
 void CreateGraphDialog::on_btnCreateGraph_clicked()
 {
     double amplitude = ui->cbAmplitude->value();

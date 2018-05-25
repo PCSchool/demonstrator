@@ -25,7 +25,7 @@ RecordDialog::RecordDialog(QWidget *parent) :
     readySignal = 0;
     running = false;
     shared_buffer = new QByteArray[bufferSize];
-    recording.setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
+    setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
     recording.changePosition(ui->widget->pos().x(), ui->widget->pos().y());
     recording.changeSize(ui->widget->size().width(), ui->widget->size().height());
 }
@@ -48,6 +48,12 @@ void RecordDialog::showContextMenu(const QPoint& pos){
 
 void RecordDialog::setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor){
     recording.setProperties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, graph, sensor);
+    this->ui->lblAmplitude->setText(QString::number(amplitude));
+    this->ui->lblFrequency->setText(QString::number(frequency));
+    this->ui->lblInterval->setText(QString::number(interval));
+    this->ui->lblSensor->setText(QString(sensor).toLower());
+    this->ui->lblGraphType->setText(QString(graph).toLower());
+    this->ui->lblYAxis->setText(("(" + QString::number(yAxisMin) + "," + QString::number(yAxisMax) + ")"));
 }
 
 void RecordDialog::setUserDir(QDir dir){
@@ -166,6 +172,7 @@ void RecordDialog::on_btnChangeSettings_clicked()
 {
     CreateGraphDialog* graphDialog = new CreateGraphDialog(this);
     connect(graphDialog, SIGNAL(properties(double,double,int,int,int,int,int,QString,QString)), this, SLOT(setProperties(double,double,int,int,int,int,int,QString,QString)));
+    graphDialog->setProperties(recording.getFrequency(), recording.getAmplitude(), recording.getYAxisMax(), recording.getYAxisMin(), recording.getInterval(), recording.getGraphType(), recording.getSensor());
     graphDialog->setModal(true);
     graphDialog->exec();
 }

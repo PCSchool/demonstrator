@@ -29,6 +29,8 @@ class Recording{
     QString getGraphType();
     QString getSensor();
     int getInterval();
+    double getFrequency();
+    double getAmplitude();
 
     //public fields
     QString pathRecording;

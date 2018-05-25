@@ -55,7 +55,6 @@ void ExportDialog::on_btnSelectPatient_clicked()
                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
     exporting->cleanUserDir(dir, dir);
     exporting->cleanListbox();
-
 }
 
 void ExportDialog::on_btnSelectExportFiles_clicked()

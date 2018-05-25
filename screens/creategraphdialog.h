@@ -14,6 +14,7 @@ class CreateGraphDialog : public QDialog
 public:
     explicit CreateGraphDialog(QWidget *parent = 0);
     ~CreateGraphDialog();
+    setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int interval, QString graph, QString sensor);
 signals:
     void properties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
 

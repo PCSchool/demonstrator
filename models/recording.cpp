@@ -64,9 +64,9 @@ void Recording::setProperties(double frequency, double amplitude, int yAxisMax, 
 Recording::Types Recording::selectTypes(std::string _s){
     transform(_s.begin(), _s.end(), _s.begin(), ::toupper);
     if(_s == "LINE") return line;
-    else if(_s == "BAR") return bar;
+    else if(_s == "BARGRAPH") return bar;
     else if(_s == "HISTOGRAM") return histogram;
-    else if(_s == "SCATTER") return scatter;
+    else if(_s == "SCATTERPLOT") return scatter;
     throw std::range_error("Not a valid Types value: " + _s);
     return invalidtype;
 }
@@ -79,6 +79,13 @@ Recording::Sensors Recording::selectSensor(std::string _s){
     else if(_s == "SKINTEMPERATURE") return skintemperature;
     else if(_s == "LIGHTSENSOR") return lightsensor;
     return invalidsensor;
+}
+
+double Recording::getFrequency(){
+    return frequency;
+}
+double Recording::getAmplitude(){
+    return amplitude;
 }
 
 int Recording::getYAxisMax(){

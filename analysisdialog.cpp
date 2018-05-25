@@ -127,8 +127,6 @@ void AnalysisDialog::on_btnSelectRecording_clicked()
     QString dir = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString path = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
                                                 dir, QFileDialog::DontUseNativeDialog);
-    analysis.setRecordingDir(QDir(path));
-    analysis.setRecordingFilePath(path);
     drawGraph(analysis.readDir(path));
 }
 /*void QCustomPlot::showPointToolTip(QMouseEvent *event){

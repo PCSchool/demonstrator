@@ -81,15 +81,33 @@
     </item>
     <item row="4" column="1">
      <widget class="QDoubleSpinBox" name="cbYAxisMax">
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>-500.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>500.000000000000000</double>
+      </property>
       <property name="value">
-       <double>20.000000000000000</double>
+       <double>250.000000000000000</double>
       </property>
      </widget>
     </item>
     <item row="5" column="1">
      <widget class="QDoubleSpinBox" name="cbYAxisMin">
+      <property name="decimals">
+       <number>0</number>
+      </property>
+      <property name="minimum">
+       <double>-500.000000000000000</double>
+      </property>
+      <property name="maximum">
+       <double>500.000000000000000</double>
+      </property>
       <property name="value">
-       <double>20.000000000000000</double>
+       <double>-100.000000000000000</double>
       </property>
      </widget>
     </item>
@@ -121,6 +139,9 @@
      <widget class="QSpinBox" name="cbInterval">
       <property name="maximum">
        <number>100</number>
+      </property>
+      <property name="value">
+       <number>20</number>
       </property>
      </widget>
     </item>
@@ -159,22 +180,22 @@
      <widget class="QComboBox" name="cbTypeSensor">
       <item>
        <property name="text">
-        <string>sensor 1 - electro</string>
+        <string>heartrate</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>sensor 2 -</string>
+        <string>accelerometer</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>sensor 3 -</string>
+        <string>skintemperature</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>sensor 4 -</string>
+        <string>lightsensor</string>
        </property>
       </item>
      </widget>
