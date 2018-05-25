@@ -44,7 +44,39 @@ QVector<TimePointer> Analysis::readFile(QString path){
 QVector<TimePointer> Analysis::readDir(QString path){
     QVector<TimePointer> vector;
     try{
-
+        FILE * fp;
+        int next = 0;
+        double x,y;
+        char buffer[9];
+        if(!path < 1){
+            QDirIterator it(QDir(path), QDirIterator::NoIteratorFlags);
+            while(it.hasNext()) {
+                QFile file(it.next());
+                file.open(QIODevice::ReadOnly);
+                while(!file.atEnd()){
+                    file.read(buffer, 8);
+                    QByteArray save(buffer, 8);
+                    memcpy(&x, save, 8);
+                    int size = save.size();
+                    QByteArray ss(buffer, 8);
+                    if(save.size() == 8){
+                        if(next == 0){
+                            next++;
+                            memcpy(&x, save, 8);
+                            TimePointer tp;
+                            tp.x = x;
+                            tp.y = y;
+                            vector.append(tp);
+                        }else{
+                            memcpy(&y, save, 8);
+                            next = 0;
+                        }
+                    }
+                    QByteArray sss(buffer, 8);
+                }
+                file.close();
+            }
+        }
     } catch(...){
         qFatal("Error occured within method Analysis::readDir(QString path)");
     }

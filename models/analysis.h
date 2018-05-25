@@ -36,10 +36,6 @@ private:
     QVector<double> Xaxis, yaxis;
     QList<QString> recordingPathList;
 
-signals:
-    void doneReadFile(QVector<TimePointer> vector);
-    void doneReadDir(QVector<TimePointer> vector);
-
 };
 
 #endif // ANALYSIS_H

@@ -117,11 +117,6 @@ void AnalysisDialog::setDir(QDir dir){
     this->dir = dir;
 }
 
-void AnalysisDialog::randomize(){
-    xAxis++;
-    counter++;
-}
-
 void AnalysisDialog::on_btnCancel_clicked(){
     this->deleteLater();
 }
