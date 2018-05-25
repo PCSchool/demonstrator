@@ -25,11 +25,15 @@ void CreateGraphDialog::on_btnCreateGraph_clicked()
 {
     double amplitude = ui->cbAmplitude->value();
     double frequency = ui->cbFrequency->value();
+    int yAxisMax = static_cast<int>(ui->cbYAxisMax->value());
+    int yAxisMin = static_cast<int>(ui->cbYAxisMin->value());
+    int xAxisMax = 25;
+    int xAxisMin = 0;
+    int interval = ui->cbInterval->value();
     QString type = ui->cbTypeGraph->currentText();
     QString sensor = ui->cbTypeSensor->currentText();
-    int duration = ui->cbDuration->value();
 
-    emit createGraphSignal(frequency, amplitude, type, sensor, duration);
+    emit properties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, type, sensor);
     on_btnCancel_clicked();
 }
 

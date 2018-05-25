@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>220</width>
-    <height>311</height>
+    <width>425</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,18 +19,44 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QPushButton" name="btnCreateGraph">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>201</width>
-     <height>241</height>
+     <x>190</x>
+     <y>260</y>
+     <width>101</width>
+     <height>23</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label_3">
+   <property name="text">
+    <string>create graph</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCancel">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>260</y>
+     <width>91</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>cancel</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>371</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_3">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_5">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
@@ -41,24 +67,8 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="cbFrequency">
-      <property name="decimals">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <double>50.000000000000000</double>
-      </property>
-      <property name="singleStep">
-       <double>0.100000000000000</double>
-      </property>
-      <property name="value">
-       <double>1.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
@@ -69,43 +79,63 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="cbAmplitude">
+    <item row="4" column="1">
+     <widget class="QDoubleSpinBox" name="cbYAxisMax">
       <property name="value">
        <double>20.000000000000000</double>
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QLabel" name="label_4">
+    <item row="5" column="1">
+     <widget class="QDoubleSpinBox" name="cbYAxisMin">
+      <property name="value">
+       <double>20.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>duration </string>
+       <string>y-axis maximum</string>
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QDoubleSpinBox" name="cbDuration">
-      <property name="decimals">
-       <number>0</number>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
+      <property name="text">
+       <string>y-axis minimum</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="cbInterval">
       <property name="maximum">
-       <double>60.000000000000000</double>
-      </property>
-      <property name="value">
-       <double>20.000000000000000</double>
+       <number>100</number>
       </property>
      </widget>
     </item>
-    <item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Interval</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
      <widget class="QComboBox" name="cbTypeGraph">
       <item>
        <property name="text">
-        <string>linegraph</string>
+        <string>line</string>
        </property>
       </item>
       <item>
@@ -125,7 +155,7 @@
       </item>
      </widget>
     </item>
-    <item>
+    <item row="7" column="1">
      <widget class="QComboBox" name="cbTypeSensor">
       <item>
        <property name="text">
@@ -149,66 +179,75 @@
       </item>
      </widget>
     </item>
-    <item>
-     <widget class="QComboBox" name="cbColor">
-      <item>
-       <property name="text">
-        <string>blue</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>red</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>green</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>yellow</string>
-       </property>
-      </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_9">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>select graph</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>select sensor</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDoubleSpinBox" name="cbAmplitude">
+      <property name="value">
+       <double>20.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="cbFrequency">
+      <property name="decimals">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <double>50.000000000000000</double>
+      </property>
+      <property name="singleStep">
+       <double>0.100000000000000</double>
+      </property>
+      <property name="value">
+       <double>1.000000000000000</double>
+      </property>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="btnCreateGraph">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>280</y>
-     <width>75</width>
-     <height>23</height>
+     <y>10</y>
+     <width>301</width>
+     <height>21</height>
     </rect>
    </property>
-   <property name="text">
-    <string>create graph</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnCancel">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>280</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="text">
-    <string>cancel</string>
+    <string>Properties for QCustomPlot</string>
    </property>
   </widget>
  </widget>
  <tabstops>
-  <tabstop>cbFrequency</tabstop>
-  <tabstop>cbAmplitude</tabstop>
-  <tabstop>cbDuration</tabstop>
-  <tabstop>cbTypeGraph</tabstop>
-  <tabstop>cbTypeSensor</tabstop>
-  <tabstop>cbColor</tabstop>
   <tabstop>btnCreateGraph</tabstop>
   <tabstop>btnCancel</tabstop>
  </tabstops>

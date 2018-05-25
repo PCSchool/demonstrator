@@ -28,15 +28,19 @@ public:
     double counter;
     QByteArray *shared_buffer;
     int readySignal;
+
 signals:
     void writeNewData(double xAxis, double yAxis);
     void stopTimer();
 
 private slots:
+    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
     void showContextMenu(const QPoint& pos);
     void realtimeDataSlot();
     void on_btnDummyGraph_clicked();
     void on_btnStop_clicked();
+    void on_btnChangeSettings_clicked();
+    void on_sbCounter_valueChanged(const QString &arg1);
 
 private:
     Ui::RecordDialog *ui;

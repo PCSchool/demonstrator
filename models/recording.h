@@ -14,39 +14,53 @@ class Recording{
 
     //constructors
     Recording();
-    Recording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor);
+    Recording(int width, int height, int x, int y);
 
     //methods
-    void addRecording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor, int duration);
-    void changePosition(double x, double y);
-    QString controlDir(QDir dir);
+    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
+    void changePosition(int x, int y);
+    void changeSize(int width, int height);
+
+    //getters
+    int getYAxisMax();
+    int getYAxisMin();
+    int getXAxisMax();
+    int getXAxisMin();
+    QString getGraphType();
+    QString getSensor();
+    int getInterval();
 
     //public fields
     QString pathRecording;
+    QString controlDir(QDir dir);
 
   public slots:
-    void changeSize(int width, int height);
 
   private:
     //methods
     static Recording::Sensors selectSensor(std::string _s);
     static Recording::Types selectTypes(std::string _s);
 
+
     //field
     QCustomPlot *plot;
 
+    //position & size of graph
     QSize size;
-    int width;
-    int height;
-    int xPosLayout;
-    int yPosLayout;
-    double frequency;
-    double amplitude;
-    double duration;
+    int width, height, x, y;
+
+    //properties of graph
+    double frequency, amplitude;
+    int yAxisMin, yAxisMax, xAxisMax, xAxisMin, counter;
     Types type;
     Sensors sensor;
-    int secOnDisplay;
-    QString pauze;
+    int secOnDisplay, interval;
+    QString pauze, typeString, sensorString;
+
+
+
+  signals:
+    void newCounter(int counter);
 };
 
 #endif // RECORDING_H

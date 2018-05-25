@@ -44,6 +44,9 @@ QVector<TimePointer> Analysis::readFile(QString path){
 }
 
 QVector<TimePointer> Analysis::readDir(QString path){
+    setRecordingDir(QDir(path));
+    setRecordingFilePath(path);
+
     QVector<TimePointer> vector;
     try{
         FILE * fp;

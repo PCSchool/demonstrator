@@ -9,13 +9,22 @@
 
 using namespace std;
 
-const int DataSize = 100000;
-const int BufferSize = 1024;
+const int dataSize = 100000;
+const int bufferSize = 1024;
 const int readDoubleSize = 8;
 const int readTimePointerSize = 16;
 const int maxBinFileSize = 40000;//2000000;
-extern char buffer[BufferSize];
+const double frequencyDefault = 10;
+const double amplitudeDefault = 10;
+const int yAxisMaxDefault = 300;
+const int yAxisMinDefault = -100;
+const int xAxisMaxDefault = 30;
+const int xAxisMinDefault = -5;
+const int intervalDefault = 15;
+const QString graphDefault = "LINE";
+const QString sensorDefault = "HEARTRATE";
 
+extern char buffer[bufferSize];
 
 
 #pragma pack(push, 1);

@@ -5,17 +5,18 @@
 //default constructor;
 Recording::Recording()
 {
-    xPosLayout = 0;
-    yPosLayout = 0;
+
 }
 
 //constructor with parameters
-Recording::Recording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor){
-    this->plot = plot;
-    this->frequency = frequency;
-    this->amplitude = amplitude;
-    this->type = selectTypes(type.toLocal8Bit().constData());
-    this->sensor = selectSensor(sensor.toLocal8Bit().constData());
+Recording::Recording(int width, int height, int x, int y){
+    if(width < 0 || height < 0 || x < 0 || y < 0 ){
+        //throw exception
+    }
+    this->width = width;
+    this->height = height;
+    this->x = x;
+    this->y = y;
 }
 
 //methods
@@ -36,9 +37,9 @@ QString Recording::controlDir(QDir dir){
     return fullPath;
 }
 
-void Recording::changePosition(double x, double y){
-    this->xPosLayout = x;
-    this->yPosLayout = y;
+void Recording::changePosition(int x, int y){
+    this->x = x;
+    this->y = y;
 }
 
 void Recording::changeSize(int width, int height){
@@ -46,13 +47,18 @@ void Recording::changeSize(int width, int height){
     size.setWidth(width);
 }
 
-void Recording::addRecording(QCustomPlot *plot, double frequency, double amplitude, QString type, QString sensor, int duration){
-    this->plot = plot;
+void Recording::setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor){
     this->frequency = frequency;
     this->amplitude = amplitude;
-    this->type = selectTypes(type.toLocal8Bit().constData());
+    this->yAxisMax = yAxisMax;
+    this->yAxisMin = yAxisMin;
+    this->xAxisMax = xAxisMax;
+    this->xAxisMin = xAxisMin;
+    this->interval = interval;
+    this->sensorString = sensor;
+    this->typeString = graph;
     this->sensor = selectSensor(sensor.toLocal8Bit().constData());
-    this->duration = duration;
+    this->type = selectTypes(graph.toLocal8Bit().constData());
 }
 
 Recording::Types Recording::selectTypes(std::string _s){
@@ -75,4 +81,31 @@ Recording::Sensors Recording::selectSensor(std::string _s){
     return invalidsensor;
 }
 
+int Recording::getYAxisMax(){
+    return this->yAxisMax;
+}
+
+int Recording::getYAxisMin(){
+    return this->yAxisMin;
+}
+
+int Recording::getXAxisMax(){
+    return this->xAxisMax;
+}
+
+int Recording::getXAxisMin(){
+    return this->xAxisMin;
+}
+
+QString Recording::getGraphType(){
+    return this->typeString;
+}
+
+QString Recording::getSensor(){
+    return this->sensorString;
+}
+
+int Recording::getInterval(){
+    return this->interval;
+}
 

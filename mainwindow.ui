@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1103</width>
+    <width>997</width>
     <height>640</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -23,16 +29,18 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>30</y>
-      <width>551</width>
-      <height>61</height>
+      <x>20</x>
+      <y>10</y>
+      <width>941</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>MS Sans Serif</family>
-      <pointsize>35</pointsize>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -45,10 +53,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>170</y>
-      <width>291</width>
-      <height>331</height>
+      <x>70</x>
+      <y>110</y>
+      <width>401</width>
+      <height>441</height>
      </rect>
     </property>
     <property name="title">
@@ -59,13 +67,13 @@
       <rect>
        <x>50</x>
        <y>20</y>
-       <width>200</width>
+       <width>300</width>
        <height>51</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </size>
      </property>
@@ -81,13 +89,13 @@
       <rect>
        <x>50</x>
        <y>80</y>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </size>
      </property>
@@ -103,13 +111,13 @@
       <rect>
        <x>50</x>
        <y>140</y>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </size>
      </property>
@@ -125,13 +133,13 @@
       <rect>
        <x>50</x>
        <y>200</y>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </size>
      </property>
@@ -147,13 +155,13 @@
       <rect>
        <x>50</x>
        <y>260</y>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
-       <width>200</width>
+       <width>300</width>
        <height>50</height>
       </size>
      </property>
@@ -168,10 +176,10 @@
    <widget class="QGroupBox" name="gbInfoPatient">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>170</y>
-      <width>241</width>
-      <height>331</height>
+      <x>560</x>
+      <y>110</y>
+      <width>341</width>
+      <height>441</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -183,9 +191,9 @@
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>221</width>
+       <x>20</x>
+       <y>50</y>
+       <width>301</width>
        <height>167</height>
       </rect>
      </property>
@@ -232,6 +240,13 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>BirthDate:</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="1">
        <widget class="QLabel" name="lblBirthDatePatient">
         <property name="text">
@@ -274,31 +289,24 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QLabel" name="lblWeight">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>BMI:</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QLabel" name="lblBMI">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="7" column="1">
+       <widget class="QLabel" name="lblWeight">
         <property name="text">
-         <string>BirthDate:</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -307,8 +315,8 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>0</y>
+       <x>0</x>
+       <y>10</y>
        <width>171</width>
        <height>21</height>
       </rect>
@@ -324,39 +332,114 @@
       <string>Information patient</string>
      </property>
     </widget>
-    <widget class="QWidget" name="verticalLayoutWidget">
+    <widget class="Line" name="lineInfoPatient">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>200</y>
-       <width>221</width>
-       <height>91</height>
+       <x>20</x>
+       <y>30</y>
+       <width>301</width>
+       <height>20</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPushButton" name="btnSelectDirPatient">
-        <property name="text">
-         <string>Directory patient</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnnAddNotes">
-        <property name="text">
-         <string>Add notes</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnChangePatient">
-        <property name="text">
-         <string>Change patient</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
+    <widget class="QPushButton" name="btnSelectDirPatient">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>250</y>
+       <width>200</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Directory patient</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnnAddNotes">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>310</y>
+       <width>200</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Add notes</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnChangePatient">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>370</y>
+       <width>200</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Change patient</string>
+     </property>
+    </widget>
+    <widget class="Line" name="lineInfoPatient_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>220</y>
+       <width>301</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>971</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -364,7 +447,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1103</width>
+     <width>997</width>
      <height>21</height>
     </rect>
    </property>

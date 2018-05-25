@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QTime>
 #include <QTextStream>
+#include <globals.h>
 
 using namespace std;
 
@@ -17,13 +18,16 @@ RecordDialog::RecordDialog(QWidget *parent) :
     ui(new Ui::RecordDialog)
 {
     ui->setupUi(this);
+    ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
+    connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
+
     counter = 0;
     readySignal = 0;
     running = false;
-    ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
-    connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
-    recording;// = new Recording();
-    shared_buffer = new QByteArray[1024];
+    shared_buffer = new QByteArray[bufferSize];
+    recording.setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
+    recording.changePosition(ui->widget->pos().x(), ui->widget->pos().y());
+    recording.changeSize(ui->widget->size().width(), ui->widget->size().height());
 }
 
 //show right-click context menu + handles selection of the selecteditem of the menu
@@ -36,10 +40,14 @@ void RecordDialog::showContextMenu(const QPoint& pos){
     QAction* selectedItem = qmenu.exec(globalPos);
     if(selectedItem){
         CreateGraphDialog* graphDialog = new CreateGraphDialog(this);
-        connect(graphDialog, SIGNAL(createGraphSignal(double, double, QString, QString, int)), this, SLOT(createGraph(double, double, QString, QString, int)));
+        connect(graphDialog, SIGNAL(properties(double,double,int,int,int,int,int,QString,QString)), this, SLOT(setProperties(double,double,int,int,int,int,int,QString,QString)));
         graphDialog->setModal(true);
         graphDialog->exec();
     }
+}
+
+void RecordDialog::setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor){
+    recording.setProperties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, graph, sensor);
 }
 
 void RecordDialog::setUserDir(QDir dir){
@@ -64,6 +72,8 @@ RecordDialog::~RecordDialog()
 void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
+        ui->widget->clearGraphs();
+
         running = true;
         InitializeCriticalSection(&shared_buffer_lock);
 
@@ -74,7 +84,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         timeTicker->setTimeFormat("%h:%m:%s");
         ui->widget->xAxis->setTicker(timeTicker);
         ui->widget->axisRect()->setupFullAxesBox();
-        ui->widget->yAxis->setRange(310, -60);
+        ui->widget->yAxis->setRange(recording.getYAxisMax(), recording.getYAxisMin());
 
         // make left and bottom axes transfer their ranges to right and top axes:
         connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
@@ -84,7 +94,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         dataTimer = new QTimer();
         connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
-        dataTimer->start(25); // Interval of 25
+        dataTimer->start(recording.getInterval()); // Interval of 25
 
         // setup the thread responsible for writing data to the buffer
         threadWriteBuffer = new QThread();
@@ -150,4 +160,17 @@ void RecordDialog::on_btnStop_clicked()
         disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
         running = false;
     }
+}
+
+void RecordDialog::on_btnChangeSettings_clicked()
+{
+    CreateGraphDialog* graphDialog = new CreateGraphDialog(this);
+    connect(graphDialog, SIGNAL(properties(double,double,int,int,int,int,int,QString,QString)), this, SLOT(setProperties(double,double,int,int,int,int,int,QString,QString)));
+    graphDialog->setModal(true);
+    graphDialog->exec();
+}
+
+void RecordDialog::on_sbCounter_valueChanged(const QString &arg1)
+{
+    int counterx = ui->sbCounter->value();
 }

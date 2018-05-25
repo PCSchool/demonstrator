@@ -15,7 +15,7 @@ public:
     explicit CreateGraphDialog(QWidget *parent = 0);
     ~CreateGraphDialog();
 signals:
-    void createGraphSignal(double frequency, double amplitude, QString graph, QString sensor, int duration);
+    void properties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
 
 private slots:
     void on_btnCreateGraph_clicked();
