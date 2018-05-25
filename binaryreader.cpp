@@ -64,7 +64,7 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     file.close();
     LeaveCriticalSection(&shared_buffer_lock);
 
-    if(sizeFile > 4000){
+    if(sizeFile > maxBinFileSize){
         std::cout << " COOK " << upNumberFile;
         sizeFile = 0;
         numberFile++;

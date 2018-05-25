@@ -11,7 +11,12 @@ using namespace std;
 
 const int DataSize = 100000;
 const int BufferSize = 1024;
+const int readDoubleSize = 8;
+const int readTimePointerSize = 16;
+const int maxBinFileSize = 40000;//2000000;
 extern char buffer[BufferSize];
+
+
 
 #pragma pack(push, 1);
 typedef struct TimePointer{   //extern or typedef

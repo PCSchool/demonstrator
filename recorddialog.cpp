@@ -65,12 +65,11 @@ void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
         running = true;
-        //initialize CriticalSection
         InitializeCriticalSection(&shared_buffer_lock);
 
+        // Create graph
         ui->widget->addGraph(); // blue line
         ui->widget->graph(0)->setPen(QPen(QColor(40, 110, 255)));
-
         QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
         timeTicker->setTimeFormat("%h:%m:%s");
         ui->widget->xAxis->setTicker(timeTicker);
@@ -85,22 +84,23 @@ void RecordDialog::on_btnDummyGraph_clicked()
         dataTimer = new QTimer();
         connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
-        dataTimer->start(25); // Interval 0 means to refresh as fast as possible
+        dataTimer->start(25); // Interval of 25
 
+        // setup the thread responsible for writing data to the buffer
         threadWriteBuffer = new QThread();
         writeBuffer = new BinaryWriter();
         connect(writeBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(quit()));
         connect(writeBuffer, SIGNAL(finished()), writeBuffer, SLOT(deleteLater()));
         connect(threadWriteBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(deleteLater()));
 
-        // setup thread to write data from buffer to file
+        // setup the thread to write data from buffer to file
         QThread* threadWriteFile = new QThread();
         writeFile = new BinaryReader();
 
+        //connect the threads with eachother and the plot
         connect(writeFile,SIGNAL(finished()), threadWriteFile, SLOT(quit()));
         connect(writeFile, SIGNAL(finished()), writeFile, SLOT(deleteLater()));
         connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
-
         connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
         connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer>)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer>)));
 
@@ -114,19 +114,15 @@ void RecordDialog::on_btnDummyGraph_clicked()
 
         //delete CriticalSection at end, when graph gets stopped -> ~RecordDialog
     }
-
 }
 
 void RecordDialog::realtimeDataSlot(){
     static QTime time(QTime::currentTime());
-    // calculate two new data points:
     double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
 
     static double lastPointKey = 0;
     if (xAxis-lastPointKey > 0.010) // at most add point every 20 ms
     {
-      // add data to lines:
-      //double newY = qSin(key)+qrand()/(double)RAND_MAX*1*qSin(key/0.3843);
       double yAxis = counter;
       counter++;
       if(counter >= 250){
@@ -138,9 +134,6 @@ void RecordDialog::realtimeDataSlot(){
           readySignal = 0;
       }
       ui->widget->graph(0)->addData(xAxis, yAxis);
-
-      //signal newData
-
       lastPointKey = xAxis;
     }
     // make key axis range scroll with the data (at a constant range size of 20):

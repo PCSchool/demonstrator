@@ -28,7 +28,9 @@ public:
     friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
 
 signals:
-    writeNewData(double newdata, double key);
+
+public slots:
+    void drawGraph(QVector<TimePointer> vector);
 
 private slots:
     void on_btnReadBinaryFile_clicked();
@@ -37,7 +39,7 @@ private slots:
 
     void on_btnSelectRecording_clicked();
 
-    void on_btnPrintResult_clicked();
+    void on_btnReadSpecificFile_clicked();
 
 private:
     //for testing data reading

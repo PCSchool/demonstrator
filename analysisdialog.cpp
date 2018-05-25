@@ -37,86 +37,69 @@ AnalysisDialog::~AnalysisDialog()
 //read out binary file
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
 {
+    //USE QDirIterator to loop through directory
+
     //FILE * fp = fopen("recordFinal.bin", "rb");
-    //analysis.setRecordingDir(QDir(dir)); //path if using file
-    //analysis.setRecordingFilePath(dir);
+    std::cout << endl << analysis.getRecordingFilePath().toLocal8Bit().constData() << " end file";
+    //FILE * fp = fopen(analysis.getRecordingFilePath().toLocal8Bit().constData(), "rb");
+    FILE * fp;
     int i, j;
-    int swap = 0;
+    int next = 0;
     tpList.clear();
     QMap<double, double> xyMap;
     QList<TimePointer> xyList;
     double x,y;
     char buffer[9];
 
-    QDirIterator it(analysis.getRecordingDir(), QDirIterator::NoIteratorFlags);
-    while(it.hasNext()){
-        analysis.addRecordingDirList(it.next());
-        FILE * fp = fopen(it.next().toLocal8Bit().constData(), "rb");
-
-        if(fp != NULL){
-            int read = 0;
-            while((read = fread(buffer, 1, 8, fp)) > 0){
-                for(i=0; i < read; i++){
-                    //qDebug("%X ", buffer[i]);
-                }
-                for(j=0; j < read; j++){
-                    //qDebug("%c", buffer[j]);
-                }
-                QByteArray test(buffer, 8);
-                if(test.size() == 8){
-                    if(swap == 1){
-                        memcpy(&y, test, 8);
+    if(!analysis.getRecordingFilePath().length() < 1){
+        QDirIterator it(analysis.getRecordingDir(), QDirIterator::NoIteratorFlags);
+        QString itDirname = analysis.getRecordingFilePath();
+        while(it.hasNext()) {
+            QFile file(it.next());
+            file.open(QIODevice::ReadOnly);
+            while(!file.atEnd()){
+                file.read(buffer, 8);
+                QByteArray save(buffer, 8);
+                memcpy(&x, save, 8);
+                int size = save.size();
+                QByteArray ss(buffer, 8);
+                if(save.size() == 8){
+                    if(next == 1){
+                        next++;
+                        memcpy(&x, save, 8);
                         TimePointer tp;
                         tp.x = x;
                         tp.y = y;
                         xyList.append(tp);
-                        swap = 0;
                     }else{
-                        memcpy(&x, test, 8);
-                        swap++;
+                        memcpy(&y, save, 8);
+                        next = 0;
                     }
                 }
+                QByteArray sss(buffer, 8);
             }
-            fclose(fp);
-        }
-        /*for (auto const& i : xyList){
-            std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
-        }*/
-    }
-    /*std::cout << endl << analysis.getRecordingFilePath().toLocal8Bit().constData() << " end file";
-    FILE * fp = fopen(analysis.getRecordingFilePath().toLocal8Bit().constData(), "rb");
-    int i, j;
-    int swap = 0;
-    tpList.clear();
-    QMap<double, double> xyMap;
-    QList<TimePointer> xyList;
-    double x,y;
-    char buffer[9];
-    if(fp != NULL){
-        int read = 0;
-        while((read = fread(buffer, 1, 8, fp)) > 0){
-            for(i=0; i < read; i++){
-                //qDebug("%X ", buffer[i]);
-            }
-            for(j=0; j < read; j++){
-                //qDebug("%c", buffer[j]);
-            }
-            QByteArray test(buffer, 8);
-            if(test.size() == 8){
-                if(swap == 1){
-                    memcpy(&y, test, 8);
-                    TimePointer tp;
-                    tp.x = x;
-                    tp.y = y;
-                    xyList.append(tp);
-                    swap = 0;
-                }else{
-                    memcpy(&x, test, 8);
-                    swap++;
+            file.close();
+            /*if(fp != NULL){
+                int read = 0;
+                while((read = fread(buffer, 1, 8, fp)) > 0){
+                    QByteArray saveBytes(buffer, 8);
+                    if(saveBytes.size() == 8){
+                        if(next == 1){
+                            memcpy(&y, saveBytes, 8);
+                            TimePointer tp;
+                            tp.x = x;
+                            tp.y = y;
+                            xyList.append(tp);
+                            next = 0;
+                        }else{
+                            memcpy(&x, saveBytes, 8);
+                            next++;
+                        }
+                    }
                 }
-            }
+                fclose(fp);
+            }*/
         }
-        fclose(fp);
     }
     /*for (auto const& i : xyList){
         std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
@@ -140,116 +123,18 @@ void AnalysisDialog::randomize(){
 }
 
 void AnalysisDialog::on_btnCancel_clicked(){
-    //open file read constantly 16 bytes - 128 bits out
-    std::ifstream fin("recording_2.bin", std::ios_base::in | std::ios_base::binary);
-    if(!fin.is_open()){
-        return;
-    }
-    QFile file("recording_2.bin");
-
-    if(!file.open(QIODevice::ReadOnly)){
-        std::cout << "File couldnt be found nor opened.";
-        return;
-    }else{
-        int counter = 0;
-        QByteArray *array;
-        char b[sizeof(array)];
-        uint_fast16_t len;
-
-        file.seek(0);
-        QByteArray bytes = file.readAll();
-
-        QDataStream dataStream(&file);
-        dataStream.setByteOrder(QDataStream::LittleEndian);
-        QVector<TimePointer> result;
-
-        file.seek(0);
-        size_t fileSize = fin.tellg();
-        fin.seekg(0, ios::beg);
-
-        std::vector<byte> vector(fileSize, 0);
-
-        //.write(static_cast<char*>(static_cast<void*>(&data)), std::ios_base::app | std::ios::binary);
-        //create  a <vector> to hold all the bytes in the file
-        //fin.read(reinterpret_cast<char*>(&vector[0]), sizeof(fileSize));
-        //fin.read(static_cast<char*>(static_cast<void*>(&vector[0])), sizeof(fileSize));
-
-        //read the file
-        char temp[fileSize];
-        //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
-        fin.read(static_cast<char*>(static_cast<void*>(&vector[0])), sizeof(fileSize));
-
-        TimePointer d1;
-        d1.x = 0;
-        d1.y = 0;
-
-        fin.read(temp, 0-16);
-        memcpy(&d1, temp, sizeof(TimePointer));
-        std::cout << "test d1: " << d1.x << " - " << d1.y << " \n";
-
-        fin.read(&temp[0-16], (16-32));
-        memcpy(&d1, temp, sizeof(TimePointer));
-        std::cout << "test d2: " << d1.x << " - " << d1.y << " \n";
-
-        fin.read(&temp[32-48], (48-56));
-        memcpy(&d1, temp, sizeof(TimePointer));
-        std::cout << "test d3: " << d1.x << " - " << d1.y << " \n";
-        //each character pointer on the system in 4-bytes long
-
-        std::vector<byte> data(fileSize, 0);
-        //read the file
-        //fin.read(reinterpret_cast<char*>(&data[0]), sizeof(fileSize));
-        fin.read(static_cast<char*>(static_cast<void*>(&data[0])), sizeof(fileSize));
-        //Axis a;
-        fin.read((char*)&len, 2);
-        std::string str(len, '\o');
-        //array = static_cast<QByteArray*>(&len);
-        //array = reinterpret_cast<QByteArray*>(&len);
-        array = static_cast<QByteArray*>(static_cast<void*>(&len));
-        //loop in buffer
-
-        std::cout << " Done reading  \n Bytes readed in file : " << counter << "\n fileSize file : " << fileSize << "\n data size : " << data.size() << endl;
-        fin.close();
-    }
+    this->deleteLater();
 }
 
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
-    /*const QString path =  QFileDialog::getOpenFileName(
-                this,
-                "Open Document",
-                dir.path(),
-                "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
+    //select one directory
+    QString dir = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
+                                                dir, QFileDialog::DontUseNativeDialog);
     analysis.setRecordingDir(QDir(path));
-    analysis.setRecordingFilePath(path);*/
-
-    // below for reading multiple files
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
-                                                path, QFileDialog::DontUseNativeDialog);
-    analysis.setRecordingDir(QDir(dir)); //path if using file
-    analysis.setRecordingFilePath(dir);
-}
-
-void AnalysisDialog::on_btnPrintResult_clicked(){
-    if(tpList.count() > 10){
-        ui->widget->addGraph();
-        ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
-        ui->widget->addGraph();
-        QVector<double> X(tpList.count() + 1), Y(tpList.count() + 1);
-        int amount = tpList.count();
-        for(double i = 0; i < amount; i++){
-            X[i] = tpList[i].x;
-            Y[i] = tpList[i].y;
-        }
-        ui->widget->xAxis2->setVisible(true);
-        ui->widget->yAxis2->setVisible(true);
-        connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
-        connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
-        ui->widget->graph(0)->setData(X, Y);
-        ui->widget->graph(0)->rescaleAxes(true);
-        ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    }
+    analysis.setRecordingFilePath(path);
+    drawGraph(analysis.readDir(path));
 }
 /*void QCustomPlot::showPointToolTip(QMouseEvent *event){
     int x = this->xAxis->pixelToCoord(event->pos().x());
@@ -257,3 +142,41 @@ void AnalysisDialog::on_btnPrintResult_clicked(){
     setToolTip(QString("%1 , %2").arg(x).arg(y));
 }*/
 
+
+void AnalysisDialog::on_btnReadSpecificFile_clicked()
+{
+    //select one file
+    drawGraph(analysis.readFile(QFileDialog::getOpenFileName(
+                                    this,
+                                    "Open Document",
+                                    dir.path(),
+                                    "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)")));
+}
+
+void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
+    ui->widget->clearGraphs();
+
+    try{
+        if(vector.count() != 0){
+            ui->widget->addGraph();
+            ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
+            ui->widget->addGraph();
+            QVector<double> X(vector.count() + 1), Y(vector.count() + 1);
+            for(double i = 0; i < vector.count() + 1; i++){
+                X[i] = vector[i].x;
+                Y[i] = vector[i].y;
+            }
+            ui->widget->xAxis2->setVisible(true);
+            ui->widget->yAxis2->setVisible(true);
+            connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
+            connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
+            ui->widget->graph(0)->setData(X, Y);
+            ui->widget->graph(0)->rescaleAxes(true);
+            ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes);
+        }
+    } catch(...){
+        qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
+    }
+
+
+}

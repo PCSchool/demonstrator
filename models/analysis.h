@@ -24,6 +24,9 @@ public:
     void addToVector(double x, double y);
     void addRecordingDirList(QString path);
     QList<QString> getRecordingList();
+    QVector<TimePointer> readFile(QString path);
+    QVector<TimePointer> readDir(QString path);
+    void convertMemcpy();
 
 private:
     QDir recordingDir;
@@ -32,7 +35,10 @@ private:
     QList<TimePointer> pointerList;
     QVector<double> Xaxis, yaxis;
     QList<QString> recordingPathList;
+
 signals:
+    void doneReadFile(QVector<TimePointer> vector);
+    void doneReadDir(QVector<TimePointer> vector);
 
 };
 
