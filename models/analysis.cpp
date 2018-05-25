@@ -1,5 +1,7 @@
 #include "analysis.h"
 #include <globals.h>
+#include <QDir>
+#include <QDirIterator>
 
 //constructor
 Analysis::Analysis()
@@ -48,15 +50,19 @@ QVector<TimePointer> Analysis::readDir(QString path){
         int next = 0;
         double x,y;
         char buffer[9];
-        if(!path < 1){
-            QDirIterator it(QDir(path), QDirIterator::NoIteratorFlags);
+        if(!path.length() < 1){
+            QDir dir(path);
+            QDirIterator it(recordingDir, QDirIterator::NoIteratorFlags);
+
             while(it.hasNext()) {
-                QFile file(it.next());
+                QString filename = it.next();
+                QFile file(filename.toLocal8Bit().constData());
                 file.open(QIODevice::ReadOnly);
                 while(!file.atEnd()){
                     file.read(buffer, 8);
                     QByteArray save(buffer, 8);
                     memcpy(&x, save, 8);
+                    std::cout << x << " - ";
                     int size = save.size();
                     QByteArray ss(buffer, 8);
                     if(save.size() == 8){
@@ -80,6 +86,7 @@ QVector<TimePointer> Analysis::readDir(QString path){
     } catch(...){
         qFatal("Error occured within method Analysis::readDir(QString path)");
     }
+    std::cout << endl << " final : " << vector.count();
     return vector;
 }
 

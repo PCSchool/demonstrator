@@ -30,7 +30,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>175</width>
+     <width>200</width>
      <height>50</height>
     </size>
    </property>
@@ -42,7 +42,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>130</y>
      <width>200</width>
      <height>50</height>
     </rect>
@@ -61,10 +61,16 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>190</y>
+     <y>250</y>
      <width>201</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>50</height>
+    </size>
    </property>
    <property name="text">
     <string>Read whole recording</string>
@@ -84,13 +90,50 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>190</y>
      <width>201</width>
      <height>51</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>50</height>
+    </size>
+   </property>
    <property name="text">
     <string>Read specific file</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>201</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Controls:</string>
    </property>
   </widget>
  </widget>

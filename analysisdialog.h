@@ -49,7 +49,6 @@ private:
     int xAxis;
     QThread* threadWriteBuffer;
     QThread* threadWriteFile;
-    void randomize();
     QDir dir;
     Ui::AnalysisDialog *ui;
 };

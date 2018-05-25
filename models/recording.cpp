@@ -55,10 +55,6 @@ void Recording::addRecording(QCustomPlot *plot, double frequency, double amplitu
     this->duration = duration;
 }
 
-/*Recording::Types Recording::getType(){
-    return type;
-}*/
-
 Recording::Types Recording::selectTypes(std::string _s){
     transform(_s.begin(), _s.end(), _s.begin(), ::toupper);
     if(_s == "LINE") return line;
