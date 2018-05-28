@@ -41,6 +41,8 @@ private slots:
 
     void on_btnReadSpecificFile_clicked();
 
+    void on_btnFilterRecording_clicked();
+
 private:
     //for testing data reading
     QBuffer qbuffer;

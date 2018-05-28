@@ -3,9 +3,10 @@
 #include <QTextStream>
 #include <QFile>
 #include <QProcess>
-#include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include <QDebug>
 
 AddNotesDialog::AddNotesDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,11 +32,16 @@ void AddNotesDialog::on_buttonBox_rejected()
 
 void AddNotesDialog::setFile(QString path){
     QFile file(path);
-    if(QFile(path).open(QIODevice::ReadOnly | QIODevice::Text)){
-        QTextStream in(&file);
-        while(!in.atEnd()){
-            QString line = in.readLine();
+    QString line;
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream stream(&file);
+        while(!stream.atEnd()){
+
+            qDebug(stream.readLine().toLocal8Bit().constData());
+            QString ss = stream.readLine().toLocal8Bit().constData();
+            ui->tbTextRead->setText(ui->tbTextRead->toPlainText()+ss+" ");
         }
+
     }
     file.close();
 }

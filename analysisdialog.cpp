@@ -14,6 +14,7 @@
 #include <windows.h>
 #include <QLibrary>
 #include <QDebug>
+#include <windows.h>
 
 using namespace std;
 
@@ -24,9 +25,6 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
     ui->setupUi(this);
     xAxis = 0;
     counter = 0;
-    int bufferSize = 1024;
-    QByteArray* array = new QByteArray[bufferSize];
-    qbuffer.setBuffer(array);
 }
 
 AnalysisDialog::~AnalysisDialog()
@@ -128,7 +126,6 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 
 void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
     ui->widget->clearGraphs();
-
     try{
         if(vector.count() != 0){
             ui->widget->addGraph();
@@ -151,5 +148,10 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
         qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
     }
 
+
+}
+
+void AnalysisDialog::on_btnFilterRecording_clicked()
+{
 
 }

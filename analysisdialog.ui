@@ -62,7 +62,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>400</y>
+      <y>460</y>
       <width>200</width>
       <height>50</height>
      </rect>
@@ -243,6 +243,30 @@
     </property>
     <property name="text">
      <string>Clear graph</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnFilterRecording">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>400</y>
+      <width>201</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>200</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Filter recording</string>
     </property>
    </widget>
   </widget>
