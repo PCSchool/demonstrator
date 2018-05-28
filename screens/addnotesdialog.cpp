@@ -33,15 +33,15 @@ void AddNotesDialog::on_buttonBox_rejected()
 void AddNotesDialog::setFile(QString path){
     QFile file(path);
     QString line;
+    QList<QString> list;
     if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
         QTextStream stream(&file);
-        while(!stream.atEnd()){
-
-            qDebug(stream.readLine().toLocal8Bit().constData());
-            QString ss = stream.readLine().toLocal8Bit().constData();
-            ui->tbTextRead->setText(ui->tbTextRead->toPlainText()+ss+" ");
-        }
-
+        list.append(stream.readAll());
     }
     file.close();
+
+    QListIterator<QString> it(list);
+    while(it.hasNext()){
+        ui->tbTextRead->setText(ui->tbTextRead->toPlainText()+it.next()+" ");
+    }
 }
