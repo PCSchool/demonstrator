@@ -79,26 +79,6 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
                 QByteArray sss(buffer, 8);
             }
             file.close();
-            /*if(fp != NULL){
-                int read = 0;
-                while((read = fread(buffer, 1, 8, fp)) > 0){
-                    QByteArray saveBytes(buffer, 8);
-                    if(saveBytes.size() == 8){
-                        if(next == 1){
-                            memcpy(&y, saveBytes, 8);
-                            TimePointer tp;
-                            tp.x = x;
-                            tp.y = y;
-                            xyList.append(tp);
-                            next = 0;
-                        }else{
-                            memcpy(&x, saveBytes, 8);
-                            next++;
-                        }
-                    }
-                }
-                fclose(fp);
-            }*/
         }
     }
     /*for (auto const& i : xyList){

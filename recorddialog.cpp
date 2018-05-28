@@ -78,6 +78,7 @@ RecordDialog::~RecordDialog()
 void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
+        ui->btnChangeSettings->setEnabled(false);
         ui->widget->clearGraphs();
 
         running = true;
@@ -165,6 +166,7 @@ void RecordDialog::on_btnStop_clicked()
         disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
         disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
         running = false;
+        ui->btnChangeSettings->setEnabled(true);
     }
 }
 

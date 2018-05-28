@@ -107,6 +107,14 @@ bool Patient::writeProfileToBinary(){
 }
 
 //getters / setters properties
+QString Patient::getPathNotes(){
+    return this->pathNotes;
+}
+
+QString Patient::getPathPersonalInfo(){
+    return this->pathPersonalInfo;
+}
+
 bool Patient::getPresent(){
     return present;
 }

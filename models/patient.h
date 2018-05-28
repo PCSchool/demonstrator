@@ -28,6 +28,8 @@ public:
     double getWeight();
     double getHeight();
     double getBMI();
+    QString getPathNotes();
+    QString getPathPersonalInfo();
 
 private:
     //methods

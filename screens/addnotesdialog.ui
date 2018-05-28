@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>382</width>
-    <height>179</height>
+    <height>267</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>130</y>
+     <x>170</x>
+     <y>220</y>
      <width>191</width>
      <height>41</height>
     </rect>
@@ -27,35 +27,6 @@
    </property>
    <property name="standardButtons">
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QDialogButtonBox" name="buttonBox_2">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>150</y>
-     <width>341</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnOpenNotes">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>91</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Open notes</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -76,13 +47,23 @@
     <string>Add text to notes of patient</string>
    </property>
   </widget>
+  <widget class="QTextEdit" name="tbTextRead">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>30</y>
+     <width>351</width>
+     <height>131</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="tbText">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>30</y>
+     <x>10</x>
+     <y>170</y>
      <width>351</width>
-     <height>101</height>
+     <height>41</height>
     </rect>
    </property>
   </widget>

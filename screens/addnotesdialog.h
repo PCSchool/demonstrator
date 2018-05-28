@@ -2,6 +2,7 @@
 #define ADDNOTESDIALOG_H
 
 #include <QDialog>
+#include <QFile>
 
 namespace Ui {
 class AddNotesDialog;
@@ -14,12 +15,11 @@ class AddNotesDialog : public QDialog
 public:
     explicit AddNotesDialog(QWidget *parent = 0);
     ~AddNotesDialog();
-
+    void setFile(QString path);
+    QFile file;
 private slots:
     void on_buttonBox_accepted();
     void on_buttonBox_rejected();
-
-    void on_btnOpenNotes_clicked();
 
 signals:
     void textToNotes(QString text);
@@ -27,6 +27,7 @@ signals:
 
 private:
     Ui::AddNotesDialog *ui;
+
 };
 
 #endif // ADDNOTESDIALOG_H

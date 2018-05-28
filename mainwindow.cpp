@@ -112,21 +112,20 @@ QDir MainWindow::getHomeDirectory(){
     return system->getDir();
 }
 
+//open directory of current selectedPatient
 void MainWindow::on_btnSelectDirPatient_clicked(){
-    std::string path = system->selectedPatient->getRecordingDir().path().toLocal8Bit().constData();
-    std::cout << path;
-    std::ifstream fin(path, ios::out | ios::binary);
-    if(!fin.is_open()){
-        cout << "opening file failed " << endl;
-    }else{
-        cout << "opening file succes " << endl;
-    }
+    const QString path =  QFileDialog::getOpenFileName(
+                    this,
+                    "Open Document",
+                    system->selectedPatient->userDir.path(),
+                    "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)");
 }
 
 void MainWindow::on_btnnAddNotes_clicked(){
     if(!system->selectedPatient->getName().isNull()){
         AddNotesDialog* addNoteDialog = new AddNotesDialog(this);
         connect(addNoteDialog, SIGNAL(textToNotes(QString)), this, SLOT(addTextToNotes(QString)));
+        addNoteDialog->setFile(system->selectedPatient->getPathNotes());
         addNoteDialog->setModal(true);
         addNoteDialog->exec();
     }
