@@ -67,7 +67,9 @@ HEADERS += \
     globals.h \
     screens/addnotesdialog.h \
     models/binarypatient.h \
-    models/analysis.h
+    models/analysis.h \
+    exceptions/exceptionemptyform.h \
+    exceptions/exceptionfilenotfound.h
 
 FORMS += \
         mainwindow.ui \

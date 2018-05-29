@@ -7,6 +7,7 @@
 #include <models/User.h>
 #include <models/patient.h>
 #include <screens/userdialog.h>
+#include <globals.h>
 
 namespace Ui {
 class UserDialog;
@@ -18,11 +19,10 @@ class UserDialog : public QDialog
 
 public:
     //enum
-    enum controlType{email, number, names, zipcodes, phone, housenr};
+
     //constructor
     explicit UserDialog(QWidget *parent = 0);
     ~UserDialog();
-    bool validation(QString control, controlType type);
     bool fileFull;
 
 signals:

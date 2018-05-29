@@ -4,6 +4,7 @@
 #include <time.h>
 #include <cstdio>
 #include <models/binarypatient.h>
+#include <exceptions/exceptionemptyform.h>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
         }
     }else{
         QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
-        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email)); //QString::number(id)));
+        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
         QString fixpath = QString(dir.path() + "/info.dat");
         pathPersonalInfo = fixpath;
         fixpath = QString(dir.path()) + "/notes.txt";
@@ -29,6 +30,79 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
         this->userDir = dir;
         this->recordingDir = QString(dir.path()) + "/recordings/";
     }
+}
+
+bool Patient::validationFormCheck(QString control, controlType type){
+    // 1. control if QString is not empty
+    if(control.length() < 1 || control.isNull()){
+        throw ExceptionEmptyForm();
+    }
+
+    // 2. control if QString contains all necessary characters
+    switch (type) {
+    case controlType::housenr:   //example 135a, 14b, 123c, last letter is allowed to be char
+    {
+        for(int i = 0; i < control.length() -1; i++){
+            if(!control[i].isDigit()){
+                return false;
+            }
+        }
+        //if(control[control.length() - 1].isLetter()){
+        //    return false;
+        //}
+        break;
+    }
+        break;
+    case controlType::email:  //must contain @ and one or more .
+    {
+        QRegExp re("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+");
+        if(re.exactMatch(control)){
+            return true;
+        }else{
+            return false;
+        }
+        break;
+    }
+    case controlType::names:  //only non-digit characters included _ wi
+    {
+        QRegExp re("[A-Za-z ]*$");
+        if(!re.exactMatch(control)){    //when control doesnt match with
+            return false;
+        }
+        break;
+    }
+    case controlType::number:     //only digit characters are allowed
+    {
+        for(int i = 0; i < control.length(); i++){
+            if(!control[i].isDigit()){
+                return false;
+            }
+        }
+        break;
+    }
+    case controlType::phone:     //only digit characters are allowed + length = 10
+    {
+        if(control.length() < 10){
+            return false;
+        }
+        for(int i = 0; i < control.length(); i++){
+            if(!control[i].isDigit()){
+                return false;
+            }
+        }
+        break;
+    }
+    case controlType::zipcodes:     //first four digits, followed by two char
+    {
+        if(!control.length() == 6 && !control[0].isDigit() && !control[1].isDigit() && !control[2].isDigit()
+                && !control[3].isDigit() && !control[4].isLetter() && !control[5].isLetter())
+            return false;
+        break;
+    }
+    default:
+        break;
+    }
+    return true;
 }
 
 /*  persoon weight 90 kg and length 173 cm -> Qi de queteletiindex (in kg/m2), m massa in kg, h lengte persoon in m ==  Qi = m /h2

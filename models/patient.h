@@ -6,6 +6,7 @@
 #include <QFile>
 #include <models/recording.h>
 #include <vector>
+#include <globals.h>
 
 class Patient : public User
 {
@@ -18,6 +19,9 @@ public:
     void changeProfile(QString newInfo, QString variable);
     void writeToNote(QString addToNote);
     bool writeProfileToBinary();
+
+    //enum controlType{email, number, names, zipcodes, phone, housenr};
+    static bool validationFormCheck(QString control, controlType type);
 
     QString pathNotes;
     QString pathPersonalInfo;
@@ -42,9 +46,10 @@ private:
     double height;
     double bmi;
     QDir directory;
-
     bool present;
-    std::map<Recording, int> recordings;
+
+signals:
+    emptyFormError(QString error);
 };
 
 #endif // PATIENT_H

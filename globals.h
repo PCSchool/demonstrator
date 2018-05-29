@@ -26,6 +26,7 @@ const QString sensorDefault = "HEARTRATE";
 
 extern char buffer[bufferSize];
 
+enum controlType{email, number, names, zipcodes, phone, housenr};
 
 #pragma pack(push, 1);
 typedef struct TimePointer{   //extern or typedef
