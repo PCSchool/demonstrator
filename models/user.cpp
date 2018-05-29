@@ -14,7 +14,7 @@ User::User(){
 //constructor 2
 User::User(int id, QString email){
     this->id = id;
-    this->name = email;
+    this->email = email;
 }
 
 //constructor 3
@@ -33,12 +33,6 @@ User::User(int id, QString email, char gender, QString street, QString housenr, 
 //getters / setters for properties
 int User::getId() {
     return id;
-}
-QDir User::getUserDir(){
-    return userDir;
-}
-QDir User::getRecordingDir(){
-    return recordingDir;
 }
 
 QString User::getName() {

@@ -32,6 +32,13 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
     }
 }
 
+QDir Patient::getUserDir(){
+    return userDir;
+}
+QDir Patient::getRecordingDir(){
+    return recordingDir;
+}
+
 bool Patient::validationFormCheck(QString control, controlType type){
     // 1. control if QString is not empty
     if(control.length() < 1 || control.isNull()){
@@ -94,9 +101,20 @@ bool Patient::validationFormCheck(QString control, controlType type){
     }
     case controlType::zipcodes:     //first four digits, followed by two char
     {
-        if(!control.length() == 6 && !control[0].isDigit() && !control[1].isDigit() && !control[2].isDigit()
-                && !control[3].isDigit() && !control[4].isLetter() && !control[5].isLetter())
+        if(control.length() == 6){
+            for(int i = 0; i < 4; i++){
+                if(!control[i].isDigit()){
+                    return false;
+                }
+            }
+            for(int z = 4; z < 6; z++){
+                if(!control[z].isLetter()){
+                    return false;
+                }
+            }
+        }else{
             return false;
+        }
         break;
     }
     default:

@@ -25,6 +25,8 @@ public:
 
     QString pathNotes;
     QString pathPersonalInfo;
+    QDir userDir;
+    QDir recordingDir;
 
     //getters / setters
     bool getPresent();
@@ -34,6 +36,8 @@ public:
     double getBMI();
     QString getPathNotes();
     QString getPathPersonalInfo();
+    QDir getUserDir();
+    QDir getRecordingDir();
 
 private:
     //methods

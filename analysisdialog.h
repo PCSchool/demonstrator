@@ -8,6 +8,7 @@
 #include <models/analysis.h>
 #include <qdatastream.h>
 #include <QDataStream>
+#include <models/graph.h>
 
 namespace Ui {
 class AnalysisDialog;
@@ -26,6 +27,7 @@ public:
     void setDir(QDir dir);
     friend QDataStream &operator<<(QDataStream &out,const TimePointer &tp);
     friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
+    Graph graph;
 
 signals:
 

@@ -18,13 +18,10 @@ public:
 
     //fields
     int id;
-    QDir userDir;
-    QDir recordingDir;
+
 
     //getters / setters
     int getId();
-    QDir getUserDir();
-    QDir getRecordingDir();
     QString getName();
     QString getGender();
     QString getStreet();

@@ -44,7 +44,8 @@ SOURCES += \
     models/exporting.cpp \
     binaryreader.cpp \
     screens/addnotesdialog.cpp \
-    models/analysis.cpp
+    models/analysis.cpp \
+    models/graph.cpp
 
 HEADERS += \
     screens/creategraphdialog.h \
@@ -69,7 +70,8 @@ HEADERS += \
     models/binarypatient.h \
     models/analysis.h \
     exceptions/exceptionemptyform.h \
-    exceptions/exceptionfilenotfound.h
+    exceptions/exceptionfilenotfound.h \
+    models/graph.h
 
 FORMS += \
         mainwindow.ui \

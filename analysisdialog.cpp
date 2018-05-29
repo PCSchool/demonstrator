@@ -15,6 +15,7 @@
 #include <QLibrary>
 #include <QDebug>
 #include <windows.h>
+#include <models/graph.h>
 
 using namespace std;
 
@@ -68,6 +69,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
                         TimePointer tp;
                         tp.x = x;
                         tp.y = y;
+                        //graph.addPoints(tp);
                         xyList.append(tp);
                     }else{
                         memcpy(&y, save, 8);
