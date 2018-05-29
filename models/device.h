@@ -12,6 +12,7 @@ public:
     Device(QString name, QString location);
 
     //methods
+    static bool validationCheckExists(QString path);
 
     //getters / setters
     void setActive(bool activity);

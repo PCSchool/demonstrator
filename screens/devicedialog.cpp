@@ -19,12 +19,32 @@ DeviceDialog::~DeviceDialog()
 
 void DeviceDialog::on_btnAddDevice_clicked()
 {
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()));
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                path, QFileDialog::ShowDirsOnly);
-    Device device("dummy", dir);
-    emit setSelectedDevice(device);
-    ui->lblTest->setText(dir);
+                                                QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()))
+                                                    , QFileDialog::ShowDirsOnly);
+    QMessageBox messageBox;
+    messageBox.setFixedSize(500,200);
+    messageBox.warning(0, "Error", "There already exists a device with this name.");
+    bool ok;
+    QString text = "";
+    while(text == ""){
+        text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                                     tr("Device name:"), QLineEdit::Normal,
+                                                     QDir::home().dirName(), &ok);
+        if(!ok){
+            break;
+        }
+    }
+
+    if(ok && !text.isEmpty()){
+        if(!Device::validationCheckExists(text)){
+            Device device(text, dir);
+            emit setSelectedDevice(device);
+            ui->lblTest->setText(text + " - " + dir);
+        }else{
+            messageBox.show();
+        }
+    }
 }
 
 void DeviceDialog::on_btnContinue_clicked()

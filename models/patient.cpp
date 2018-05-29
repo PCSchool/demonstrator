@@ -153,10 +153,7 @@ void Patient::changeProfile(QString newInfo, QString variable){
 //create directory must be in user due to possible changes to the id
 //return true when directory already exists, return false if directory is succesfully created
 bool Patient::createDirectory(){
-    QString ss = "afdadsfa";
-
     QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email)); //QString::number(id)
-
     //create directory for user/patient
     dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));//QString::number(id)));
     //create directory for recordings

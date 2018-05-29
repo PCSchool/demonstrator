@@ -24,6 +24,9 @@ const int intervalDefault = 15;
 const QString graphDefault = "LINE";
 const QString sensorDefault = "HEARTRATE";
 
+const QString pathDevices = "/SignalSleepDemonstrator/devices/";
+const QString pathPatient = "/SignalSleepDemonstrator/patients/";
+
 extern char buffer[bufferSize];
 
 enum controlType{email, number, names, zipcodes, phone, housenr};
