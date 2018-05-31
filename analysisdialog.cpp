@@ -14,8 +14,8 @@
 #include <windows.h>
 #include <QLibrary>
 #include <QDebug>
-#include <windows.h>
 #include <models/graph.h>
+#include <exceptions/exceptioninvalidparameters.h>
 
 using namespace std;
 
@@ -128,11 +128,9 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 }
 
 void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
-    if(vector.isEmpty()){
-
-    }
-    ui->widget->clearGraphs();
     try{
+        ui->widget->clearGraphs();
+
         if(vector.count() != 0){
             ui->widget->addGraph();
             ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
@@ -150,11 +148,12 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
             ui->widget->graph(0)->rescaleAxes(true);
             ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes);
         }
-    } catch(...){
-        qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
-    }
-
-
+     }catch(ExceptionInvalidParameters ){
+            QMessageBox messageBox;
+            messageBox.setFixedSize(500,200);
+            messageBox.information(0, "ExceptionInvalidParameters", "The selected directory or file doesnt contain any content usable for the Sleep signal demonstrator.");
+            messageBox.show();
+      };
 }
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
