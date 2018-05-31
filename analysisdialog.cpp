@@ -158,5 +158,23 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
 {
+    int selectedPass = ui->cbPass->currentIndex();
+    //int selectedFilter = ui->cbFilter->currentIndex();
+    ui->btnFilterRecording->setText(QString::number(selectedPass));
+
+    QVector<TimePointer> tptp = analysis.readFile(QFileDialog::getOpenFileName(
+                                                                this,
+                                                                "Open Document",
+                                                                dir.path(),
+                                                                "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)"));
+    if(selectedPass == 0){  //low pass
+         drawGraph(analysis.castToLowPass(tptp));
+    }else if(selectedPass == 1){  //high pass
+        drawGraph(analysis.castToHighPass(tptp));
+    }else if(selectedPass == 2){  //band pass
+
+    }else if(selectedPass = 3){ // band stop
+
+    }
 
 }
