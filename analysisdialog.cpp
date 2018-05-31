@@ -81,10 +81,11 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
             file.close();
         }
     }
-    /*for (auto const& i : xyList){
-        std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
-    }*/
-
+    if(ui->rbtnPrintResults->isChecked()){
+        for (auto const& i : xyList){
+            std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
+        }
+    }
     tpList = xyList;
 }
 
@@ -127,6 +128,9 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 }
 
 void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
+    if(vector.isEmpty()){
+
+    }
     ui->widget->clearGraphs();
     try{
         if(vector.count() != 0){
