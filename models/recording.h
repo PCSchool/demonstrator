@@ -20,6 +20,8 @@ class Recording{
     void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
     void changePosition(int x, int y);
     void changeSize(int width, int height);
+    QString convertSensor(Sensors _s);
+    QString convertGraphType(Types _s);
 
     //getters
     int getYAxisMax();

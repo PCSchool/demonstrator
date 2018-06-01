@@ -52,7 +52,6 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     QFile file(pathnow);
     file.open(QIODevice::WriteOnly | QIODevice::Append);
     QDataStream out(&file);
-    std::cout << " coook " << file.size();
     sizeFile = file.size();
     out.setVersion(QDataStream::Qt_5_10);
     out.setByteOrder(QDataStream::LittleEndian);
@@ -60,7 +59,8 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
     for(int i = 0; i < vector.count(); ++i){
         out << (double)vector[i].x;
         out << (double)vector[i].y;
-     }
+    }
+
     file.close();
     LeaveCriticalSection(&shared_buffer_lock);
 

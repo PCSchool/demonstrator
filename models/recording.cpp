@@ -1,6 +1,12 @@
+
 #include "recording.h"
 #include <stdexcept>
 #include <qcustomplot.h>
+
+#include "recording.h"
+#include <stdexcept>
+#include <QDateTime>
+#include <Exceptions/exceptioninvalidenumtype.h>
 
 //default constructor;
 Recording::Recording()
@@ -64,10 +70,10 @@ void Recording::setProperties(double frequency, double amplitude, int yAxisMax, 
 Recording::Types Recording::selectTypes(std::string _s){
     transform(_s.begin(), _s.end(), _s.begin(), ::toupper);
     if(_s == "LINE") return line;
-    else if(_s == "BARGRAPH") return bar;
+    else if(_s == "BAR") return bar;
     else if(_s == "HISTOGRAM") return histogram;
     else if(_s == "SCATTERPLOT") return scatter;
-    throw std::range_error("Not a valid Types value: " + _s);
+    throw ExceptionInvalidEnumType();
     return invalidtype;
 }
 
@@ -78,7 +84,27 @@ Recording::Sensors Recording::selectSensor(std::string _s){
     else if(_s == "MICROPHONE") return microphone;
     else if(_s == "SKINTEMPERATURE") return skintemperature;
     else if(_s == "LIGHTSENSOR") return lightsensor;
+    throw ExceptionInvalidEnumType();
     return invalidsensor;
+}
+
+QString Recording::convertSensor(Sensors _s){
+    if(_s == Recording::heartrate) return "HEARTRATE";
+    else if(_s == Recording::accelerometer) return "ACCELEROMETER";
+    else if(_s == Recording::microphone) return "MICROPHONE";
+    else if(_s == Recording::skintemperature) return "SKINTEMPERATURE";
+    else if(_s == Recording::lightsensor) return "LIGHTSENSOR";
+    else if(_s == Recording::invalidsensor) return "INVALIDSENSOR";
+    return "";
+}
+
+QString Recording::convertGraphType(Types _s){
+    if(_s == Recording::line) return "LINE";
+    else if(_s == Recording::bar) return "BAR";
+    else if(_s == Recording::histogram) return "HISTOGRAM";
+    else if(_s == Recording::scatter) return "SCATTERPLOT";
+    else if(_s == Recording::invalidtype) return "INVALIDTYPE";
+    return "";
 }
 
 double Recording::getFrequency(){
@@ -115,4 +141,3 @@ QString Recording::getSensor(){
 int Recording::getInterval(){
     return this->interval;
 }
-

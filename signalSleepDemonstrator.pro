@@ -73,7 +73,6 @@ HEADERS += \
     mainwindow.h \
     qcustomplot.h \
     recorddialog.h \
-    analysisdialog.h \
     screens/addnotesdialog.h \
     screens/creategraphdialog.h \
     screens/devicedialog.h \

@@ -6,7 +6,7 @@
 #include <screens/exportdialog.h>
 #include <screens/devicedialog.h>
 #include <screens/addnotesdialog.h>
-#include <screens/analysisdialog.h>
+#include <analysisdialog.h>
 #include <iostream>
 #include <fstream>
 #include <exception>
@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->gbInfoPatient->setVisible(false);
     system = new System();
-    system->loadCrypt32();
 }
 
 MainWindow::~MainWindow()
@@ -105,7 +104,7 @@ void MainWindow::on_btnOpenExportDialog_clicked()
 }
 
 void MainWindow::deviceSelected(Device device){
-    system->setSelectedDevice(device);
+    system->setDevice(device);
 }
 
 QDir MainWindow::getHomeDirectory(){

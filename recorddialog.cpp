@@ -1,5 +1,9 @@
 #include "recorddialog.h"
+<<<<<<< HEAD
 #include "ui_recorddialog.h";
+=======
+#include "ui_recorddialog.h"
+>>>>>>> master
 #include <binarywriter.h>
 #include <stdio.h>
 #include <iostream>

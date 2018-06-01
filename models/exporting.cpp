@@ -1,6 +1,7 @@
 #include "exporting.h"
 #include <QDir>
 #include <QDirIterator>
+#include <Exceptions/exceptioninvalidparameters.h>
 
 //constructors
 Exporting::Exporting(QObject *parent) : QObject(parent)
@@ -10,6 +11,9 @@ Exporting::Exporting(QObject *parent) : QObject(parent)
 
 //methods
 void Exporting::cleanUserDir(QString newdir, QString path){
+    if(newdir.isEmpty() || path.isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
     std::string x = path.toLocal8Bit().constData();
     std::size_t _s = x.find_last_of("/\\");
     int id = atoi(x.substr(_s+1).c_str());
@@ -37,6 +41,9 @@ void Exporting::cleanListbox(){
 }
 
 void Exporting::cleanExportDir(QString newdir, QString path){
+    if(newdir.isEmpty() || path.isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
     std::string x = path.toLocal8Bit().constData();
     std::size_t _s = x.find_last_of("/\\");
     QDir exportDir(newdir+ "/" + QString(x.substr(_s+1).c_str()));
@@ -49,10 +56,16 @@ void Exporting::cleanExportDir(QString newdir, QString path){
 
 //getters/setters
 void Exporting::setUserDir(QDir dir){
+    if(dir.path().isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
     this->userDir = dir;
 }
 
 void Exporting::setExportDir(QDir dir){
+    if(dir.path().isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
     this->exportDir = dir;
 }
 

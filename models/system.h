@@ -22,19 +22,16 @@ public:
     void addDevice(Device device);
     QLinkedList<Device> getDevices();
     void removeDevice(Device device);
-    void loadCrypt32();
 
     //getters / setters for properties
     QDir getDir();
     void setDir(QString path);
     Patient* getPatient();
     void setPatient(Patient* patient);
-    Device getSelectedDevice();
-    void setSelectedDevice(const Device device);
+    Device getDevice();
+    void setDevice(const Device device);
     QDir getPatientDir();
     void setPatientDir(QDir dir);
-
-
 
 public slots:
     void removePatient(QString path);

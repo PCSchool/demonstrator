@@ -6,6 +6,10 @@
 #include <string>
 #include <QDir>
 #include <QStandardPaths>
+<<<<<<< HEAD
+=======
+#include <exceptions/exceptioninvalidparameters.h>
+>>>>>>> master
 
 //constructor 1 default
 User::User(){
@@ -19,6 +23,12 @@ User::User(int id, QString email){
 
 //constructor 3
 User::User(int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date){
+    if(id < 0 || homePhone < 0){
+        throw ExceptionInvalidParameters();
+    }
+    if(email.isEmpty() || street.isEmpty() || housenr.isEmpty() || zipcode.isEmpty() || name.isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
     this->id = id;
     this->name = name;
     this->gender = gender;

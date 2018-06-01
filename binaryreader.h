@@ -47,7 +47,6 @@ public slots:
 private slots:
 
 private:
-
     QFile file;
     QBuffer qbuffer;
     QByteArray qarray;

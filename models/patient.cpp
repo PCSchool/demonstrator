@@ -5,11 +5,19 @@
 #include <cstdio>
 #include <models/binarypatient.h>
 #include <exceptions/exceptionemptyform.h>
+#include <exceptions/exceptioninvalidparameters.h>
 
 using namespace std;
 
+Patient::Patient(){  //default constructor
+}
+
 //constructor - for new patients
 Patient::Patient(bool exist, int id, QString email, char gender, QString street, QString housenr, QString zipcode, int homePhone, QString name, QDate date, double weight, double height) : User(id, email, gender, street, housenr, zipcode, homePhone, name, date){
+    if(email.isEmpty() || street.isEmpty() || street.isEmpty() || housenr.isEmpty() ||  housenr.isEmpty() ||  zipcode.isEmpty() ||  name.isEmpty() ||  weight < 0 || height < 0){
+        throw ExceptionInvalidParameters();
+    }
+
     this->weight = weight;
     this->height = height;    
     calculateBMI(weight, height);
@@ -62,7 +70,31 @@ bool Patient::validationFormCheck(QString control, controlType type){
         break;
     case controlType::email:  //must contain @ and one or more .
     {
-        QRegExp re("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+");
+        QRegExp re("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+.([a-zA-Z0-9_-])+");
+        char must = '.';
+        int maximumA = 0;
+        int maximumB = 0;
+        for(int i = 0; i < control.length() + 1; i++){
+
+            if(control[i].isSpace()){
+                control = control.remove(i, 1); //remove spaces
+            }
+            if(control[i] == '@'){
+                maximumA++; //  maximum 1 @ allowed
+            }
+            if(control[i] == '.'){
+               maximumB++; // maximum 4 . allowed
+            }
+        }
+
+        if(maximumA > 1 || maximumB > 4){
+            return false;
+        }
+
+        if(maximumA <= 0 || maximumB <=0){
+            return false;
+        }
+
         if(re.exactMatch(control)){
             return true;
         }else{
@@ -135,6 +167,10 @@ void Patient::calculateBMI(double weight, double height){
 void Patient::writeToNote(QString addToNote){
     //each patient owns simple .txt file within patients directory
     //write to .txt file in patients directory
+    if(addToNote.isEmpty()){
+        throw ExceptionInvalidParameters();
+    }
+
     time_t raw;
     time (&raw);
 

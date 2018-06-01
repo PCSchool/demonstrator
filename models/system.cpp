@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QDebug>
 #include <stdlib.h>
+#include <exceptions/exceptioninvalidparameters.h>
 #include <mainwindow.h>
 
 typedef int (__cdecl *MYPROC)(LPWSTR);
@@ -32,40 +33,20 @@ void System::addDevice(Device device){
 
 void System::removeDevice(Device device){
     QLinkedList<Device>::iterator i;
-    for (i = devices.begin(); i != devices.end(); i++){}
-
+    for(i = devices.begin(); i != devices.end(); i++){
+        if((*i).getName() == device.getName()){
+            i = devices.erase(i);
+        }
+    }
 }
 
 QLinkedList<Device> System::getDevices(){
     return this->devices;
 }
 
-//dynamically linke crypt32.dll --> doing this using Win32 API functions LoadLibrary + GetProcAddress
-void System::loadCrypt32(){
-    HINSTANCE hinstLib;
-    MYPROC procAdd;
-    BOOL fFreeResult, fRunTimeLinkSucces = FALSE;
-    //C:\Users\Onera\Documents\SignalSleepDemonstrator
-    hinstLib = LoadLibrary(TEXT("crypt32.dll"));
-    if (hinstLib != NULL){
-        procAdd = (MYPROC) GetProcAddress(hinstLib, "crypt32.dll");
-
-        if(procAdd != NULL){
-            fRunTimeLinkSucces = TRUE;
-            (procAdd) (L"Message sent to the DLL function\n");
-        }
-
-        fFreeResult = FreeLibrary(hinstLib);
-
-    }
-
-    if(! fRunTimeLinkSucces)
-        printf("Message printed from executable\n");
-}
-
-
 //getters / setters voor properties
 void System::setPatientDir(QDir dir){
+    if(dir.path().isEmpty()){ throw ExceptionInvalidParameters();}
     this->patientDir  = dir;
 }
 
@@ -77,6 +58,7 @@ QDir System::getDir(){
     return dir;
 }
 void System::setDir(const QString path){
+    if(path.isEmpty()){throw ExceptionInvalidParameters();}
     this->dir.setPath(path);
     hasDir = true;
 }
@@ -85,15 +67,16 @@ Patient* System::getPatient(){
     return selectedPatient;
 }
 void System::setPatient(Patient* patient){
+    if(patient->getEmail().isEmpty()){throw ExceptionInvalidParameters();}
     selectedPatient = patient;
     hasPatient = true;
 }
 
-Device System::getSelectedDevice(){
+Device System::getDevice(){
     return selectedDevice;
 }
 
-void System::setSelectedDevice(Device device){
+void System::setDevice(Device device){
     selectedDevice = device;
     hasDevice = true;
 }
@@ -103,10 +86,16 @@ void System::removePatient(QString path){
     if(hasPatient){
         if(selectedPatient->userDir.path() != path){
             removeDir.removeRecursively();
+    if(path.isEmpty()){throw ExceptionInvalidParameters();}
+
+    QDir removeDir(path);
+    if(hasPatient){
+        if(selectedPatient->userDir.path() != path){
+            //removeDir.removeRecursively();
         }else{
             std::cout << endl << "Error: cant remove current active patient.";
         }
     }else{
-        removeDir.removeRecursively();
+        //removeDir.removeRecursively();
     }
 }
