@@ -63,7 +63,7 @@
        </font>
       </property>
       <property name="text">
-       <string>frequency (hertz)</string>
+       <string>frequency (Hz)</string>
       </property>
      </widget>
     </item>
