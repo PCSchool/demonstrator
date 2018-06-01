@@ -1,6 +1,6 @@
 #include "addnotesdialog.h"
 #include "ui_addnotesdialog.h"
-<<<<<<< HEAD
+
 #include <QTextStream>
 #include <QFile>
 #include <QProcess>
@@ -8,8 +8,6 @@
 #include <sstream>
 #include <string>
 #include <QDebug>
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 
 AddNotesDialog::AddNotesDialog(QWidget *parent) :
     QDialog(parent),
@@ -22,7 +20,6 @@ AddNotesDialog::~AddNotesDialog()
 {
     delete ui;
 }
-<<<<<<< HEAD
 
 void AddNotesDialog::on_buttonBox_accepted()
 {
@@ -49,5 +46,3 @@ void AddNotesDialog::setFile(QString path){
         ui->tbTextRead->setText(ui->tbTextRead->toPlainText()+it.next()+" ");
     }
 }
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

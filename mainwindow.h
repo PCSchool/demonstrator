@@ -49,8 +49,6 @@ private:
     Patient *patient;
     System *system;
 
-private:
-    Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

@@ -1,18 +1,14 @@
 #include "exporting.h"
-<<<<<<< HEAD
 #include <QDir>
 #include <QDirIterator>
 #include <Exceptions/exceptioninvalidparameters.h>
 
 //constructors
-=======
 
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 Exporting::Exporting(QObject *parent) : QObject(parent)
 {
 
 }
-<<<<<<< HEAD
 
 //methods
 void Exporting::cleanUserDir(QString newdir, QString path){
@@ -83,5 +79,3 @@ QDir Exporting::getUserDir(){
 QDir Exporting::getExportDir(){
     return exportDir;
 }
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

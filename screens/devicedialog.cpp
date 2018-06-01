@@ -1,30 +1,23 @@
 #include "devicedialog.h"
 #include "ui_devicedialog.h"
-<<<<<<< HEAD
 #include <QFileDialog>
 #include <QStandardPaths>
-using namespace std;
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
+#include <QMessageBox>
 
-DeviceDialog::DeviceDialog(QWidget *parent) :
-    QDialog(parent),
+using namespace std;
+
+Ui::DeviceDialog::DeviceDialog(QWidget *parent) : QDialog(parent),
     ui(new Ui::DeviceDialog)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
-
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }
 
-DeviceDialog::~DeviceDialog()
+Ui::DeviceDialog::~DeviceDialog()
 {
     delete ui;
 }
-<<<<<<< HEAD
 
-void DeviceDialog::on_btnAddDevice_clicked()
+void Ui::DeviceDialog::on_btnAddDevice_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                 QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()))
@@ -47,21 +40,21 @@ void DeviceDialog::on_btnAddDevice_clicked()
         if(!Device::validationCheckExists(text)){
             Device device(text, dir);
             emit setSelectedDevice(device);
-            ui->lblTest->setText(text + " - " + dir);
         }else{
             messageBox.show();
         }
     }
 }
 
-void DeviceDialog::on_btnContinue_clicked()
-{
-
-}
-
-void DeviceDialog::on_btnCancel_clicked()
-{
+void Ui::DeviceDialog::on_btnContinue_clicked(){
     delete ui;
 }
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
+
+void Ui::DeviceDialog::on_btnCancel_clicked(){
+    delete ui;
+}
+
+void Ui::DeviceDialog::on_btnContinue_clicked()
+{
+
+}

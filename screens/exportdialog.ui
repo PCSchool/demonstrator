@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 <ui version="4.0">
  <class>ExportDialog</class>
  <widget class="QDialog" name="ExportDialog">
@@ -9,7 +6,6 @@
    <rect>
     <x>0</x>
     <y>0</y>
-<<<<<<< HEAD
     <width>693</width>
     <height>410</height>
    </rect>
@@ -207,16 +203,5 @@
     <string>select patient</string>
    </property>
   </widget>
-=======
-    <width>400</width>
-    <height>300</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
- </widget>
- <resources/>
- <connections/>
+  </widget>
 </ui>

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QDir>
+#include <QStandardPaths>
 
 class Device
 {

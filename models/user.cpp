@@ -1,5 +1,4 @@
 #include "user.h"
-<<<<<<< HEAD
 #include <qcustomplot.h>
 #include <iostream>
 #include <fstream>
@@ -75,10 +74,4 @@ QString User::getEmail(){
 }
 QDate User::getBirthDate(){
     return date;
-=======
-
-User::User(QObject *parent) : QObject(parent)
-{
-
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }

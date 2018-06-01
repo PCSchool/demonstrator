@@ -1,20 +1,15 @@
-<<<<<<< HEAD
-
 #include "recording.h"
 #include <stdexcept>
 #include <QDateTime>
 #include <Exceptions/exceptioninvalidenumtype.h>
 
 //default constructor;
-=======
 #include "recording.h"
 
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 Recording::Recording()
 {
 
 }
-<<<<<<< HEAD
 
 //constructor with parameters
 Recording::Recording(int width, int height, int x, int y){
@@ -143,7 +138,3 @@ QString Recording::getSensor(){
 int Recording::getInterval(){
     return this->interval;
 }
-
-
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

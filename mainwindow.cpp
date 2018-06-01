@@ -60,7 +60,7 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 {
     if(system->hasPatient){
         DeviceDialog* deviceDialog = new DeviceDialog(this);
-        connect(deviceDialog, SIGNAL(setSelectedDevice(Device)), this, SLOT(deviceSelected(Device)));
+        connect(deviceDialog, SIGNAL(setDevice(Device)), this, SLOT(deviceSelected(Device)));
         deviceDialog->setModal(true);
         deviceDialog->exec();
     }else{

@@ -52,8 +52,6 @@ private:
     QThread* threadWriteBuffer;
     Recording recording;
 
-private:
-    Ui::RecordDialog *ui;
 };
 
 #endif // RECORDDIALOG_H

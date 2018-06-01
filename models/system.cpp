@@ -1,5 +1,4 @@
 #include "system.h"
-<<<<<<< HEAD
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
@@ -98,10 +97,4 @@ void System::removePatient(QString path){
     }else{
         //removeDir.removeRecursively();
     }
-=======
-
-System::System()
-{
-
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /***************************************************************************
 **                                                                        **
 **  QCustomPlot, an easy to use, modern plotting widget for Qt            **
@@ -6660,17 +6660,3 @@ Q_DECLARE_METATYPE(QCPItemBracket::BracketStyle)
 
 
 #endif // QCUSTOMPLOT_H
-
-=======
-#ifndef QCUSTOMPLOT_H
-#define QCUSTOMPLOT_H
-
-
-class QCustomPlot
-{
-public:
-    QCustomPlot();
-};
-
-#endif // QCUSTOMPLOT_H
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
