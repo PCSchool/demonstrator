@@ -278,6 +278,21 @@
       <height>22</height>
      </rect>
     </property>
+    <item>
+     <property name="text">
+      <string>butterworth</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>bessel</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>chebyshev</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="cbPass">
     <property name="geometry">
