@@ -1,5 +1,6 @@
 #include "exportdialog.h"
 #include "ui_exportdialog.h"
+<<<<<<< HEAD
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <cstddef>
@@ -13,21 +14,27 @@
 #include <qmessagebox.h>
 
 using namespace std;
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 
 ExportDialog::ExportDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ExportDialog)
 {
     ui->setupUi(this);
+<<<<<<< HEAD
     exporting = new Exporting();
     connect(exporting, SIGNAL(updateReady(QDir, QDir)), this, SLOT(updateDialog(QDir,QDir)));
     connect(exporting, SIGNAL(readyToListBox(QStringList)), this, SLOT(updateListBox(QStringList)));
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }
 
 ExportDialog::~ExportDialog()
 {
     delete ui;
 }
+<<<<<<< HEAD
 
 //public slots
 void ExportDialog::updateDialog(QDir userDir, QDir exportDir){
@@ -86,3 +93,5 @@ void ExportDialog::prepare(QDir userPath, QDir exportPath){
     ui->lblPathFile->setText(userPath.path());
     ui->lblPathPatient->setText(exportPath.path());
 }
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

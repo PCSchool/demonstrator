@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 <ui version="4.0">
  <class>RecordDialog</class>
  <widget class="QDialog" name="RecordDialog">
@@ -6,6 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>1135</width>
     <height>608</height>
    </rect>
@@ -396,6 +400,16 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+=======
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+ </widget>
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
  <resources/>
  <connections/>
 </ui>

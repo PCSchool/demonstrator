@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>AnalysisDialog</class>
  <widget class="QDialog" name="AnalysisDialog">
+=======
+<ui version="4.0">
+ <class>AnalysisDialog</class>
+ <widget name="AnalysisDialog" class="QDialog">
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>1091</width>
     <height>604</height>
    </rect>
@@ -334,6 +341,16 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+=======
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+ </widget>
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
  <resources/>
  <connections/>
 </ui>

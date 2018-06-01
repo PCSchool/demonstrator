@@ -1,18 +1,30 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DeviceDialog</class>
  <widget class="QDialog" name="DeviceDialog">
+=======
+<ui version="4.0">
+ <class>DeviceDialog</class>
+ <widget name="DeviceDialog" class="QDialog">
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>491</width>
     <height>302</height>
+=======
+    <width>400</width>
+    <height>300</height>
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+<<<<<<< HEAD
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
@@ -184,6 +196,8 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
  </widget>
  <resources/>
  <connections/>

@@ -2,6 +2,7 @@
 #define RECORDDIALOG_H
 
 #include <QDialog>
+#include <QThread>
 #include <screens/creategraphdialog.h>
 #include <binarywriter.h>
 #include <QString>
@@ -50,6 +51,9 @@ private:
     bool running;
     QThread* threadWriteBuffer;
     Recording recording;
+
+private:
+    Ui::RecordDialog *ui;
 };
 
 #endif // RECORDDIALOG_H

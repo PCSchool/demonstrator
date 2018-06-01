@@ -1,11 +1,13 @@
 #ifndef EXPORTING_H
 #define EXPORTING_H
 
+
 #include <QDialog>
 #include <QDir>
 
-class Exporting : public QObject
-{
+#include <QObject>
+
+class Exporting : public QObject{
     Q_OBJECT
 public:
     //constructor

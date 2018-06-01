@@ -21,6 +21,7 @@ class AnalysisDialog : public QDialog
 public:
     explicit AnalysisDialog(QWidget *parent = 0);
     ~AnalysisDialog();
+
     Analysis analysis;
     double transfer(quint64 number);
     QList<TimePointer> tpList;
@@ -54,6 +55,8 @@ private:
     QThread* threadWriteBuffer;
     QThread* threadWriteFile;
     QDir dir;
+
+private:
     Ui::AnalysisDialog *ui;
 };
 

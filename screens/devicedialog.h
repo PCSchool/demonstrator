@@ -2,9 +2,12 @@
 #define DEVICEDIALOG_H
 
 #include <QDialog>
+<<<<<<< HEAD
 #include <models/device.h>
 #include <mainwindow.h>
 #include <models/system.h>
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 
 namespace Ui {
 class DeviceDialog;
@@ -18,6 +21,7 @@ public:
     explicit DeviceDialog(QWidget *parent = 0);
     ~DeviceDialog();
 
+<<<<<<< HEAD
 signals:
     void setSelectedDevice(Device d);
 
@@ -33,6 +37,9 @@ private slots:
 private:
     Device device;
     QDir dir; //directory of
+=======
+private:
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
     Ui::DeviceDialog *ui;
 };
 

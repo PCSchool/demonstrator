@@ -25,5 +25,3 @@ public:
 
 private:
 };
-
-#endif // PLOT_H

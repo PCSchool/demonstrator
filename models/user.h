@@ -1,7 +1,6 @@
 #ifndef USER_H
 #define USER_H
 
-#include <QDialog>
 #include <iostream>
 #include <string>
 #include <QDate>
@@ -18,7 +17,6 @@ public:
 
     //fields
     int id;
-
 
     //getters / setters
     int getId();
@@ -48,3 +46,4 @@ private:
 
 };
 #endif // USER_H
+

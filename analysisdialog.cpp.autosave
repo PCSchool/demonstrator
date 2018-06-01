@@ -1,6 +1,6 @@
 #include "analysisdialog.h"
 #include "ui_analysisdialog.h"
-<<<<<<< HEAD
+
 #include <QBuffer>
 #include <iostream>
 #include <fstream>
@@ -19,26 +19,20 @@
 #include <exceptions/exceptioninvalidparameters.h>
 
 using namespace std;
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 
 AnalysisDialog::AnalysisDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AnalysisDialog)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
     xAxis = 0;
     counter = 0;
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }
 
 AnalysisDialog::~AnalysisDialog()
 {
     delete ui;
 }
-<<<<<<< HEAD
 
 //read out binary file
 void AnalysisDialog::on_btnReadBinaryFile_clicked()
@@ -185,5 +179,3 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
     }
 
 }
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

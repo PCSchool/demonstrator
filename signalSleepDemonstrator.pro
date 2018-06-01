@@ -125,7 +125,8 @@ FORMS += \
     analysisdialog.ui \
     screens/addnotesdialog.ui
 
-DISTFILES += \
-    demonstratorSources.pri
+##DISTFILES += \
+##    demonstratorSources.pri
 
-include(../signalSleepDemonstrator/Other_files/demonstratorSources.pri)
+##include(../signalSleepDemonstrator/Other_files/demonstratorSources.pri)
+

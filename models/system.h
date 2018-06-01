@@ -1,7 +1,6 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <QObject>
 #include <models/patient.h>
 #include <models/device.h>
 #include <models/user.h>

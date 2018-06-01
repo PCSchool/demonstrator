@@ -1,5 +1,6 @@
 #include "plot.h"
 
+<<<<<<< HEAD
 Plot::Plot(QObject *parent)
     : QAbstractItemModel(parent)
 {
@@ -43,4 +44,9 @@ QVariant Plot::data(const QModelIndex &index, int role) const
 
     // FIXME: Implement me!
     return QVariant();
+=======
+Plot::Plot()
+{
+
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }

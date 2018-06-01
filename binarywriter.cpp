@@ -1,4 +1,5 @@
 #include "binarywriter.h"
+<<<<<<< HEAD
 #include <QFile>
 #include <iostream>
 #include <fstream>

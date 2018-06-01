@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /***************************************************************************
 **                                                                        **
 **  QCustomPlot, an easy to use, modern plotting widget for Qt            **
@@ -30119,3 +30120,11 @@ QPen QCPItemBracket::mainPen() const
 /* end of 'src/items/item-bracket.cpp' */
 
 
+=======
+#include "qcustomplot.h"
+
+QCustomPlot::QCustomPlot()
+{
+
+}
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

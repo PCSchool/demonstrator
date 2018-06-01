@@ -1,13 +1,18 @@
 #include "device.h"
+<<<<<<< HEAD
 #include <QStandardPaths>
 #include <globals.h>
 #include <exceptions/exceptioninvalidparameters.h>
 
 //default constructor
+=======
+
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 Device::Device()
 {
 
 }
+<<<<<<< HEAD
 
 //constructor with parameters
 Device::Device(QString name, QString location){
@@ -49,3 +54,5 @@ QDir Device::getDir(){
     return dir;
 }
 
+=======
+>>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3

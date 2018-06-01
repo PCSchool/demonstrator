@@ -1,6 +1,5 @@
 #include "recorddialog.h"
 #include "ui_recorddialog.h"
-<<<<<<< HEAD
 #include <binarywriter.h>
 #include <stdio.h>
 #include <iostream>
@@ -13,15 +12,12 @@
 using namespace std;
 
 CRITICAL_SECTION shared_buffer_lock;
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 
 RecordDialog::RecordDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RecordDialog)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
 
@@ -63,13 +59,10 @@ void RecordDialog::setProperties(double frequency, double amplitude, int yAxisMa
 void RecordDialog::setUserDir(QDir dir){
     userDir = recording.controlDir(dir);
     ui->lblTest->setText(userDir.path());
-=======
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
 }
 
 RecordDialog::~RecordDialog()
 {
-<<<<<<< HEAD
     //stop threads & wait for threads
     dataTimer->stop();
     writeBuffer->finished();   //  --> connected with thread to finish together
@@ -190,7 +183,3 @@ void RecordDialog::on_sbCounter_valueChanged(const QString &arg1)
 {
     int counterx = ui->sbCounter->value();
 }
-=======
-    delete ui;
-}
->>>>>>> 62ffced7a03b4bcf911f1b212369ade8808337d3
