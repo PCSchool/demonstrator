@@ -82,18 +82,11 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
             file.close();
         }
     }
-<<<<<<< HEAD
-    /*for (auto const& i : xyList){
-        std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
-    }*/
-
-=======
     if(ui->rbtnPrintResults->isChecked()){
         for (auto const& i : xyList){
             std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
         }
     }
->>>>>>> master
     tpList = xyList;
 }
 
@@ -136,14 +129,8 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 }
 
 void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
-<<<<<<< HEAD
-    ui->widget->clearGraphs();
-    try{
-=======
     try{
         ui->widget->clearGraphs();
-
->>>>>>> master
         if(vector.count() != 0){
             ui->widget->addGraph();
             ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
@@ -161,26 +148,16 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
             ui->widget->graph(0)->rescaleAxes(true);
             ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes);
         }
-<<<<<<< HEAD
-    } catch(...){
-        qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
-    }
-
-
-=======
      }catch(ExceptionInvalidParameters ){
             QMessageBox messageBox;
             messageBox.setFixedSize(500,200);
             messageBox.information(0, "ExceptionInvalidParameters", "The selected directory or file doesnt contain any content usable for the Sleep signal demonstrator.");
             messageBox.show();
       };
->>>>>>> master
 }
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
 {
-<<<<<<< HEAD
-=======
     int selectedPass = ui->cbPass->currentIndex();
     //int selectedFilter = ui->cbFilter->currentIndex();
     ui->btnFilterRecording->setText(QString::number(selectedPass));
@@ -199,6 +176,4 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
     }else if(selectedPass = 3){ // band stop
 
     }
->>>>>>> master
-
 }
