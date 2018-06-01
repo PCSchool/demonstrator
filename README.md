@@ -14,3 +14,12 @@
   <ul>Create the demonstrator with its basic functionality.</ul>
 </ol>
 <p>The Sleep Signal Demonstrator is a medical software application that serves as the prototype for the Sleep Signal Viewer and is capable to progress, filter, record and visualize the data it receives. The internship ends at 22 July 2018. </p>
+
+<h2>Use of digital processing filters</h2>
+<p>Within this project there is made use of digital processing filters. The digital processing filters classes are from the following Github project:</p>
+<ol>
+  <ul>Github link: <A HREF="https://github.com/vinniefalco/DSPFiltersDemo/tree/master/DSPFilters">DSPFilters</A></ul>
+  <ul>Source code is provided under: <A HREF="https://opensource.org/licenses/mit-license.php">MIT License</A></ul>
+</ol>
+
+<h6>The sleep signal demonstrator is a non-commercial project. No profit is made of it.</h6>
