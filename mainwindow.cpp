@@ -6,7 +6,7 @@
 #include <screens/exportdialog.h>
 #include <screens/devicedialog.h>
 #include <screens/addnotesdialog.h>
-#include <analysisdialog.h>
+#include <screens/analysisdialog.h>
 #include <iostream>
 #include <fstream>
 #include <exception>

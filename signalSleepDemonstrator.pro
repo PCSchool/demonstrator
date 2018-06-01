@@ -27,63 +27,106 @@ INCLUDEPATH += /usr/include/c++/5.10.0/
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    screens/userdialog.cpp \
-    screens/creategraphdialog.cpp \
-    models/user.cpp \
-    models/patient.cpp \
-    models/system.cpp \
-    models/device.cpp \
-    models/plot.cpp \
+    analysisdialog.cpp \
+    binaryreader.cpp \
+    binarywriter.cpp \
     qcustomplot.cpp \
     recorddialog.cpp \
-    binarywriter.cpp \
-    screens/exportdialog.cpp \
-    screens/devicedialog.cpp \
-    models/recording.cpp \
-    analysisdialog.cpp \
-    models/exporting.cpp \
-    binaryreader.cpp \
     screens/addnotesdialog.cpp \
+    screens/creategraphdialog.cpp \
+    screens/devicedialog.cpp \
+    screens/exportdialog.cpp \
+    screens/userdialog.cpp \
     models/analysis.cpp \
-    models/graph.cpp
+    models/device.cpp \
+    models/exporting.cpp \
+    models/graph.cpp \
+    models/patient.cpp \
+    models/plot.cpp \
+    models/recording.cpp \
+    models/system.cpp \
+    models/user.cpp \
+    dsp_filters/filters/Bessel.cpp \
+    dsp_filters/filters/Biquad.cpp \
+    dsp_filters/filters/Butterworth.cpp \
+    dsp_filters/filters/Cascade.cpp \
+    dsp_filters/filters/ChebyshevI.cpp \
+    dsp_filters/filters/ChebyshevII.cpp \
+    dsp_filters/filters/Custom.cpp \
+    dsp_filters/filters/Design.cpp \
+    dsp_filters/filters/Documentation.cpp \
+    dsp_filters/filters/Elliptic.cpp \
+    dsp_filters/filters/Filter.cpp \
+    dsp_filters/filters/Legendre.cpp \
+    dsp_filters/filters/Param.cpp \
+    dsp_filters/filters/PoleFilter.cpp \
+    dsp_filters/filters/RBJ.cpp \
+    dsp_filters/filters/RootFinder.cpp \
+    dsp_filters/filters/State.cpp \
+    dsp_filters/dsp_filters.cpp
 
 HEADERS += \
-    screens/creategraphdialog.h \
+    analysisdialog.h \
+    binaryreader.h \
+    binarywriter.h \
+    globals.h \
     mainwindow.h \
-    screens/userdialog.h \
-    models/user.h \
-    models/patient.h \
-    models/system.h \
-    models/device.h \
-    models/plot.h \
     qcustomplot.h \
     recorddialog.h \
-    binarywriter.h \
-    screens/exportdialog.h \
-    screens/devicedialog.h \
-    models/recording.h \
     analysisdialog.h \
-    models/exporting.h \
-    binaryreader.h \
-    globals.h \
     screens/addnotesdialog.h \
-    models/binarypatient.h \
+    screens/creategraphdialog.h \
+    screens/devicedialog.h \
+    screens/exportdialog.h \
+    screens/userdialog.h \
     models/analysis.h \
+    models/binarypatient.h \
+    models/device.h \
+    models/exporting.h \
+    models/graph.h \
+    models/patient.h \
+    models/plot.h \
+    models/recording.h \
+    models/system.h \
+    models/user.h \
     exceptions/exceptionemptyform.h \
     exceptions/exceptionfilenotfound.h \
-    models/graph.h
+    exceptions/exceptioninvalidenumtype.h \
+    exceptions/exceptioninvalidparameters.h \
+    dsp_filters/filters/Bessel.h \
+    dsp_filters/filters/Biquad.h \
+    dsp_filters/filters/Butterworth.h \
+    dsp_filters/filters/Cascade.h \
+    dsp_filters/filters/ChebyshevI.h \
+    dsp_filters/filters/ChebyshevII.h \
+    dsp_filters/filters/Custom.h \
+    dsp_filters/filters/Design.h \
+    dsp_filters/filters/Elliptic.h \
+    dsp_filters/filters/Filter.h \
+    dsp_filters/filters/Layout.h \
+    dsp_filters/filters/Legendre.h \
+    dsp_filters/filters/MathSupplement.h \
+    dsp_filters/filters/Params.h \
+    dsp_filters/filters/PoleFilter.h \
+    dsp_filters/filters/RBJ.h \
+    dsp_filters/filters/RootFinder.h \
+    dsp_filters/filters/SmoothedFilter.h \
+    dsp_filters/filters/State.h \
+    dsp_filters/filters/Types.h \
+    dsp_filters/filters/Utilities.h \
+    dsp_filters/dsp_filters.h
 
 FORMS += \
         mainwindow.ui \
-    screens/userdialog.ui \
-    screens/creategraphdialog.ui \
-    recorddialog.ui \
-    screens/exportdialog.ui \
-    screens/devicedialog.ui \
     analysisdialog.ui \
-    screens/addnotesdialog.ui
+    screens/addnotesdialog.ui \
+    screens/creategraphdialog.ui \
+    screens/devicedialog.ui \
+    screens/exportdialog.ui \
+    screens/userdialog.ui \
+    recorddialog.ui
 
-DISTFILES += \
-    demonstratorSources.pri
+#DISTFILES += \
+#    demonstratorSources.pri
 
-include(../signalSleepDemonstrator/Other_files/demonstratorSources.pri)
+#include(../signalSleepDemonstrator/Other_files/demonstratorSources.pri)

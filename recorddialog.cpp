@@ -1,5 +1,5 @@
 #include "recorddialog.h"
-#include "ui_recorddialog.h"
+#include "ui_recorddialog.h";
 #include <binarywriter.h>
 #include <stdio.h>
 #include <iostream>
