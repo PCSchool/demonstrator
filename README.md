@@ -3,7 +3,7 @@
 
 <p>The application the Sleep Signal Demonstrator is part of the assignment for the internship. The demonstrator is build within Qt(qt5), part of the assignment is to find out if Qt is qualified for the functionalities for the Sleep Signal Viewer.</p>
 <p>For the functionality, the demonstrator will be used to store, progress, analyze, visualize data and capable to convert the data stored into automatically generated reports.</p>
-<br/><p>If there is something to be remarked about the code, feel free to tell.</p>
+<br/><p>If there is something to be remarked about the code, feel free to message me about it.</p>
 
 <h2>Introduction internship</h2>
 <p>The internship took place from 4 February till 21 July 2018. This internship takes place into the sector Software Engineering, the program of the 4 year HBO program that I(sup :) conduct at the academy Fontys in Eindhoven, the Netherlands. The internship exist of two assignments: </p>
@@ -20,6 +20,11 @@
 <ol>
   <ul>Github link: <A HREF="https://github.com/vinniefalco/DSPFiltersDemo/tree/master/DSPFilters">DSPFilters</A></ul>
   <ul>Source code is provided under: <A HREF="https://opensource.org/licenses/mit-license.php">MIT License</A></ul>
+</ol>
+<p>The project made use of QCustomPlot, a C++ Qt Widget for plotting and data visualization.</p>
+<ol>
+  <ul>Official website QCustomPlot: <A HREF="www.qcustomplot.com/">QCustomPlot website</A></ul>
+  <ul>Official website Qt: <A HREF="https://www.qt.io/">Qt website</A></ul>
 </ol>
 
 <h6>The sleep signal demonstrator is a non-commercial project. No profit is made of it.</h6>
