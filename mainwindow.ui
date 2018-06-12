@@ -25,6 +25,12 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton:hover {color : rgb(123, 151, 240)}
+QPushButton:pressed {color : rgb(77, 110, 200)}
+
+</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -364,7 +370,7 @@
       <string>Directory patient</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btnnAddNotes">
+    <widget class="QPushButton" name="btnAddNotes">
      <property name="geometry">
       <rect>
        <x>120</x>

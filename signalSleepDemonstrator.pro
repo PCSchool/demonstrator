@@ -63,7 +63,8 @@ SOURCES += \
     dsp_filters/filters/RBJ.cpp \
     dsp_filters/filters/RootFinder.cpp \
     dsp_filters/filters/State.cpp \
-    dsp_filters/dsp_filters.cpp
+    dsp_filters/dsp_filters.cpp \
+    design/demonstratorstyle.cpp
 
 HEADERS += \
     analysisdialog.h \
@@ -73,6 +74,7 @@ HEADERS += \
     mainwindow.h \
     qcustomplot.h \
     recorddialog.h \
+    analysisdialog.h \
     screens/addnotesdialog.h \
     screens/creategraphdialog.h \
     screens/devicedialog.h \
@@ -113,7 +115,8 @@ HEADERS += \
     dsp_filters/filters/State.h \
     dsp_filters/filters/Types.h \
     dsp_filters/filters/Utilities.h \
-    dsp_filters/dsp_filters.h
+    dsp_filters/dsp_filters.h \
+    design/demonstratorstyle.h
 
 FORMS += \
         mainwindow.ui \
@@ -129,3 +132,7 @@ FORMS += \
 #    demonstratorSources.pri
 
 #include(../signalSleepDemonstrator/Other_files/demonstratorSources.pri)
+
+DISTFILES += \
+    F:/texture_1.png \
+    F:/texture_2.jpg

@@ -4,6 +4,8 @@
 #include <time.h>
 #include <cstdio>
 #include <models/binarypatient.h>
+#include <models/system.h>
+#include <globals.h>
 #include <exceptions/exceptionemptyform.h>
 #include <exceptions/exceptioninvalidparameters.h>
 
@@ -25,18 +27,20 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
     //create new directory for the patient, directory can be recognised with id, since no database connect
     //check if there is already a directory with the id
     if(!exist){
-        if(createDirectory()){
+        if(createPatientDirectory()){
 
         }
     }else{
-        QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
-        dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
-        QString fixpath = QString(dir.path() + "/info.dat");
-        pathPersonalInfo = fixpath;
-        fixpath = QString(dir.path()) + "/notes.txt";
-        pathNotes = fixpath;
-        this->userDir = dir;
-        this->recordingDir = QString(dir.path()) + "/recordings/";
+        QDir dir(QString(System::getHomeLocation("") + email));
+        if(System::checkDirectoryExists(dir.path())){
+            dir.mkpath(QString(pathPatient + email));
+            QString fixpath = QString(dir.path() + "/info.dat");
+            pathPersonalInfo = fixpath;
+            fixpath = QString(dir.path()) + "/notes.txt";
+            pathNotes = fixpath;
+            this->userDir = dir;
+            this->recordingDir = QString(dir.path()) + "/recordings/";
+        }
     }
 }
 
@@ -160,7 +164,6 @@ bool Patient::validationFormCheck(QString control, controlType type){
 void Patient::calculateBMI(double weight, double height){
     //formula bmi = weight(kg) / (height(cm) x height(m)
     bmi = weight / ((height/100) * (height/100));
-    std::cout << bmi;
 }
 
 //methods
@@ -188,28 +191,26 @@ void Patient::changeProfile(QString newInfo, QString variable){
 
 //create directory must be in user due to possible changes to the id
 //return true when directory already exists, return false if directory is succesfully created
-bool Patient::createDirectory(){
-    QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email)); //QString::number(id)
-    //create directory for user/patient
-    dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));//QString::number(id)));
-    //create directory for recordings
-    QDir dirRecordings(dir.path() + "/recordings");
-    dirRecordings.mkpath(dir.path() + "/recordings");
-    recordingDir.setPath(dir.path() + "/recordings");
+bool Patient::createPatientDirectory(){
+    QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients/" + email));
 
-    QString fixpath = QString(dir.path() + "/info.dat");
-    pathPersonalInfo = fixpath;
+    QString patientLocation = QString(System::getPatientLocation() + email);
+    if(System::createDirectory(patientLocation)){
 
-    //create notes.txt
-    fixpath = QString(dir.path()) + "/notes.txt";
-    std::ofstream fout2(fixpath.toLocal8Bit().constData(), std::ios::out);
-    fout2 << "notes: " << endl;
-    fout2.close();
+        recordingDir.setPath(patientLocation + "/recordings");
+        System::createDirectory(recordingDir.path());
 
-    pathNotes = fixpath;
-    this->userDir = dir;
+        pathPersonalInfo = QString(patientLocation + "/info.dat");
 
-    return false; //path doesnt exist
+        pathNotes = QString(patientLocation + "/notes.txt");
+        std::ofstream fout(pathNotes.toLocal8Bit().constData(), std::ios::out);
+        fout << "notes: " << endl;
+        fout.close();
+        this->userDir = QDir(patientLocation);
+
+        return true;
+    }
+    return false;
 }
 
 bool Patient::writeProfileToBinary(){

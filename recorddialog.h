@@ -25,16 +25,15 @@ public:
     void setUserDir(QDir dir);
     QDir userDir;
     static const QSemaphore semaphore;
-    double counter;
+    double counter, readySignal;
     QByteArray *shared_buffer;
-    int readySignal;
+    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
 
 signals:
     void writeNewData(double xAxis, double yAxis);
     void stopTimer();
 
 private slots:
-    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax,int xAxisMin, int interval, QString graph, QString sensor);
     void showContextMenu(const QPoint& pos);
     void realtimeDataSlot();
     void on_btnDummyGraph_clicked();

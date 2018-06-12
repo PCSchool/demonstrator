@@ -33,6 +33,13 @@ public:
     QDir getPatientDir();
     void setPatientDir(QDir dir);
 
+    //static methods for control directory
+    static bool createDirectory(QString path);
+    static bool checkDirectoryExists(QString path);
+    static QString getHomeLocation(QString path);
+    static QString getPatientLocation();
+    static QString getDeviceLocation();
+
 public slots:
     void removePatient(QString path);
 signals:

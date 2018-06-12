@@ -6,10 +6,7 @@
 #include <string>
 #include <QDir>
 #include <QStandardPaths>
-<<<<<<< HEAD
-=======
 #include <exceptions/exceptioninvalidparameters.h>
->>>>>>> master
 
 //constructor 1 default
 User::User(){

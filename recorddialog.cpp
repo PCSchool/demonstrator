@@ -1,9 +1,5 @@
 #include "recorddialog.h"
-<<<<<<< HEAD
 #include "ui_recorddialog.h";
-=======
-#include "ui_recorddialog.h"
->>>>>>> master
 #include <binarywriter.h>
 #include <stdio.h>
 #include <iostream>
@@ -52,6 +48,7 @@ void RecordDialog::showContextMenu(const QPoint& pos){
 
 void RecordDialog::setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor){
     recording.setProperties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, graph, sensor);
+    //connect(recording, SIGNAL(setProperties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, graph, sensor)), this, SLOT());
     this->ui->lblAmplitude->setText(QString::number(amplitude));
     this->ui->lblFrequency->setText(QString::number(frequency));
     this->ui->lblInterval->setText(QString::number(interval));

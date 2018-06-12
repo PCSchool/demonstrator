@@ -208,19 +208,6 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbtnPrintResults">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>191</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Print points</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnReadBinaryFile_2">
     <property name="geometry">
      <rect>
@@ -269,49 +256,23 @@
      <string>Filter recording</string>
     </property>
    </widget>
-
-   <widget class="QComboBox" name="cbFilter">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>201</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>butterworth</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>bessel</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>chebyshev</string>
-     </property>
-    </item>
-   </widget>
    <widget class="QComboBox" name="cbPass">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>100</y>
-      <width>201</width>
+      <y>50</y>
+      <width>151</width>
       <height>22</height>
      </rect>
     </property>
     <item>
      <property name="text">
-      <string>low-pass</string>
+      <string>high-pass</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>high-pass</string>
+      <string>low-pass</string>
      </property>
     </item>
     <item>
@@ -321,9 +282,29 @@
     </item>
     <item>
      <property name="text">
-      <string>band-stop</string>
+      <string>band-with-pass</string>
      </property>
     </item>
+   </widget>
+   <widget class="QComboBox" name="cbFilter">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>151</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>69</width>
+      <height>22</height>
+     </rect>
+    </property>
    </widget>
   </widget>
  </widget>

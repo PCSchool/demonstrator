@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QDebug>
 #include <stdlib.h>
+#include <globals.h>
 #include <exceptions/exceptioninvalidparameters.h>
 #include <mainwindow.h>
 
@@ -24,6 +25,36 @@ System::System()
     }
     this->setDir(path);
     this->setPatientDir(QDir(path + "/patients/"));
+}
+
+//static methods
+bool System::createDirectory(QString path){
+    if(!checkDirectoryExists(path)){
+        QDir thisDir = QDir(path);
+        thisDir.mkdir(path);
+        return true;
+    }
+    return false;
+}
+
+bool System::checkDirectoryExists(QString path){
+    QDir thisDir = QDir(path);
+    if(thisDir.exists()){
+       return true;
+    }
+    return false;
+}
+
+QString System::getHomeLocation(QString path){
+    return QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathHome);
+}
+
+QString System::getPatientLocation(){
+    return QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathPatient);
+}
+
+QString System::getDeviceLocation(){
+    return QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathDevices);
 }
 
 //methods
@@ -86,9 +117,11 @@ void System::removePatient(QString path){
     if(hasPatient){
         if(selectedPatient->userDir.path() != path){
             removeDir.removeRecursively();
+        }
+    }
     if(path.isEmpty()){throw ExceptionInvalidParameters();}
 
-    QDir removeDir(path);
+    removeDir = QDir(path);
     if(hasPatient){
         if(selectedPatient->userDir.path() != path){
             //removeDir.removeRecursively();

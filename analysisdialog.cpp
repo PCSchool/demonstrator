@@ -9,14 +9,16 @@
 #include <binarywriter.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <stdio.h>      //library crypt32 missing
+#include <stdio.h>
 #include <wincrypt.h>
 #include <windows.h>
 #include <QLibrary>
 #include <QDebug>
 #include <windows.h>
 #include <models/graph.h>
-#include <exceptions/exceptioninvalidparameters.h>
+#include <dsp_filters/dsp_filters.h>
+#include <dsp_filters/filters/ChebyshevI.h>
+#include <dsp_filters/filters/Filter.h>
 
 using namespace std;
 
@@ -82,11 +84,10 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
             file.close();
         }
     }
-    if(ui->rbtnPrintResults->isChecked()){
-        for (auto const& i : xyList){
-            std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
-        }
-    }
+    /*for (auto const& i : xyList){
+        std::cout << endl << " TimePointer: (" << i.x << "," << i.y << ")";
+    }*/
+
     tpList = xyList;
 }
 
@@ -129,8 +130,8 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 }
 
 void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
+    ui->widget->clearGraphs();
     try{
-        ui->widget->clearGraphs();
         if(vector.count() != 0){
             ui->widget->addGraph();
             ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
@@ -148,31 +149,44 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
             ui->widget->graph(0)->rescaleAxes(true);
             ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes);
         }
-     }catch(ExceptionInvalidParameters ){
-            QMessageBox messageBox;
-            messageBox.setFixedSize(500,200);
-            messageBox.information(0, "ExceptionInvalidParameters", "The selected directory or file doesnt contain any content usable for the Sleep signal demonstrator.");
-            messageBox.show();
-      };
+    } catch(...){
+        qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
+    }
+
+
 }
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
 {
-    int selectedPass = ui->cbPass->currentIndex();
+    int selectedPass = 0;
     //int selectedFilter = ui->cbFilter->currentIndex();
+
     ui->btnFilterRecording->setText(QString::number(selectedPass));
 
-    QVector<TimePointer> tptp = analysis.readFile(QFileDialog::getOpenFileName(
+    QVector<TimePointer> vector = analysis.readFile(QFileDialog::getOpenFileName(
                                                                 this,
                                                                 "Open Document",
                                                                 dir.path(),
                                                                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)"));
+
+    QVector<double> doubleAxis = analysis.splitXY(vector, false);
+    int amount = doubleAxis.count();
+    std::vector<double> vectorAxis = doubleAxis.toStdVector();
+    double* a = &vectorAxis[0];
+
     if(selectedPass == 0){  //low pass
-         drawGraph(analysis.castToLowPass(tptp));
+         drawGraph(analysis.castToLowPass(vector));
     }else if(selectedPass == 1){  //high pass
-        drawGraph(analysis.castToHighPass(tptp));
+        drawGraph(analysis.castToHighPass(vector));
     }else if(selectedPass == 2){  //band pass
 
+        Dsp::SimpleFilter <Dsp::ChebyshevI::BandStop <3>, 2> f;
+        f.setup(3,
+                44100,
+                4000,
+                880,
+                1);
+        //f.process(amount, a);
     }else if(selectedPass = 3){ // band stop
 
     }

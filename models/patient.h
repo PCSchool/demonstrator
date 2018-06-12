@@ -42,8 +42,7 @@ public:
 private:
     //methods
     void calculateBMI(double weight, double height);
-    bool createDirectory();
-    void addRecording();
+    bool createPatientDirectory();
 
     //fields
     double weight;

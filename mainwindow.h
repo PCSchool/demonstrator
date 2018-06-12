@@ -7,6 +7,9 @@
 #include <recorddialog.h>
 #include <models/system.h>
 #include <models/device.h>
+#include <design/demonstratorstyle.h>
+#include <QPalette>
+
 
 namespace Ui {
 class MainWindow;
@@ -22,15 +25,16 @@ public:
 
 signals:
 
+
 public slots:
     QDir getHomeDirectory();
 
 private slots:
     void patientSelected(Patient* patient);
+    void removePatientSlot(QString thispath);
     void userDeselected();
     void deviceSelected(Device device);
     void addTextToNotes(QString text);
-    void removePatientSlot(QString thispath);
     void openNotes();
 
     void on_btnOpenPatientDialog_clicked();
@@ -39,8 +43,7 @@ private slots:
     void on_btnOpenAnalysisDialog_clicked();
     void on_btnOpenExportDialog_clicked();
     void on_btnSelectDirPatient_clicked();
-    void on_btnnAddNotes_clicked();
-
+    void on_btnAddNotes_clicked();
     void on_btnChangePatient_clicked();
 
 private:

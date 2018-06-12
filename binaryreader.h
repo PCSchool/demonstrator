@@ -12,7 +12,6 @@
 #include <QReadLocker>
 #include <windows.h>
 #include <globals.h>
-#include <QVector>
 
 class BinaryReader : public QObject
 {
@@ -32,6 +31,7 @@ public:
     QArrayData tester;
     int numberFile, sizeFile;
     bool upNumberFile;
+
 signals:
     void start();
     void finished();
@@ -58,6 +58,6 @@ private:
     int numUsedBytes;                   //amount of bytes used
     int dataSize;                       //dataSize
     int bufferSize;                     //bufferSize
-};
 
+};
 #endif // BINARYREADER_H

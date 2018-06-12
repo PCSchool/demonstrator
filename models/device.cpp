@@ -1,7 +1,7 @@
 #include "device.h"
 #include <QStandardPaths>
 #include <globals.h>
-#include <exceptions/exceptioninvalidparameters.h>
+#include <models/system.h>
 
 //default constructor
 Device::Device()
@@ -11,20 +11,19 @@ Device::Device()
 
 //constructor with parameters
 Device::Device(QString name, QString location){
-    if(name.isEmpty() || location.isEmpty()){throw ExceptionInvalidParameters();}
     this->name = name;
     this->path = location;
     this->dir.setPath(location);
     this->active = false;
 
-    QDir dir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathDevices + name)); //QString::number(id)
+    QDir dir(QString(System::getDeviceLocation() + name));
+
 
     dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathDevices + name));
 }
 
 bool Device::validationCheckExists(QString path){
-    if(path.isEmpty()){ throw ExceptionInvalidParameters(); }
-    if(QDir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathDevices + path)).exists()){
+    if(System::checkDirectoryExists(path)){
         return true;
     }
     return false;

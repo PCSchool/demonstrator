@@ -20,7 +20,7 @@
 #include <globals.h>
 #include <windows.h>
 #include <recorddialog.h>
-#include <QVector>
+#include <vector>
 
 using namespace std;
 
@@ -68,4 +68,5 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
         sizeFile = 0;
         numberFile++;
     }
+
 }
