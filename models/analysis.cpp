@@ -2,7 +2,6 @@
 #include <globals.h>
 #include <QDir>
 #include <QDirIterator>
-#include <exceptions/exceptioninvalidparameters.h>
 
 //constructor
 Analysis::Analysis()
@@ -12,9 +11,6 @@ Analysis::Analysis()
 
 //methods
 QVector<TimePointer> Analysis::readFile(QString path){
-    if(path.isEmpty()){
-        throw ExceptionInvalidParameters();
-    }
     QVector<TimePointer> vector;
     try{
         FILE * fp = fopen(path.toLocal8Bit().constData(), "rb");
@@ -47,6 +43,56 @@ QVector<TimePointer> Analysis::readFile(QString path){
     return vector;
 }
 
+QVector<TimePointer> Analysis::readDir(QString path){
+    setRecordingDir(QDir(path));
+    setRecordingFilePath(path);
+
+    QVector<TimePointer> vector;
+    try{
+        FILE * fp;
+        int next = 0;
+        double x,y;
+        char buffer[9];
+        if(!path.length() < 1){
+            QDir dir(path);
+            QDirIterator it(recordingDir, QDirIterator::NoIteratorFlags);
+
+            while(it.hasNext()) {
+                QString filename = it.next();
+                QFile file(filename.toLocal8Bit().constData());
+                file.open(QIODevice::ReadOnly);
+                while(!file.atEnd()){
+                    file.read(buffer, 8);
+                    QByteArray save(buffer, 8);
+                    memcpy(&x, save, 8);
+                    std::cout << x << " - ";
+                    int size = save.size();
+                    QByteArray ss(buffer, 8);
+                    if(save.size() == 8){
+                        if(next == 0){
+                            next++;
+                            memcpy(&x, save, 8);
+                            TimePointer tp;
+                            tp.x = x;
+                            tp.y = y;
+                            vector.append(tp);
+                        }else{
+                            memcpy(&y, save, 8);
+                            next = 0;
+                        }
+                    }
+                    QByteArray sss(buffer, 8);
+                }
+                file.close();
+            }
+        }
+    } catch(...){
+        qFatal("Error occured within method Analysis::readDir(QString path)");
+    }
+    std::cout << endl << " final : " << vector.count();
+    return vector;
+}
+
 QVector<TimePointer> Analysis::castToLowPass(QVector<TimePointer> points){
     double xm1 = 0;
     int M = 10/2;
@@ -76,8 +122,27 @@ QVector<TimePointer> Analysis::castToHighPass(QVector<TimePointer> points){
     double freq = 0.1;
     double b = 0.08;
     int N = 2;
+
     return returnVector;
 }
+
+QVector<double> Analysis::splitXY(QVector<TimePointer> points, bool xAxis){
+    QVector<double> returnVector;
+    if(points.count() > 0){
+        if(xAxis){  //get all points on the xaxis
+            for(int q =0; q >= points.count(); q++){
+                returnVector.push_back(points[q].x);
+            }
+        }
+        else{  //get all points on the xaxis
+            for(int q =0; q >= points.count(); q++){
+                returnVector.push_back(points[q].y);
+            }
+        }
+    }
+    return returnVector;
+}
+
 QVector<TimePointer> Analysis::castToBandPass(QVector<TimePointer> points){
     return points;
 }
@@ -85,75 +150,7 @@ QVector<TimePointer> Analysis::castToBandStop(QVector<TimePointer> points){
     return points;
 }
 
-QVector<TimePointer> Analysis::readDir(QString path){
-    if(path.isEmpty()){
-        throw ExceptionInvalidParameters();
-    }
-    setRecordingDir(QDir(path));
-    setRecordingFilePath(path);
-
-    QVector<TimePointer> vector;
-    try{
-        FILE * fp;
-        TimePointer tp;
-        int next = 0;
-        double x,y;
-        char buffer[9];
-        if(!path.length() < 1){
-            QDir dir(path);
-            QDirIterator it(recordingDir, QDirIterator::NoIteratorFlags);
-
-            while(it.hasNext()) {
-                QString filename = it.next();
-                QFile file(filename.toLocal8Bit().constData());
-                file.open(QIODevice::ReadOnly);
-                while(!file.atEnd()){
-                    file.read(buffer, 8);
-                    QByteArray save(buffer, 8);
-                    memcpy(&x, save, 8);
-                    std::cout << x << " - ";
-                    int size = save.size();
-                    QByteArray ss(buffer, 8);
-                    if(save.size() == 8){
-                        if(next == 0){
-                            next++;
-                            memcpy(&x, save, 8);
-                            TimePointer tp;
-                            tp.x = x;
-                            tp.y = y;
-                            vector.append(tp);
-                        }else{
-                            memcpy(&y, save, 8);
-                        }
-                    }
-                    //int size = save.size();
-                    QByteArray ss(buffer, 8);
-                    if(save.size() == 8){
-                        if(next == 1){
-                            next++;
-                            memcpy(&x, save, 8);
-                            tp.x = x;
-                        }else{
-                            memcpy(&y, save, 8);
-                            tp.y = y;
-                            vector.append(tp);
-                            next = 0;
-                        }
-                    }
-                    QByteArray sss(buffer, 8);
-                }
-                file.close();
-            }
-        }
-    } catch(...){
-        qFatal("Error occured within method Analysis::readDir(QString path)");
-    }
-    std::cout << endl << " final : " << vector.count();
-    return vector;
-}
-
 void Analysis::addRecordingDirList(QString path){
-    if(path.isEmpty()){throw ExceptionInvalidParameters();}
     recordingPathList.append(path);
 }
 
@@ -187,7 +184,6 @@ void Analysis::addToVector(double x, double y){
 }
 
 void Analysis::setRecordingDir(QDir dir){
-    if(dir.path().isEmpty()){throw ExceptionInvalidParameters();}
     this->recordingDir = dir;
 }
 
@@ -196,7 +192,6 @@ QDir Analysis::getRecordingDir(){
 }
 
 void Analysis::setRecordingFilePath(QString filepath){
-    if(filepath.isEmpty()){throw ExceptionInvalidParameters();}
     recordingFilePath = filepath;
     recordingFile.setFileName(filepath);
 }
