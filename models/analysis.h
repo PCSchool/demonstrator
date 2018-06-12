@@ -26,9 +26,12 @@ public:
     QList<QString> getRecordingList();
     QVector<TimePointer> readFile(QString path);
     QVector<TimePointer> readDir(QString path);
-
+    
+    //for signal processing
+    QVector<double> splitXY(QVector<TimePointer> points, bool xAxis);
     QVector<TimePointer> castToLowPass(QVector<TimePointer> points);
     double simpleLowPass(double *x, double *y, int M, double xm1);
+
     QVector<TimePointer> castToHighPass(QVector<TimePointer> points);
     QVector<TimePointer> castToBandPass(QVector<TimePointer> points);
     QVector<TimePointer> castToBandStop(QVector<TimePointer> points);
