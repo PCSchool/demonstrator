@@ -129,15 +129,10 @@ void UserDialog::on_btnSelectPatient_clicked()
     std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
         cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
-        int ret = QMessageBox::warning(this, "Error", "The selected patient is invalid. Would u like to delete this patient?", QMessageBox::Ok | QMessageBox::No | QMessageBox::Cancel);
-        if(ret == QMessageBox::Ok){
+        int ret = QMessageBox::warning(this, "Error", "The personal information of the patient is missing. Would u like to delete this patient?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        if(ret == 16384){
             emit removePatient(dir);
-        }else if(ret == QMessageBox::No){
-
-        }else{
-
         }
-
     }else{
         BinaryPatient bpatient;
         fin.read((char *)&bpatient, sizeof(bpatient));

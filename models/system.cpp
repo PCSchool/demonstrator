@@ -118,17 +118,8 @@ void System::removePatient(QString path){
         if(selectedPatient->userDir.path() != path){
             removeDir.removeRecursively();
         }
+    }else{
+        removeDir.removeRecursively();
     }
     if(path.isEmpty()){throw ExceptionInvalidParameters();}
-
-    removeDir = QDir(path);
-    if(hasPatient){
-        if(selectedPatient->userDir.path() != path){
-            //removeDir.removeRecursively();
-        }else{
-            std::cout << endl << "Error: cant remove current active patient.";
-        }
-    }else{
-        //removeDir.removeRecursively();
-    }
 }
