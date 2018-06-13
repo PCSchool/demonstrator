@@ -123,10 +123,7 @@ void MainWindow::on_btnSelectDirPatient_clicked(){
                     "Open Document",
                     system->selectedPatient->userDir.path(),
                     "All files (*.*) ;; Document files (*.doc *.rtf *.txt);; PNG files (*.png)");
-    //QProcess *proc = new QProcess(this);
-    //std::string notepad = path.toLocal8Bit().constData();
 
-    //proc->start("notepad.exe " + notepad);
 }
 
 void MainWindow::on_btnAddNotes_clicked(){

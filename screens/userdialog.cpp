@@ -120,9 +120,8 @@ void UserDialog::on_btnCancel_clicked()
 
 void UserDialog::on_btnSelectPatient_clicked()
 {
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
-                                                path, QFileDialog::DontUseNativeDialog);
+                                                System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
 
     std::string pathInfo = dir.toLocal8Bit().constData();
     pathInfo = pathInfo + "/info.dat";
@@ -130,20 +129,28 @@ void UserDialog::on_btnSelectPatient_clicked()
     std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
         cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
+        int ret = QMessageBox::warning(this, "Error", "The selected patient is invalid. Would u like to delete this patient?", QMessageBox::Ok | QMessageBox::No | QMessageBox::Cancel);
+        if(ret == QMessageBox::Ok){
+            emit removePatient(dir);
+        }else if(ret == QMessageBox::No){
+
+        }else{
+
+        }
+
     }else{
-        BinaryPatient two;
-        fin.read((char *)&two, sizeof(two));
-        QDate date = QDate::fromString(QString::fromUtf8(two.birthDate), "dd/MM/yyyy");
-        Patient* pp = new Patient(true, two.id, QString::fromUtf8(two.email), two.gender, QString::fromUtf8(two.street), QString::fromUtf8(two.housenr), QString::fromUtf8(two.zipcode), two.homePhone, QString::fromUtf8(two.name), date, two.weight, two.height);
-        emit newPatient(pp);
+        BinaryPatient bpatient;
+        fin.read((char *)&bpatient, sizeof(bpatient));
+        QDate date = QDate::fromString(QString::fromUtf8(bpatient.birthDate), "dd/MM/yyyy");
+        Patient* patient = new Patient(true, bpatient.id, QString::fromUtf8(bpatient.email), bpatient.gender, QString::fromUtf8(bpatient.street), QString::fromUtf8(bpatient.housenr), QString::fromUtf8(bpatient.zipcode), bpatient.homePhone, QString::fromUtf8(bpatient.name), date, bpatient.weight, bpatient.height);
+        emit newPatient(patient);
         on_btnCancel_clicked();
     }
 }
 
 void UserDialog::on_btnDeletePatient_clicked()
 {
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
-                                                path, QFileDialog::DontUseNativeDialog);
+                                                System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
     emit removePatient(dir);
 }

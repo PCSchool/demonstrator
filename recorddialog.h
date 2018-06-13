@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <screens/creategraphdialog.h>
+#include <QElapsedTimer>
 #include <binarywriter.h>
 #include <QString>
 #include <models/recording.h>
@@ -26,6 +27,8 @@ public:
     QDir userDir;
     static const QSemaphore semaphore;
     double counter, readySignal;
+    QElapsedTimer qTimer;
+    qint64 qAccumulator;
     QByteArray *shared_buffer;
     void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
 
@@ -40,6 +43,8 @@ private slots:
     void on_btnStop_clicked();
     void on_btnChangeSettings_clicked();
     void on_sbCounter_valueChanged(const QString &arg1);
+
+    void on_btnPause_clicked();
 
 private:
     Ui::RecordDialog *ui;

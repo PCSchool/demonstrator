@@ -21,6 +21,7 @@ RecordDialog::RecordDialog(QWidget *parent) :
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
 
+
     counter = 0;
     readySignal = 0;
     running = false;
@@ -130,6 +131,8 @@ void RecordDialog::on_btnDummyGraph_clicked()
         threadWriteBuffer->start();
         threadWriteFile->start();
 
+        qTimer.start();
+        qAccumulator = 0;
         //delete CriticalSection at end, when graph gets stopped -> ~RecordDialog
     }
 }
@@ -169,6 +172,7 @@ void RecordDialog::on_btnStop_clicked()
         running = false;
         ui->btnChangeSettings->setEnabled(true);
     }
+
 }
 
 void RecordDialog::on_btnChangeSettings_clicked()
@@ -183,4 +187,17 @@ void RecordDialog::on_btnChangeSettings_clicked()
 void RecordDialog::on_sbCounter_valueChanged(const QString &arg1)
 {
     int counterx = ui->sbCounter->value();
+}
+
+void RecordDialog::on_btnPause_clicked()
+{
+    if(running){
+        if(qTimer.isValid()){
+            qAccumulator += qTimer.elapsed();
+            qTimer.invalidate();
+        }else{
+            qTimer.restart();
+
+        }
+    }
 }
