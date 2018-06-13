@@ -77,7 +77,7 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 void MainWindow::on_btnOpenRecordingDialog_clicked()
 {
     RecordDialog* recordDialog = new RecordDialog(this);
-    recordDialog->setUserDir(this->system->getDir());
+    recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
     recordDialog->setModal(true);
     recordDialog->exec();
 }
@@ -147,9 +147,8 @@ void MainWindow::openNotes(){
 
 void MainWindow::on_btnChangePatient_clicked()
 {
-    QString path = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
-                                                path, QFileDialog::DontUseNativeDialog);
+                                                System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
 
     std::string pathInfo = dir.toLocal8Bit().constData();
     pathInfo = pathInfo + "/info.dat";
@@ -157,6 +156,8 @@ void MainWindow::on_btnChangePatient_clicked()
     std::ifstream fin(pathInfo, ios::out | ios::binary);
     if(!fin.is_open()){
         cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
+        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+
     }else{
         BinaryPatient patient;
         fin.read((char *)&patient, sizeof(patient));

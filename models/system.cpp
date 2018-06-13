@@ -121,5 +121,4 @@ void System::removePatient(QString path){
     }else{
         removeDir.removeRecursively();
     }
-    if(path.isEmpty()){throw ExceptionInvalidParameters();}
 }

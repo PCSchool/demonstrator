@@ -31,7 +31,7 @@ public:
     qint64 qAccumulator;
     QByteArray *shared_buffer;
     void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
-
+    QTime time;
 signals:
     void writeNewData(double xAxis, double yAxis);
     void stopTimer();
@@ -46,12 +46,14 @@ private slots:
 
     void on_btnPause_clicked();
 
+    void on_btnCancel_clicked();
+
 private:
     Ui::RecordDialog *ui;
     QTimer* dataTimer;
     BinaryWriter* writeBuffer;
     BinaryReader* writeFile;
-    bool running;
+    bool running, pause;
     QThread* threadWriteBuffer;
     Recording recording;
 };
