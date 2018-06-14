@@ -19,6 +19,7 @@
 #include <dsp_filters/dsp_filters.h>
 #include <dsp_filters/filters/ChebyshevI.h>
 #include <dsp_filters/filters/Filter.h>
+#include <models/system.h>
 
 using namespace std;
 
@@ -107,9 +108,8 @@ void AnalysisDialog::on_btnCancel_clicked(){
 void AnalysisDialog::on_btnSelectRecording_clicked()
 {
     //select one directory
-    QString dir = QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients");
     QString path = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
-                                                dir, QFileDialog::DontUseNativeDialog);
+                                                System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
     drawGraph(analysis.readDir(path));
 }
 /*void QCustomPlot::showPointToolTip(QMouseEvent *event){
@@ -168,7 +168,16 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
                                                                 "Open Document",
                                                                 dir.path(),
                                                                 "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)"));
+    double pepoles[1000];
+    int zz = 1;
+    for(int z = 0; z < 999; z++){
+        pepoles[z] = zz;
+        if(z % 10 == 0){
+            zz=1;
 
+        }
+        zz++;
+    }
     QVector<double> doubleAxis = analysis.splitXY(vector, false);
     int amount = doubleAxis.count();
     std::vector<double> vectorAxis = doubleAxis.toStdVector();
@@ -186,7 +195,7 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
                 4000,
                 880,
                 1);
-        //f.process(amount, a);
+
     }else if(selectedPass = 3){ // band stop
 
     }

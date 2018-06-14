@@ -36,7 +36,7 @@ public:
     //static methods for control directory
     static bool createDirectory(QString path);
     static bool checkDirectoryExists(QString path);
-    static QString getHomeLocation(QString path);
+    static QString getHomeLocation();
     static QString getPatientLocation();
     static QString getDeviceLocation();
 

@@ -45,7 +45,7 @@ bool System::checkDirectoryExists(QString path){
     return false;
 }
 
-QString System::getHomeLocation(QString path){
+QString System::getHomeLocation(){
     return QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathHome);
 }
 

@@ -76,8 +76,17 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 
 void MainWindow::on_btnOpenRecordingDialog_clicked()
 {
+    /*if(system->hasPatient){
+        RecordDialog* recordDialog = new RecordDialog(this);
+        recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
+        recordDialog->setModal(true);
+        recordDialog->exec();
+    }else{
+        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+        msgBox.exec();
+    }*/
     RecordDialog* recordDialog = new RecordDialog(this);
-    recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
+    recordDialog->setUserDir(system->getHomeLocation());
     recordDialog->setModal(true);
     recordDialog->exec();
 }
@@ -123,7 +132,6 @@ void MainWindow::on_btnSelectDirPatient_clicked(){
                     "Open Document",
                     system->selectedPatient->userDir.path(),
                     "All files (*.*) ;; Document files (*.doc *.rtf *.txt);; PNG files (*.png)");
-
 }
 
 void MainWindow::on_btnAddNotes_clicked(){
@@ -157,7 +165,6 @@ void MainWindow::on_btnChangePatient_clicked()
     if(!fin.is_open()){
         cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
         QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
-
     }else{
         BinaryPatient patient;
         fin.read((char *)&patient, sizeof(patient));

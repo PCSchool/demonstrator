@@ -31,7 +31,7 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
 
         }
     }else{
-        QDir dir(QString(System::getHomeLocation("") + email));
+        QDir dir(QString(System::getHomeLocation() + email));
         if(System::checkDirectoryExists(dir.path())){
             dir.mkpath(QString(pathPatient + email));
             QString fixpath = QString(dir.path() + "/info.dat");

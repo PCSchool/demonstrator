@@ -68,5 +68,4 @@ void BinaryReader::writeBufferToFile(QByteArray array, QVector<TimePointer> vect
         sizeFile = 0;
         numberFile++;
     }
-
 }

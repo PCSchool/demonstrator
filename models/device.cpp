@@ -6,7 +6,6 @@
 //default constructor
 Device::Device()
 {
-
 }
 
 //constructor with parameters
@@ -17,9 +16,7 @@ Device::Device(QString name, QString location){
     this->active = false;
 
     QDir dir(QString(System::getDeviceLocation() + name));
-
-
-    dir.mkpath(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + pathDevices + name));
+    dir.mkpath(QString(System::getDeviceLocation() + name));
 }
 
 bool Device::validationCheckExists(QString path){

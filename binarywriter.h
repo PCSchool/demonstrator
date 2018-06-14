@@ -11,6 +11,7 @@
 #include <QReadWriteLock>
 #include <windows.h>
 #include <globals.h>
+#include <QVector>
 
 class BinaryWriter : public QObject
 {
@@ -21,22 +22,18 @@ public:
     void convertDoubleToBinary(double d);       //convertDoubleToBinary
     void setUserDir(QDir dir);                  //set directory where the recording files will be stored
 
-    //thread synchronization
-    QWaitCondition bufferIsFull;                //true if buffer is full and ready to be written to file, false is buffer still is getting filled
-    QWaitCondition bufferDoneWriteFile;         //true when the buffer is done being written into the file, false when the buffer still aint completely written to the file
-    QWaitCondition bufferNotEmpty;
-    QMutex mutex;                               //QMutex mutex, can be used to lock or unlock certain parts of threads
-
     QBuffer qbuffer;
     QArrayData tester;                          //test QArrayData
     int numberFile;                             //default 0
+    QVector<TimePointer> vector;
+
 signals:
     void start();                               //start thread
     void finished();                            //finishes thread
     void error(QString error);                  //debugging error, to show whats wrong
     void writeNewBufferToFile();                //ready for new buffer to be written
     void fileFull();
-    void bufferFull(QByteArray array);
+    void bufferFull(QByteArray array, QVector<TimePointer> vector);
     void setDir(QDir dir);
 
 public slots:
@@ -47,10 +44,7 @@ public slots:
 private slots:
 
 private:
-    QMutexLocker* mutexLocker;                   //QMutexLocker mutexLocker, can be used to lock or unlock certain
-    QReadWriteLock* readWriteLock;              //QReadWriteLock readWriteLock, can be used to lock for read, writing purposes
-    //QFile file;                                 //QFile file, used
-
+    TimePointer pointer;
     QByteArray qarray;
     QByteArray byteArray;
     QDir dir;                                   //directory used

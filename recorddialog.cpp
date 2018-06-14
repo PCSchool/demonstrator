@@ -79,10 +79,15 @@ RecordDialog::~RecordDialog()
     delete ui;
 }
 
+void RecordDialog::enableButtons(bool enable){
+    ui->btnChangeSettings->setEnabled(enable);
+    ui->btnDummyGraph->setEnabled(enable);
+}
+
 void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
-        ui->btnChangeSettings->setEnabled(false);
+        enableButtons(false);
         ui->widget->clearGraphs();
 
         running = true;
@@ -91,45 +96,48 @@ void RecordDialog::on_btnDummyGraph_clicked()
         qTimer.start();
         qAccumulator = 0;
         // Create graph
-                ui->widget->addGraph(); // blue line
-                ui->widget->graph(0)->setPen(QPen(QColor(40, 110, 255)));
-                QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
-                timeTicker->setTimeFormat("%h:%m:%s");
-                ui->widget->xAxis->setTicker(timeTicker);
-                ui->widget->axisRect()->setupFullAxesBox();
-                ui->widget->yAxis->setRange(recording.getYAxisMax(), recording.getYAxisMin());
+        ui->widget->addGraph(); // blue line
+        ui->widget->graph(0)->setPen(QPen(QColor(40, 110, 255)));
+        QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
+        timeTicker->setTimeFormat("%h:%m:%s");
+        ui->widget->xAxis->setTicker(timeTicker);
+        ui->widget->axisRect()->setupFullAxesBox();
+        ui->widget->yAxis->setRange(recording.getYAxisMax(), recording.getYAxisMin());
 
-                // make left and bottom axes transfer their ranges to right and top axes:
-                connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
-                connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
+        // make left and bottom axes transfer their ranges to right and top axes:
+        connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
+        connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
 
-                // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
-                dataTimer = new QTimer();
-                connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
-                connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
-                dataTimer->start(recording.getInterval()); // Interval of 25
+        // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
+        dataTimer = new QTimer();
+        connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
+        connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
+        dataTimer->start(recording.getInterval()); // Interval of 25
 
-                // setup the thread responsible for writing data to the buffer
-                threadWriteBuffer = new QThread();
-                writeBuffer = new BinaryWriter();
-                connect(writeBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(quit()));
-                connect(writeBuffer, SIGNAL(finished()), writeBuffer, SLOT(deleteLater()));
-                connect(threadWriteBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(deleteLater()));
+        // setup the thread responsible for writing data to the buffer
+        threadWriteBuffer = new QThread();
+        writeBuffer = new BinaryWriter();
+        writeBuffer->moveToThread(threadWriteBuffer);
 
-                // setup the thread to write data from buffer to file
-                QThread* threadWriteFile = new QThread();
-                writeFile = new BinaryReader();
+        connect(writeBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(quit()));
+        connect(writeBuffer, SIGNAL(finished()), writeBuffer, SLOT(deleteLater()));
+        connect(threadWriteBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(deleteLater()));
 
-                //connect the threads with eachother and the plot
-                connect(writeFile,SIGNAL(finished()), threadWriteFile, SLOT(quit()));
-                connect(writeFile, SIGNAL(finished()), writeFile, SLOT(deleteLater()));
-                connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
-                connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-                connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer>)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer>)));
+        // setup the thread to write data from buffer to file
+        QThread* threadWriteFile = new QThread();
+        writeFile = new BinaryReader();
+        writeFile->moveToThread(threadWriteFile);
 
-                //ensure the recording file gets written to the right directory
-                writeBuffer->setUserDir(this->userDir);
-                writeFile->setUserDir(this->userDir);
+        //connect the threads with eachother and the plot
+        connect(writeFile,SIGNAL(finished()), threadWriteFile, SLOT(quit()));
+        connect(writeFile, SIGNAL(finished()), writeFile, SLOT(deleteLater()));
+        connect(threadWriteFile, SIGNAL(finished()), threadWriteFile, SLOT(deleteLater()));
+        connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
+        connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer>)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer>)));
+
+        //ensure the recording file gets written to the right directory
+        writeBuffer->setUserDir(this->userDir);
+        writeFile->setUserDir(this->userDir);
 
         //start threads
         threadWriteBuffer->start();
@@ -233,5 +241,5 @@ void RecordDialog::on_btnPause_clicked()
 
 void RecordDialog::on_btnCancel_clicked()
 {
-    time.restart();
+    this->close();
 }

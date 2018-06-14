@@ -49,6 +49,8 @@ private slots:
     void on_btnCancel_clicked();
 
 private:
+    void enableButtons(bool enable);
+
     Ui::RecordDialog *ui;
     QTimer* dataTimer;
     BinaryWriter* writeBuffer;
