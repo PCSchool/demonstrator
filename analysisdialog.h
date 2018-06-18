@@ -45,11 +45,21 @@ private slots:
 
     void on_btnFilterRecording_clicked();
 
+    void mouseMoveEvent(QMouseEvent* event);
+
+    void on_cbMouseTrack_stateChanged(int arg1);
+
+    void on_cbShowScale_stateChanged(int arg1);
+
+    void on_cbShowLegend_stateChanged(int arg1);
+
+    void on_btnSaveFile_clicked();
+
 private:
     //for testing data reading
     QBuffer qbuffer;
     QTimer* timer;
-    int counter;
+    int counter, index;
     int xAxis;
     QThread* threadWriteBuffer;
     QThread* threadWriteFile;

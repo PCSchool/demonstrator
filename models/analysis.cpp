@@ -6,7 +6,10 @@
 //constructor
 Analysis::Analysis()
 {
-
+    trackMouse = false;
+    showRoster = false;
+    autoScaling = false;
+    showLegend = false;
 }
 
 //methods

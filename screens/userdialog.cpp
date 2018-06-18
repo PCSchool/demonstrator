@@ -20,7 +20,8 @@ UserDialog::UserDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     gender = 'o';   //gender default is o
-    dir = QDir(QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()) + "/SignalSleepDemonstrator/patients"));
+    dir = System::getPatientLocation();
+
 }
 
 UserDialog::~UserDialog()
@@ -36,7 +37,7 @@ void UserDialog::on_btnRegister_clicked()
 
     try{
         if(!Patient::validationFormCheck(ui->tbName->text(), controlType::names)){
-            error = "Name invalid. Please re-enter the name.";
+            error = "Name invalid. Please re-enter the name. ";
         }
         if(!Patient::validationFormCheck(ui->tbStreet->text(), controlType::names )){
             error = "Street invalid. Please enter only the streetname.";
@@ -45,13 +46,13 @@ void UserDialog::on_btnRegister_clicked()
             error = "House nr invalid. Please re-enter the house nr.";
         }
         if(!Patient::validationFormCheck(ui->tbHomephone->text(), controlType::phone)){
-            error = "home phone number invalid. Please enter the phone number in numbrs only.";
+            error = "phone number invalid. Please enter the phone number. \nThe phone number only allows numbers";
         }
         if(!Patient::validationFormCheck(ui->tbZipcode->text(), controlType::zipcodes)){
-            error = "zipcode invalid. Please re-enter the zipcode.";
+            error = "zipcode invalid. Please re-enter the zipcode. \nThe zipcode is built up as follows: \n-first four are numbers \n-the other two are charachters \nFor example:'6671JK' or '9102KL'.";
         }
         if(!Patient::validationFormCheck(ui->tbEmail->text(), controlType::email)){
-            error = "email invalid. Please re-enter a valid email."; // example valid email: Hello@email.com
+            error = "email invalid. Please re-enter a valid email. \nA valid email contains: \n-One '@' char \n-One '.' \nFor example: 'HenryV@outlook.com'." ;  // example valid email: Hello@email.com
         }
     }catch(ExceptionEmptyForm &e){
         emptyError = "Not all fields are correctly filled in, please try again.";
@@ -75,7 +76,6 @@ void UserDialog::on_btnRegister_clicked()
             on_btnCancel_clicked();
         }else{
             messageBox.critical(0, "Error", "There already exists an account with this email addres.");
-            //directory does exists -> not valid registeration, change email patient
         }
     }else{
         if(emptyError != ""){
@@ -108,9 +108,9 @@ void UserDialog::on_cbV_stateChanged(int arg1)
 void UserDialog::on_cbM_stateChanged(int arg1){
     if(arg1 == 2){
         gender = 'm';
+        ui->cbV->setChecked(false);
+        ui->cbO->setChecked(false);
     }
-    ui->cbV->setChecked(false);
-    ui->cbO->setChecked(false);
 }
 
 void UserDialog::on_btnCancel_clicked()
@@ -122,30 +122,39 @@ void UserDialog::on_btnSelectPatient_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
                                                 System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
+    int index = dir.lastIndexOf("/");
+    QString control = dir.mid(index);
 
-    std::string pathInfo = dir.toLocal8Bit().constData();
-    pathInfo = pathInfo + "/info.dat";
-
-    std::ifstream fin(pathInfo, ios::out | ios::binary);
-    if(!fin.is_open()){
-        cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
-        int ret = QMessageBox::warning(this, "Error", "The personal information of the patient is missing. Would u like to delete this patient?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-        if(ret == 16384){
-            emit removePatient(dir);
+    if(!dir.isEmpty() && !dir.isNull() && !control.contains("patients")){
+        std::string pathInfo = dir.toLocal8Bit().constData();
+        pathInfo = pathInfo + "/info.dat";
+        std::ifstream fin(pathInfo, ios::out | ios::binary);
+        if(!fin.is_open()){
+            cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
+            int ret = QMessageBox::warning(this, "Error", "The personal information of the patient is missing. Would u like to delete this patient?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+            if(ret == 16384){
+                emit removePatient(dir);
+            }
+        }else{
+            BinaryPatient bpatient;
+            fin.read((char *)&bpatient, sizeof(bpatient));
+            QDate date = QDate::fromString(QString::fromUtf8(bpatient.birthDate), "dd/MM/yyyy");
+            Patient* patient = new Patient(true, bpatient.id, QString::fromUtf8(bpatient.email), bpatient.gender, QString::fromUtf8(bpatient.street), QString::fromUtf8(bpatient.housenr), QString::fromUtf8(bpatient.zipcode), bpatient.homePhone, QString::fromUtf8(bpatient.name), date, bpatient.weight, bpatient.height);
+            emit newPatient(patient);
+            on_btnCancel_clicked();
         }
-    }else{
-        BinaryPatient bpatient;
-        fin.read((char *)&bpatient, sizeof(bpatient));
-        QDate date = QDate::fromString(QString::fromUtf8(bpatient.birthDate), "dd/MM/yyyy");
-        Patient* patient = new Patient(true, bpatient.id, QString::fromUtf8(bpatient.email), bpatient.gender, QString::fromUtf8(bpatient.street), QString::fromUtf8(bpatient.housenr), QString::fromUtf8(bpatient.zipcode), bpatient.homePhone, QString::fromUtf8(bpatient.name), date, bpatient.weight, bpatient.height);
-        emit newPatient(patient);
-        on_btnCancel_clicked();
     }
+
 }
 
 void UserDialog::on_btnDeletePatient_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select patient file"),
                                                 System::getPatientLocation(), QFileDialog::DontUseNativeDialog);
-    emit removePatient(dir);
+    QString control = dir.mid(dir.lastIndexOf("/"));
+
+    if(!dir.isEmpty() && !dir.isNull() && !control.contains("patients") && control.contains("@")){
+        emit removePatient(dir);
+    }
+
 }

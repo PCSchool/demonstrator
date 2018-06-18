@@ -27,7 +27,7 @@ public:
     QDir userDir;
     static const QSemaphore semaphore;
     double counter, readySignal;
-    QElapsedTimer qTimer;
+    QElapsedTimer qTimer, mainTimer;
     qint64 qAccumulator;
     QByteArray *shared_buffer;
     void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
@@ -50,9 +50,11 @@ private slots:
 
 private:
     void enableButtons(bool enable);
-
+    void stopRecording();
+    QCPGraph* graph;
     Ui::RecordDialog *ui;
     QTimer* dataTimer;
+    int index;
     BinaryWriter* writeBuffer;
     BinaryReader* writeFile;
     bool running, pause;

@@ -47,6 +47,7 @@ private slots:
     void on_btnChangePatient_clicked();
 
 private:
+    RecordDialog* recordDialog;
     Ui::MainWindow *ui;
     User *user;
     Patient *patient;

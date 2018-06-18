@@ -8,6 +8,8 @@
 #include <QTime>
 #include <QTextStream>
 #include <globals.h>
+#include <qcustomplot.h>
+#include <models/plot.h>
 
 using namespace std;
 
@@ -22,8 +24,11 @@ RecordDialog::RecordDialog(QWidget *parent) :
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
 
     if(time.isValid()){time.restart();}
-
+    if(mainTimer.isValid()){
+        mainTimer.restart();
+    }
     counter = 0;
+    index = 0;
     readySignal = 0;
     running = false;
     pause = false;
@@ -65,17 +70,32 @@ void RecordDialog::setUserDir(QDir dir){
     ui->lblTest->setText(userDir.path());
 }
 
-RecordDialog::~RecordDialog()
-{
+void RecordDialog::stopRecording(){
     //stop threads & wait for threads
     dataTimer->stop();
     writeBuffer->finished();   //  --> connected with thread to finish together
-    while(threadWriteBuffer->isRunning()){
-    }
-    threadWriteBuffer->terminate();
-
+    writeFile->finished();
     // delete critical sections, after ending threads
     DeleteCriticalSection(&shared_buffer_lock);
+
+    //ui->widget->clearGraphs();
+    if(ui->widget->plottableCount() > 0){
+        int cc = ui->widget->plottableCount() - 1;
+        ui->label_7->setText(QString::number(ui->widget->plottableCount()));
+        ui->widget->removePlottable(cc);
+        ui->label_9->setText(QString::number(ui->widget->plottableCount()));
+        ui->widget->clearPlottables();
+
+        ui->label_6->setText(QString::number(ui->widget->plottableCount()));
+
+        ui->widget->clearGraphs();
+    }
+    ui->widget->replot();
+}
+
+RecordDialog::~RecordDialog()
+{  
+    stopRecording();
     delete ui;
 }
 
@@ -88,21 +108,28 @@ void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
         enableButtons(false);
-        ui->widget->clearGraphs();
+
+        int db = ui->widget->graphCount();
+        ui->lblAmplitude->setText(QString::number(db));
 
         running = true;
         InitializeCriticalSection(&shared_buffer_lock);
 
-        qTimer.start();
-        qAccumulator = 0;
         // Create graph
-        ui->widget->addGraph(); // blue line
-        ui->widget->graph(0)->setPen(QPen(QColor(40, 110, 255)));
+        QCPGraph *g = new QCPGraph(ui->widget->xAxis, ui->widget->yAxis);
+
+        ui->widget->addGraph();
+        ui->widget->graph(index)->setPen(QPen(QColor(40, 140, 80)));
         QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
         timeTicker->setTimeFormat("%h:%m:%s");
         ui->widget->xAxis->setTicker(timeTicker);
         ui->widget->axisRect()->setupFullAxesBox();
         ui->widget->yAxis->setRange(recording.getYAxisMax(), recording.getYAxisMin());
+        ui->widget->graph(index)->setName("Recording");
+        ui->widget->xAxis->setLabel("Time - format hh:mm::ss");
+        ui->widget->yAxis->setLabel("Amount ");
+        ui->widget->setMouseTracking(true);
+        ui->widget->setBackgroundScaled(true);
 
         // make left and bottom axes transfer their ranges to right and top axes:
         connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
@@ -114,10 +141,15 @@ void RecordDialog::on_btnDummyGraph_clicked()
         connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
         dataTimer->start(recording.getInterval()); // Interval of 25
 
+        qTimer.start();
+        mainTimer.start();
+        if(time.isValid()){time.restart();}else{time.start();}
+        qAccumulator = 0;
+
         // setup the thread responsible for writing data to the buffer
         threadWriteBuffer = new QThread();
         writeBuffer = new BinaryWriter();
-        writeBuffer->moveToThread(threadWriteBuffer);
+        //writeBuffer->moveToThread(threadWriteBuffer);
 
         connect(writeBuffer, SIGNAL(finished()), threadWriteBuffer, SLOT(quit()));
         connect(writeBuffer, SIGNAL(finished()), writeBuffer, SLOT(deleteLater()));
@@ -126,7 +158,7 @@ void RecordDialog::on_btnDummyGraph_clicked()
         // setup the thread to write data from buffer to file
         QThread* threadWriteFile = new QThread();
         writeFile = new BinaryReader();
-        writeFile->moveToThread(threadWriteFile);
+        //writeFile->moveToThread(threadWriteFile);
 
         //connect the threads with eachother and the plot
         connect(writeFile,SIGNAL(finished()), threadWriteFile, SLOT(quit()));
@@ -155,13 +187,15 @@ void RecordDialog::realtimeDataSlot(){
         qtime.addMSecs(qAccumulator);
         xAxis = qtime.elapsed()/1000.0;
     }else{
-        static QTime time(QTime::currentTime());
+        //static QTime time(QTime::currentTime());
         xAxis = time.elapsed()/1000.0;
+        QTime qtime;
+        qtime.addMSecs(qAccumulator);
     }
     //double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
 
     static double lastPointKey = 0;
-    if (xAxis-lastPointKey > 0.010) // at most add point every 20 ms
+    if (xAxis-lastPointKey > 0.010 && !pause) // at most add point every 20 ms
     {
       double yAxis = counter;
       counter++;
@@ -173,7 +207,7 @@ void RecordDialog::realtimeDataSlot(){
           emit writeNewData(xAxis, yAxis);
           readySignal = 0;
       }
-      ui->widget->graph(0)->addData(xAxis, yAxis);
+      ui->widget->graph(index)->addData(xAxis, yAxis);
       lastPointKey = xAxis;
     }
     // make key axis range scroll with the data (at a constant range size of 20):
@@ -187,9 +221,10 @@ void RecordDialog::on_btnStop_clicked()
         disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
         disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+        disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
         running = false;
-        ui->btnChangeSettings->setEnabled(true);
+        enableButtons(true);
+        stopRecording();
     }
 }
 
@@ -213,12 +248,12 @@ void RecordDialog::on_btnPause_clicked()
         if(pause){
             if(qTimer.isValid()){
                 //pauze voorbij , resume graph
-                qAccumulator += qTimer.elapsed();
+                qAccumulator = qTimer.elapsed();
                 qTimer.restart();
                 connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
                 connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
                 connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-                connect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+                connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
                 pause = false;
                 ui->btnPause->setText("pauze: OFF");
             }
@@ -231,7 +266,7 @@ void RecordDialog::on_btnPause_clicked()
                 disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
                 disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
                 disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-                disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray)), writeFile, SLOT(writeBufferToFile(QByteArray)));
+                disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
                 pause = true;
                 ui->btnPause->setText("pauze : ON");
             }

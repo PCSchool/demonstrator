@@ -19,6 +19,7 @@
 #include <dsp_filters/dsp_filters.h>
 #include <dsp_filters/filters/ChebyshevI.h>
 #include <dsp_filters/filters/Filter.h>
+#include <exception>
 #include <models/system.h>
 
 using namespace std;
@@ -30,6 +31,7 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
     ui->setupUi(this);
     xAxis = 0;
     counter = 0;
+    index = 0;
 }
 
 AnalysisDialog::~AnalysisDialog()
@@ -51,6 +53,7 @@ void AnalysisDialog::on_btnReadBinaryFile_clicked()
     tpList.clear();
     QMap<double, double> xyMap;
     QList<TimePointer> xyList;
+    TimePointer *tp;
     double x,y;
     char buffer[9];
 
@@ -134,8 +137,7 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
     try{
         if(vector.count() != 0){
             ui->widget->addGraph();
-            ui->widget->graph(0)->setPen(QPen(Qt::blue)); // line color blue for first graph
-            ui->widget->addGraph();
+            ui->widget->graph(index)->setPen(QPen(Qt::blue)); // line color blue for first graph
             QVector<double> X(vector.count() + 1), Y(vector.count() + 1);
             for(double i = 0; i < vector.count() + 1; i++){
                 X[i] = vector[i].x;
@@ -145,15 +147,25 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
             ui->widget->yAxis2->setVisible(true);
             connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
             connect(ui->widget->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->yAxis2, SLOT(setRange(QCPRange)));
-            ui->widget->graph(0)->setData(X, Y);
-            ui->widget->graph(0)->rescaleAxes(true);
+            ui->widget->graph(index)->setData(X, Y);
+            ui->widget->graph(index)->rescaleAxes(true);
+            ui->widget->graph(index)->setName("Analysis graph " + QString::number(index));
+            ui->widget->xAxis->setLabel("Time(hh:mm::ss)");
+            ui->widget->yAxis->setLabel("Amount");
+            ui->widget->setMouseTracking(true);
+            ui->widget->setAutoAddPlottableToLegend(true);
+            ui->widget->rescaleAxes();
             ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes);
+            ui->widget->replot();
         }
     } catch(...){
         qFatal("Error occured within method AnalysDialog::drawGraph(QVector<TimePointer> vector");
     }
+}
 
-
+void AnalysisDialog::mouseMoveEvent(QMouseEvent *event){
+    QString string = QString::number(event->x()) + " " + QString::number(event->y());
+    QToolTip::showText(QPoint(event->x(), event->y()), string, ui->widget);
 }
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
@@ -198,5 +210,59 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
 
     }else if(selectedPass = 3){ // band stop
 
+    }
+}
+
+void AnalysisDialog::on_cbMouseTrack_stateChanged(int arg1){
+    if(arg1 == 2){
+        connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+    }else{
+        disconnect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+    }
+    ui->widget->replot();
+}
+
+void AnalysisDialog::on_cbShowScale_stateChanged(int arg1)
+{
+    if(arg1 == 2){
+        ui->widget->rescaleAxes(true);
+    }
+    ui->widget->replot();
+}
+
+void AnalysisDialog::on_cbShowLegend_stateChanged(int arg1)
+{
+    if(arg1 == 2){
+        ui->widget->legend->setVisible(true);
+        ui->widget->legend->setBrush(QBrush(QColor(255,255,255,150)));
+        ui->widget->axisRect()->insetLayout()->setInsetAlignment(index, Qt::AlignLeft|Qt::AlignTop);
+    }else{
+        ui->widget->legend->setVisible(false);
+    }
+    ui->widget->replot();
+}
+
+void AnalysisDialog::on_btnSaveFile_clicked()
+{
+    QSettings settings;
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save graph"), settings.value("Plot Image Export Directory").toString(), "PNG (*.png);;PDF (*.PDF");
+    if(!filename.isEmpty()){
+        try{
+            settings.setValue("Plot Image Export Directory", QFileInfo(filename).absolutePath());
+            if(filename.right(3)=="png"){
+                ui->widget->savePng(filename, 500, 500, 1.0, -1);
+            }else if(filename.right(3)=="jpg"){
+                ui->widget->saveJpg(filename, 500, 500, 1.0, -1);
+            }else if(filename.right(3)=="PDF"){
+
+            }else{
+                //ui->widget->saveRastered(filename, 500, 500, 1.0, );
+            }
+        }
+        catch(...){
+            QMessageBox messageBox;
+            messageBox.warning(0, "Error", "The selected file couldnt be found.");
+            messageBox.show();
+        }
     }
 }

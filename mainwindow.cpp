@@ -76,19 +76,19 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 
 void MainWindow::on_btnOpenRecordingDialog_clicked()
 {
-    /*if(system->hasPatient){
+    if(system->hasPatient){
         RecordDialog* recordDialog = new RecordDialog(this);
         recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
         recordDialog->setModal(true);
         recordDialog->exec();
     }else{
-        QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
-        msgBox.exec();
-    }*/
-    RecordDialog* recordDialog = new RecordDialog(this);
-    recordDialog->setUserDir(system->getHomeLocation());
-    recordDialog->setModal(true);
-    recordDialog->exec();
+        //QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
+        //msgBox.exec();
+        recordDialog = new RecordDialog(this);
+        recordDialog->setUserDir(system->getHomeLocation());
+        recordDialog->setModal(true);
+        recordDialog->exec();
+    }
 }
 
 void MainWindow::on_btnOpenAnalysisDialog_clicked()

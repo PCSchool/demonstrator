@@ -12,6 +12,8 @@ public:
     Analysis();
 
 public:
+    bool trackMouse, showRoster, autoScaling, showLegend;
+
     void setRecordingDir(QDir dir);
     void setRecordingFilePath(QString filepath);
     QDir getRecordingDir();

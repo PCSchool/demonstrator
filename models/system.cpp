@@ -25,6 +25,16 @@ System::System()
     }
     this->setDir(path);
     this->setPatientDir(QDir(path + "/patients/"));
+    hasDir = true;
+
+    /*QList<const QMetaObject*> metaObjectList;
+    metaObjectList << &TimePointer::staticMetaObject;
+
+    QMap<QString, const QMetaObject*> metaObjectLookup;
+    foreach(const QMetaObject *mo, metaObjectList){
+        metaObjectLookup.insert(mo->className(), mo);
+    }
+    qRegisterMetaType<TimePointer>("TimePointer");*/
 }
 
 //static methods
