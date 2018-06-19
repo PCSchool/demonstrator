@@ -29,6 +29,9 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
     ui(new Ui::AnalysisDialog)
 {
     ui->setupUi(this);
+    ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
+    connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
+
     xAxis = 0;
     counter = 0;
     index = 0;
@@ -37,6 +40,19 @@ AnalysisDialog::AnalysisDialog(QWidget *parent) :
 AnalysisDialog::~AnalysisDialog()
 {
     delete ui;
+}
+
+//show right-click context menu + handles selection of the selecteditem of the menu
+void AnalysisDialog::showContextMenu(const QPoint& pos){
+    QPoint globalPos = ui->widget->mapToGlobal(pos);
+    QMenu qmenu;
+    qmenu.addAction("create graph");
+    qmenu.addAction("exit");
+
+    QAction* selectedItem = qmenu.exec(globalPos);
+    if(selectedItem){
+        std::cout << "click menu";
+    }
 }
 
 //read out binary file

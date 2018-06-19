@@ -24,6 +24,7 @@ public:
     explicit RecordDialog(QWidget *parent = 0);
     ~RecordDialog();
     void setUserDir(QDir dir);
+    void clear();
     QDir userDir;
     static const QSemaphore semaphore;
     double counter, readySignal;
@@ -43,15 +44,13 @@ private slots:
     void on_btnStop_clicked();
     void on_btnChangeSettings_clicked();
     void on_sbCounter_valueChanged(const QString &arg1);
-
     void on_btnPause_clicked();
-
     void on_btnCancel_clicked();
 
 private:
     void enableButtons(bool enable);
     void stopRecording();
-    QCPGraph* graph;
+    double lastPointKey;
     Ui::RecordDialog *ui;
     QTimer* dataTimer;
     int index;

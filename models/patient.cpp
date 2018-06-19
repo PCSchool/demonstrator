@@ -31,7 +31,7 @@ Patient::Patient(bool exist, int id, QString email, char gender, QString street,
 
         }
     }else{
-        QDir dir(QString(System::getHomeLocation() + email));
+        QDir dir(QString(System::getPatientLocation() + email));
         if(System::checkDirectoryExists(dir.path())){
             dir.mkpath(QString(pathPatient + email));
             QString fixpath = QString(dir.path() + "/info.dat");
@@ -200,6 +200,7 @@ bool Patient::createPatientDirectory(){
         recordingDir.setPath(patientLocation + "/recordings");
         System::createDirectory(recordingDir.path());
 
+        std::cout << recordingDir.path().toLocal8Bit().constData();
         pathPersonalInfo = QString(patientLocation + "/info.dat");
 
         pathNotes = QString(patientLocation + "/notes.txt");
@@ -211,6 +212,14 @@ bool Patient::createPatientDirectory(){
         return true;
     }
     return false;
+}
+
+void Patient::setDirectory(QString dir, QString recordingPath, QString infoPath, QString notePath){
+    this->directory = QDir(dir);
+    this->recordingDir = QDir(dir + pathPatientRecordingDefault);
+    this->pathNotes = dir + pathPatientNotesDefault;
+    this->pathPersonalInfo = dir + pathPatientPersonalInfoDefault;
+
 }
 
 bool Patient::writeProfileToBinary(){

@@ -499,7 +499,7 @@ QFormLayout::indicator {
      <x>260</x>
      <y>10</y>
      <width>821</width>
-     <height>441</height>
+     <height>571</height>
     </rect>
    </property>
   </widget>

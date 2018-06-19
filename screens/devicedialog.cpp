@@ -2,6 +2,7 @@
 #include "ui_devicedialog.h"
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <models/system.h>
 using namespace std;
 
 DeviceDialog::DeviceDialog(QWidget *parent) :
@@ -9,6 +10,11 @@ DeviceDialog::DeviceDialog(QWidget *parent) :
     ui(new Ui::DeviceDialog)
 {
     ui->setupUi(this);
+    QDirIterator it(System::getDeviceLocation(), QDirIterator::Subdirectories | QDirIterator::FollowSymlinks);
+    while(it.hasNext()){
+        qDebug() << it.next();
+
+    }
 
 }
 
@@ -19,14 +25,13 @@ DeviceDialog::~DeviceDialog()
 
 void DeviceDialog::on_btnAddDevice_clicked()
 {
+    QMessageBox messageBox;
+    messageBox.setFixedSize(500,200);
+    QString text = "";
+    bool ok;
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
                                                 QString(QString(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first()))
                                                     , QFileDialog::ShowDirsOnly);
-    QMessageBox messageBox;
-    messageBox.setFixedSize(500,200);
-    messageBox.warning(0, "Error", "There already exists a device with this name.");
-    bool ok;
-    QString text = "";
     while(text == ""){
         text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
                                                      tr("Device name:"), QLineEdit::Normal,
@@ -37,22 +42,27 @@ void DeviceDialog::on_btnAddDevice_clicked()
     }
 
     if(ok && !text.isEmpty()){
-        if(!Device::validationCheckExists(text)){
+        if(!System::checkDirectoryExists(System::getDeviceLocation() + text)){
             Device device(text, dir);
             emit setSelectedDevice(device);
-            ui->lblTest->setText(text + " - " + dir);
+            ui->lblTest->setText(dir);
+            ui->lbListDevices->addItem(text);
+            devices.push_back(device);
         }else{
+            messageBox.warning(0, "Error", "There already exists a device with this name. \n Select the device again and enter a new name.");
             messageBox.show();
         }
     }
-}
-
-void DeviceDialog::on_btnContinue_clicked()
-{
 
 }
+
 
 void DeviceDialog::on_btnCancel_clicked()
 {
     delete ui;
+}
+
+void DeviceDialog::on_lbListDevices_itemClicked(QListWidgetItem *item)
+{
+    ui->lblSelectedDeviceName->setText(item->text());
 }

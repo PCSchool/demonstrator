@@ -20,6 +20,8 @@ RecordDialog::RecordDialog(QWidget *parent) :
     ui(new Ui::RecordDialog)
 {
     ui->setupUi(this);
+
+    //ui->widget->plotLayout()->clear();
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
 
@@ -36,6 +38,25 @@ RecordDialog::RecordDialog(QWidget *parent) :
     setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
     recording.changePosition(ui->widget->pos().x(), ui->widget->pos().y());
     recording.changeSize(ui->widget->size().width(), ui->widget->size().height());
+}
+
+void RecordDialog::clear(){
+    //ui->widget->clearGraphs();
+    for(int g=0; g < ui->widget->graphCount(); g++){
+        ui->widget->graph(g)->data().data()->clear();
+    }
+    ui->widget->clearGraphs();
+    lastPointKey = 0;
+    counter = 0;
+    readySignal = 0;
+
+    //clear file, delete file and then create again
+    /*std::ofstream ofs;
+    std::string path = userDir.path().toLocal8Bit().constData();
+    ofs.open(path, std::ofstream::out | std::ofstream::trunc);
+    ofs.close();*/
+
+    ui->widget->replot();
 }
 
 //show right-click context menu + handles selection of the selecteditem of the menu
@@ -77,26 +98,13 @@ void RecordDialog::stopRecording(){
     writeFile->finished();
     // delete critical sections, after ending threads
     DeleteCriticalSection(&shared_buffer_lock);
-
-    //ui->widget->clearGraphs();
-    if(ui->widget->plottableCount() > 0){
-        int cc = ui->widget->plottableCount() - 1;
-        ui->label_7->setText(QString::number(ui->widget->plottableCount()));
-        ui->widget->removePlottable(cc);
-        ui->label_9->setText(QString::number(ui->widget->plottableCount()));
-        ui->widget->clearPlottables();
-
-        ui->label_6->setText(QString::number(ui->widget->plottableCount()));
-
-        ui->widget->clearGraphs();
-    }
-    ui->widget->replot();
 }
 
 RecordDialog::~RecordDialog()
 {  
     stopRecording();
     delete ui;
+    delete this;
 }
 
 void RecordDialog::enableButtons(bool enable){
@@ -107,29 +115,36 @@ void RecordDialog::enableButtons(bool enable){
 void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
+        if(ui->widget->graphCount() != 0){
+            clear();
+        }
         enableButtons(false);
 
         int db = ui->widget->graphCount();
-        ui->lblAmplitude->setText(QString::number(db));
+        ui->lblGraphType->setText(QString::number(db));
 
         running = true;
         InitializeCriticalSection(&shared_buffer_lock);
 
         // Create graph
-        QCPGraph *g = new QCPGraph(ui->widget->xAxis, ui->widget->yAxis);
+        index = ui->widget->graphCount();
+        ui->lblAmplitude->setText(QString::number(index));
+        //QCPGraph *g = new QCPGraph(ui->widget->xAxis, ui->widget->yAxis);
 
         ui->widget->addGraph();
         ui->widget->graph(index)->setPen(QPen(QColor(40, 140, 80)));
+        ui->widget->graph(index)->setName("Recording");
+
         QSharedPointer<QCPAxisTickerTime> timeTicker(new QCPAxisTickerTime);
         timeTicker->setTimeFormat("%h:%m:%s");
         ui->widget->xAxis->setTicker(timeTicker);
         ui->widget->axisRect()->setupFullAxesBox();
         ui->widget->yAxis->setRange(recording.getYAxisMax(), recording.getYAxisMin());
-        ui->widget->graph(index)->setName("Recording");
         ui->widget->xAxis->setLabel("Time - format hh:mm::ss");
         ui->widget->yAxis->setLabel("Amount ");
         ui->widget->setMouseTracking(true);
         ui->widget->setBackgroundScaled(true);
+
 
         // make left and bottom axes transfer their ranges to right and top axes:
         connect(ui->widget->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->widget->xAxis2, SLOT(setRange(QCPRange)));
@@ -193,8 +208,11 @@ void RecordDialog::realtimeDataSlot(){
         qtime.addMSecs(qAccumulator);
     }
     //double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
+    ui->lblAmplitude->setText(QString::number(qTimer.elapsed()/1000.0) + "qt");
+    ui->lblFrequency->setText(QString::number(time.elapsed()/1000.0) + "t");
 
-    static double lastPointKey = 0;
+    ui->lblYAxis->setText(QString::number(lastPointKey));
+    ui->lblTest->setText(QString::number(xAxis-lastPointKey));
     if (xAxis-lastPointKey > 0.010 && !pause) // at most add point every 20 ms
     {
       double yAxis = counter;

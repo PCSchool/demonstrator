@@ -2,6 +2,9 @@
 #include <QStandardPaths>
 #include <globals.h>
 #include <models/system.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 //default constructor
 Device::Device()
@@ -17,6 +20,12 @@ Device::Device(QString name, QString location){
 
     QDir dir(QString(System::getDeviceLocation() + name));
     dir.mkpath(QString(System::getDeviceLocation() + name));
+
+    QString path = QString(System::getDeviceLocation() + name + pathPatientNotesDefault);
+
+    std::ofstream fout(path.toLocal8Bit().constData(), std::ios::out);
+    fout << location.toLocal8Bit().constData() << endl;
+    fout.close();
 }
 
 bool Device::validationCheckExists(QString path){

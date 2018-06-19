@@ -609,6 +609,9 @@ QFormLayout::indicator {
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter email&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="toolTipDuration">
+        <number>5</number>
+       </property>
       </widget>
      </item>
      <item row="4" column="0">
@@ -623,6 +626,9 @@ QFormLayout::indicator {
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter street&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="toolTipDuration">
+        <number>5</number>
+       </property>
       </widget>
      </item>
      <item row="5" column="0">
@@ -636,6 +642,9 @@ QFormLayout::indicator {
       <widget class="QLineEdit" name="tbHouseNr">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter housenummer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>5</number>
        </property>
        <property name="text">
         <string/>
@@ -689,7 +698,7 @@ QFormLayout::indicator {
         <double>250.000000000000000</double>
        </property>
        <property name="singleStep">
-        <double>0.100000000000000</double>
+        <double>1.000000000000000</double>
        </property>
        <property name="value">
         <double>150.000000000000000</double>
@@ -721,7 +730,7 @@ QFormLayout::indicator {
         <double>500.000000000000000</double>
        </property>
        <property name="singleStep">
-        <double>0.100000000000000</double>
+        <double>1.000000000000000</double>
        </property>
        <property name="value">
         <double>50.000000000000000</double>

@@ -35,6 +35,7 @@ public slots:
     void drawGraph(QVector<TimePointer> vector);
 
 private slots:
+    void showContextMenu(const QPoint& pos);
     void on_btnReadBinaryFile_clicked();
 
     void on_btnCancel_clicked();

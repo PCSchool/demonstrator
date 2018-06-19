@@ -516,6 +516,9 @@ QFormLayout::indicator {
    </property>
   </widget>
   <widget class="QTextEdit" name="tbTextRead">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -532,7 +535,7 @@ QFormLayout::indicator {
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>170</y>
+     <y>180</y>
      <width>351</width>
      <height>41</height>
     </rect>

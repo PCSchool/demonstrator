@@ -140,6 +140,7 @@ void UserDialog::on_btnSelectPatient_clicked()
             fin.read((char *)&bpatient, sizeof(bpatient));
             QDate date = QDate::fromString(QString::fromUtf8(bpatient.birthDate), "dd/MM/yyyy");
             Patient* patient = new Patient(true, bpatient.id, QString::fromUtf8(bpatient.email), bpatient.gender, QString::fromUtf8(bpatient.street), QString::fromUtf8(bpatient.housenr), QString::fromUtf8(bpatient.zipcode), bpatient.homePhone, QString::fromUtf8(bpatient.name), date, bpatient.weight, bpatient.height);
+            patient->setDirectory(dir, "","","");
             emit newPatient(patient);
             on_btnCancel_clicked();
         }

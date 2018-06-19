@@ -38,6 +38,7 @@ public:
     QString getPathPersonalInfo();
     QDir getUserDir();
     QDir getRecordingDir();
+    void setDirectory(QString dir, QString recordingPath, QString infoPath, QString notePath);
 
 private:
     //methods

@@ -122,6 +122,10 @@ void System::setDevice(Device device){
     hasDevice = true;
 }
 
+QLinkedList<Device> System::getDeviceList(){
+    return devices;
+}
+
 void System::removePatient(QString path){
     QDir removeDir(path);
     if(hasPatient){

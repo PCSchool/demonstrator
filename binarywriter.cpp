@@ -31,7 +31,7 @@ BinaryWriter::BinaryWriter()
 void BinaryWriter::setUserDir(QDir dir){
     //should be used for binarywriter as directory where the file should be stored
     this->dir = dir;
-    std::cout << dir.path().toLocal8Bit().constData();
+    //std::cout << dir.path().toLocal8Bit().constData();
 }
 
 //fill the buffer
@@ -54,7 +54,7 @@ void BinaryWriter::writeData(double xAxis, double yAxis){
 
      //check if ready to write to file
      if(bufferSize < numUsedBytes){
-         std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
+         //std::cout << QString::number(qbuffer.currentWriteChannel()).toLocal8Bit().constData() << " ";
 
          //signal buffer is full + parameter with qByteArray
          emit bufferFull(qbuffer.buffer(), vector);             //signal buffer is full --> binaryReader will take action, will start reading the buffer and write it to the file within the selected directory

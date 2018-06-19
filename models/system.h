@@ -32,6 +32,7 @@ public:
     void setDevice(const Device device);
     QDir getPatientDir();
     void setPatientDir(QDir dir);
+    QLinkedList<Device> getDeviceList();
 
     //static methods for control directory
     static bool createDirectory(QString path);

@@ -20,12 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    //QPalette palette = QApplication::palette();
-
-
     ui->setupUi(this);
     ui->gbInfoPatient->setVisible(false);
     system = new System();
+    test=0;
 }
 
 MainWindow::~MainWindow()
@@ -76,15 +74,14 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 
 void MainWindow::on_btnOpenRecordingDialog_clicked()
 {
+
     if(system->hasPatient){
         RecordDialog* recordDialog = new RecordDialog(this);
         recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
         recordDialog->setModal(true);
         recordDialog->exec();
     }else{
-        //QMessageBox msgBox(QMessageBox::Warning, "Warning: not available", "To start the analysis, a patient must be selected.");
-        //msgBox.exec();
-        recordDialog = new RecordDialog(this);
+        RecordDialog* recordDialog = new RecordDialog(this);
         recordDialog->setUserDir(system->getHomeLocation());
         recordDialog->setModal(true);
         recordDialog->exec();
@@ -119,6 +116,7 @@ void MainWindow::on_btnOpenExportDialog_clicked()
 
 void MainWindow::deviceSelected(Device device){
     system->setDevice(device);
+    system->addDevice(device);
 }
 
 QDir MainWindow::getHomeDirectory(){

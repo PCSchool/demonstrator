@@ -26,6 +26,9 @@ const QString sensorDefault = "HEARTRATE";
 const QString pathHome = "/SignalSleepDemonstrator/";
 const QString pathDevices = "/SignalSleepDemonstrator/devices/";
 const QString pathPatient = "/SignalSleepDemonstrator/patients/";
+const QString pathPatientRecordingDefault = "/recordings/";
+const QString pathPatientNotesDefault = "/notes.txt";
+const QString pathPatientPersonalInfoDefault = "/info.dat";
 
 extern char buffer[bufferSize];
 

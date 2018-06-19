@@ -27,7 +27,6 @@ signals:
 
 private:
     Ui::AddNotesDialog *ui;
-
 };
 
 #endif // ADDNOTESDIALOG_H

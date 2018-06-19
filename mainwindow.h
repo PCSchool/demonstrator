@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    int test;
 signals:
 
 
@@ -52,6 +52,7 @@ private:
     User *user;
     Patient *patient;
     System *system;
+
 };
 
 #endif // MAINWINDOW_H

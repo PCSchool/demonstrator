@@ -5,6 +5,8 @@
 #include <models/device.h>
 #include <mainwindow.h>
 #include <models/system.h>
+#include <iostream>
+#include <string>
 
 namespace Ui {
 class DeviceDialog;
@@ -25,12 +27,12 @@ public slots:
 
 private slots:
     void on_btnAddDevice_clicked();
-
-    void on_btnContinue_clicked();
-
     void on_btnCancel_clicked();
 
+    void on_lbListDevices_itemClicked(QListWidgetItem *item);
+
 private:
+    QList<Device> devices;
     Device device;
     QDir dir; //directory of
     Ui::DeviceDialog *ui;
