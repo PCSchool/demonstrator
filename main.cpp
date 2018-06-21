@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QPalette>
 #include <design/demonstratorstyle.h>
+#include <QLatin1String>
 
 int main(int argc, char *argv[])
 {

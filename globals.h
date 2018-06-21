@@ -30,6 +30,9 @@ const QString pathPatientRecordingDefault = "/recordings/";
 const QString pathPatientNotesDefault = "/notes.txt";
 const QString pathPatientPersonalInfoDefault = "/info.dat";
 
+const QStringList itemsFilterDefault = {"low-pass", "high-pass", "band-pass", "band-stop"};
+const QStringList itemsDesignDefault = {"butterworth", "chebyshev", "elliptic", "bessel"};
+
 extern char buffer[bufferSize];
 
 enum controlType{email, number, names, zipcodes, phone, housenr};

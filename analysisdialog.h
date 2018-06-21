@@ -36,30 +36,30 @@ public slots:
 
 private slots:
     void showContextMenu(const QPoint& pos);
-    void on_btnReadBinaryFile_clicked();
-
     void on_btnCancel_clicked();
-
     void on_btnSelectRecording_clicked();
-
     void on_btnReadSpecificFile_clicked();
+    void on_cbShowScale_stateChanged(int arg1);
+    void on_cbShowLegend_stateChanged(int arg1);
+    void on_btnSaveFile_clicked();
+    void on_cbMouseTrack_stateChanged(int arg1);
+    void mouseMoveEvent(QMouseEvent *event);
+    void on_cbDesign_currentIndexChanged(const QString &arg1);
+
+    void on_cbFilter_currentIndexChanged(const QString &arg1);
+
+    void on_btnScaleGraph_clicked();
 
     void on_btnFilterRecording_clicked();
 
-    void mouseMoveEvent(QMouseEvent* event);
-
-    void on_cbMouseTrack_stateChanged(int arg1);
-
-    void on_cbShowScale_stateChanged(int arg1);
-
-    void on_cbShowLegend_stateChanged(int arg1);
-
-    void on_btnSaveFile_clicked();
-
 private:
+    void enableButtons(bool active);
     //for testing data reading
+    void showPointToolTip(QMouseEvent *event);
     QBuffer qbuffer;
     QTimer* timer;
+    QString filter, design;
+    QVector<TimePointer> points;
     int counter, index;
     int xAxis;
     QThread* threadWriteBuffer;

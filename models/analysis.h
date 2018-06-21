@@ -10,7 +10,8 @@ class Analysis
 {
 public:
     Analysis();
-
+    QString filterDefault;
+    QString designDefault;
 public:
     bool trackMouse, showRoster, autoScaling, showLegend;
 
@@ -39,6 +40,7 @@ public:
     QVector<TimePointer> castToBandStop(QVector<TimePointer> points);
 
 private:
+
     QDir recordingDir;
     QString recordingFilePath;
     QFile recordingFile;

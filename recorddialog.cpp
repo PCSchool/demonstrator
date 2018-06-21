@@ -20,7 +20,6 @@ RecordDialog::RecordDialog(QWidget *parent) :
     ui(new Ui::RecordDialog)
 {
     ui->setupUi(this);
-
     //ui->widget->plotLayout()->clear();
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
@@ -29,11 +28,8 @@ RecordDialog::RecordDialog(QWidget *parent) :
     if(mainTimer.isValid()){
         mainTimer.restart();
     }
-    counter = 0;
-    index = 0;
-    readySignal = 0;
-    running = false;
-    pause = false;
+    counter, index, readySignal = 0;
+    running, pause = false;
     shared_buffer = new QByteArray[bufferSize];
     setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
     recording.changePosition(ui->widget->pos().x(), ui->widget->pos().y());
@@ -46,16 +42,9 @@ void RecordDialog::clear(){
         ui->widget->graph(g)->data().data()->clear();
     }
     ui->widget->clearGraphs();
-    lastPointKey = 0;
-    counter = 0;
-    readySignal = 0;
+    lastPointKey, counter, readySignal = 0;
 
     //clear file, delete file and then create again
-    /*std::ofstream ofs;
-    std::string path = userDir.path().toLocal8Bit().constData();
-    ofs.open(path, std::ofstream::out | std::ofstream::trunc);
-    ofs.close();*/
-
     ui->widget->replot();
 }
 
@@ -208,11 +197,6 @@ void RecordDialog::realtimeDataSlot(){
         qtime.addMSecs(qAccumulator);
     }
     //double xAxis = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
-    ui->lblAmplitude->setText(QString::number(qTimer.elapsed()/1000.0) + "qt");
-    ui->lblFrequency->setText(QString::number(time.elapsed()/1000.0) + "t");
-
-    ui->lblYAxis->setText(QString::number(lastPointKey));
-    ui->lblTest->setText(QString::number(xAxis-lastPointKey));
     if (xAxis-lastPointKey > 0.010 && !pause) // at most add point every 20 ms
     {
       double yAxis = counter;

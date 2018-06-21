@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1091</width>
-    <height>604</height>
+    <height>634</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -550,11 +550,11 @@ QFormLayout::indicator {
      <string>Back</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnReadBinaryFile">
+   <widget class="QPushButton" name="btnFilterRecording">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>280</y>
+      <y>340</y>
       <width>200</width>
       <height>50</height>
      </rect>
@@ -571,14 +571,14 @@ QFormLayout::indicator {
      </font>
     </property>
     <property name="text">
-     <string>Read recording</string>
+     <string>Filter recording</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnSelectRecording">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>400</y>
+      <y>220</y>
       <width>201</width>
       <height>51</height>
      </rect>
@@ -602,7 +602,7 @@ QFormLayout::indicator {
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>340</y>
+      <y>280</y>
       <width>201</width>
       <height>51</height>
      </rect>
@@ -680,7 +680,7 @@ QFormLayout::indicator {
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>220</y>
+      <y>460</y>
       <width>200</width>
       <height>50</height>
      </rect>
@@ -700,11 +700,11 @@ QFormLayout::indicator {
      <string>Save recording</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnFilterRecording">
+   <widget class="QPushButton" name="btnScaleGraph">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>460</y>
+      <y>400</y>
       <width>201</width>
       <height>51</height>
      </rect>
@@ -721,10 +721,10 @@ QFormLayout::indicator {
      </font>
     </property>
     <property name="text">
-     <string>Filter recording</string>
+     <string>Sampling - scale graph</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="cbPass">
+   <widget class="QComboBox" name="cbDesign">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -733,26 +733,6 @@ QFormLayout::indicator {
       <height>22</height>
      </rect>
     </property>
-    <item>
-     <property name="text">
-      <string>high-pass</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>low-pass</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>band-pass</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>band-with-pass</string>
-     </property>
-    </item>
    </widget>
    <widget class="QComboBox" name="cbFilter">
     <property name="geometry">
@@ -768,46 +748,46 @@ QFormLayout::indicator {
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>130</y>
+      <y>110</y>
       <width>70</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>On</string>
+     <string>Off</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="cbShowScale">
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>160</y>
+      <y>140</y>
       <width>70</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>On</string>
+     <string>Off</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="cbShowLegend">
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>190</y>
+      <y>170</y>
       <width>70</width>
       <height>17</height>
      </rect>
     </property>
     <property name="text">
-     <string>On</string>
+     <string>Off</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>190</y>
+      <y>170</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -820,7 +800,7 @@ QFormLayout::indicator {
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>160</y>
+      <y>140</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -833,7 +813,7 @@ QFormLayout::indicator {
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>130</y>
+      <y>110</y>
       <width>81</width>
       <height>16</height>
      </rect>
@@ -842,6 +822,19 @@ QFormLayout::indicator {
      <string>show points</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="lblTest">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>610</y>
+     <width>931</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>

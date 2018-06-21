@@ -12938,8 +12938,14 @@ QCustomPlot::QCustomPlot(QWidget *parent) :
   mSelectionRect->setLayer(QLatin1String("overlay"));
 
   setViewport(rect()); // needs to be called after mPlotLayout has been created
-
   replot(rpQueuedReplot);
+}
+
+void QCustomPlot::showPointToolTip(QMouseEvent *event){
+    double x = this->xAxis->pixelToCoord(event->pos().x());
+    double y = this->yAxis->pixelToCoord(event->pos().y());
+
+    setToolTip(QString("%1, %2").arg(x).arg(y));
 }
 
 QCustomPlot::~QCustomPlot()
@@ -30117,5 +30123,3 @@ QPen QCPItemBracket::mainPen() const
     return mSelected ? mSelectedPen : mPen;
 }
 /* end of 'src/items/item-bracket.cpp' */
-
-

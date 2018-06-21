@@ -116,7 +116,8 @@ HEADERS += \
     dsp_filters/filters/Types.h \
     dsp_filters/filters/Utilities.h \
     dsp_filters/dsp_filters.h \
-    design/demonstratorstyle.h
+    design/demonstratorstyle.h \
+    exceptions/exceptioninvalidpathchosen.h
 
 FORMS += \
         mainwindow.ui \

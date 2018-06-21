@@ -3715,6 +3715,9 @@ public:
   QCPAxisRect* axisRectAt(const QPointF &pos) const;
   Q_SLOT void rescaleAxes(bool onlyVisiblePlottables=false);
 
+  //OWN
+  Q_SLOT void showPointToolTip(QMouseEvent *event);
+
   QList<QCPAxis*> selectedAxes() const;
   QList<QCPLegend*> selectedLegends() const;
   Q_SLOT void deselectAll();
