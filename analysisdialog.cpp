@@ -203,7 +203,7 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
        params[0] = 2;       //order
        params[1] = 65;   // sample rate == amount of signals in 5 seconds
        params[1] = numSamples / 2;    //center frequency
-       params[2] = 880;     //band width
+       params[2] = 200;     //band width
        params[3] = 1;       //ripple db
        if(analysis.filterDefault == "low-pass"){
            f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
@@ -242,14 +242,14 @@ double AnalysisDialog::convert(double *x, double y){
 void AnalysisDialog::on_cbDesign_currentIndexChanged(const QString &arg1)
 {
     design = arg1;
-    analysis.designDefault = design;
-    ui->btnFilterRecording->setText(QString("Filter \n %1 - %2").arg(design).arg(filter));
+    analysis.designDefault = arg1;
+    ui->btnFilterRecording->setText(QString("Filter \n %1 - %2").arg(design).arg(analysis.filterDefault));
 }
 
 void AnalysisDialog::on_cbFilter_currentIndexChanged(const QString &arg1)
 {
     filter = arg1;
-    analysis.filterDefault = filter;
+    analysis.filterDefault = arg1;
     ui->btnFilterRecording->setText(QString("Filter \n %1 - %2").arg(design).arg(filter));
 }
 
