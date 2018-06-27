@@ -131,8 +131,8 @@ void UserDialog::on_btnSelectPatient_clicked()
         std::ifstream fin(pathInfo, ios::out | ios::binary);
         if(!fin.is_open()){
             cout << "opening file failed "<< pathInfo.c_str() << "  " << endl;
-            int ret = QMessageBox::warning(this, "Error", "The personal information of the patient is missing. Would u like to delete this patient?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
-            if(ret == 16384){
+            QMessageBox::StandardButton reply = QMessageBox::warning(this, "Error", "The personal information of the patient is missing. Would u like to delete this patient?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+            if(reply == QMessageBox::Yes){
                 emit removePatient(dir);
             }
         }else{
@@ -145,7 +145,6 @@ void UserDialog::on_btnSelectPatient_clicked()
             on_btnCancel_clicked();
         }
     }
-
 }
 
 void UserDialog::on_btnDeletePatient_clicked()

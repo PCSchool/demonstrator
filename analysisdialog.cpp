@@ -159,15 +159,18 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
 void AnalysisDialog::on_btnScaleGraph_clicked()
 {
     double dividedBy = 100.0;
-    if(points.size() > 5000){dividedBy = 1000;}
+    if(points.size() > 5000){dividedBy = 500;}
+    if(points.size() > 20000){dividedBy = 5000;}
 
     QVector<TimePointer> newvalues;
     TimePointer tpMax, tpMin;
     tpMax.x = 0;
     tpMax.y = 0;
+    tpMin.x = 0;
+    tpMin.y = 5;
     newvalues.append(tpMax);
-    tpMax.x = 10;
-    tpMax.y = 10;
+    tpMax.x = 0;
+    tpMax.y = 0;
 
     double count = 0;
     for(int z = 0; z < points.size(); z++){
@@ -190,25 +193,28 @@ void AnalysisDialog::on_btnScaleGraph_clicked()
                 newvalues.push_back(tpMin);
             }
             count = 0;
-            tpMin.y = 10;
-            tpMax.y = 10;
+            tpMin.y = 5;
+            tpMax.y = 5;
         }
     }
-    /*for(int k = 0; k < newvalues.count(); k++){
-        std::cout << newvalues.at(k).x << " " << newvalues.at(k).y << " points " <<endl;
-    }*/
     ui->widget->clearGraphs();
     drawGraph(newvalues);
 }
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
 {
-    //frequency 64Hz -> 15.625 ms in 5.000 ms  -> 0.2 Hz
+    /*int size = points.size();
+    QVector<TimePointer> newvalues(size);
+    newvalues = analysis.castToBandPass(points);
+    drawGraph(newvalues);*/
+
+
    int numSamples = points.size();
+   QVector<TimePointer> newvalues(numSamples);
    double* info[numSamples];
    for(int z = 0; z < numSamples; z++){
-       int d = static_cast<int>(points.at(z).y);
-       info[z] = new double[d];
+       double *d = (double *)&points.at(z).y;
+       info[z] = d;
    }
 
    Dsp::Filter* f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
@@ -218,6 +224,22 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
    params[2] = 1.25;
    f->setParams(params);
    f->process(numSamples, info);
+
+   TimePointer tp;
+   for(int z  = 0; z <numSamples; z++){
+       double *d = info[z];
+       double ddd = *(double *)d;
+       tp.x = points.at(z).x;
+       tp.y = ddd;
+       newvalues.push_back(tp);
+   }
+
+   drawGraph(newvalues);
+
+}
+
+double AnalysisDialog::convert(double *x, double y){
+    return x[0];
 }
 
 void AnalysisDialog::on_cbDesign_currentIndexChanged(const QString &arg1)

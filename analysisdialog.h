@@ -28,6 +28,7 @@ public:
     friend QDataStream &operator<<(QDataStream &out,const TimePointer &tp);
     friend QDataStream &operator>>(QDataStream &in,TimePointer &tp);
     Graph graph;
+    double convert(double *x, double y);
 
 signals:
 

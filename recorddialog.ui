@@ -656,7 +656,7 @@ QFormLayout::indicator {
      <number>-150</number>
     </property>
     <property name="maximum">
-     <number>250</number>
+     <number>500</number>
     </property>
     <property name="value">
      <number>250</number>

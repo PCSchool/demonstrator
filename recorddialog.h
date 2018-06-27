@@ -31,29 +31,34 @@ public:
     QElapsedTimer qTimer, mainTimer;
     qint64 qAccumulator;
     QByteArray *shared_buffer;
-    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
     QTime time;
 signals:
     void writeNewData(double xAxis, double yAxis);
     void stopTimer();
+    void newCounterMax(int max);
 
 private slots:
+    void setProperties(double frequency, double amplitude, int yAxisMax, int yAxisMin, int xAxisMax, int xAxisMin, int interval, QString graph, QString sensor);
     void showContextMenu(const QPoint& pos);
     void realtimeDataSlot();
     void on_btnDummyGraph_clicked();
     void on_btnStop_clicked();
     void on_btnChangeSettings_clicked();
-    void on_sbCounter_valueChanged(const QString &arg1);
     void on_btnPause_clicked();
     void on_btnCancel_clicked();
+
+    void setNewCounterMax(int max);
+    void on_sbCounter_valueChanged(int arg1);
 
 private:
     void enableButtons(bool enable);
     void stopRecording();
     double lastPointKey;
     Ui::RecordDialog *ui;
+    QTime frequencyTime;
     QTimer* dataTimer;
     int index;
+    int counterMax, frequency;
     BinaryWriter* writeBuffer;
     BinaryReader* writeFile;
     bool running, pause;

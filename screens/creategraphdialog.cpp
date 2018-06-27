@@ -43,10 +43,7 @@ void CreateGraphDialog::on_btnCreateGraph_clicked()
     QString type = ui->cbTypeGraph->currentText();
     QString sensor = ui->cbTypeSensor->currentText();
 
-
-
     emit properties(frequency, amplitude, yAxisMax, yAxisMin, xAxisMax, xAxisMin, interval, type, sensor);
-    on_btnCancel_clicked();
 }
 
 void CreateGraphDialog::on_btnCancel_clicked()

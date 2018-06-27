@@ -23,13 +23,15 @@ RecordDialog::RecordDialog(QWidget *parent) :
     //ui->widget->plotLayout()->clear();
     ui->widget->setContextMenuPolicy(Qt::CustomContextMenu);  //open right click menu
     connect(ui->widget, SIGNAL(customContextMenuRequested(const QPoint&)),this, SLOT(showContextMenu(const QPoint&)));
-
+    connect(this, SIGNAL(newCounterMax(int)), this, SLOT(setNewCounterMax(int)));
     if(time.isValid()){time.restart();}
     if(mainTimer.isValid()){
         mainTimer.restart();
     }
-    counter, index, readySignal = 0;
-    running, pause = false;
+    //default frequency =  1/65'2 = 4,225
+    //method to calculate and show freq will be added soon
+    counter = 0;index = 0; readySignal = 0; counterMax = 250;
+    running = false; pause = false;
     shared_buffer = new QByteArray[bufferSize];
     setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
     recording.changePosition(ui->widget->pos().x(), ui->widget->pos().y());
@@ -42,7 +44,17 @@ void RecordDialog::clear(){
         ui->widget->graph(g)->data().data()->clear();
     }
     ui->widget->clearGraphs();
-    lastPointKey, counter, readySignal = 0;
+    lastPointKey = 0; counter = 0; readySignal = 0;
+
+    //empty current recording directory
+    this->userDir.setNameFilters(QStringList() << "*.*");
+    this->userDir.setFilter(QDir::Files);
+    foreach(QString dirfile, this->userDir.entryList()){
+        this->userDir.remove(dirfile);
+    }
+
+    //clear threads, stop them
+    //stopRecording();
 
     //clear file, delete file and then create again
     ui->widget->replot();
@@ -73,6 +85,8 @@ void RecordDialog::setProperties(double frequency, double amplitude, int yAxisMa
     this->ui->lblSensor->setText(QString(sensor).toLower());
     this->ui->lblGraphType->setText(QString(graph).toLower());
     this->ui->lblYAxis->setText(("(" + QString::number(yAxisMin) + "," + QString::number(yAxisMax) + ")"));
+
+
 }
 
 void RecordDialog::setUserDir(QDir dir){
@@ -104,6 +118,9 @@ void RecordDialog::enableButtons(bool enable){
 void RecordDialog::on_btnDummyGraph_clicked()
 {
     if(!running){
+        //clear current recording
+
+
         if(ui->widget->graphCount() != 0){
             clear();
         }
@@ -200,10 +217,22 @@ void RecordDialog::realtimeDataSlot(){
     if (xAxis-lastPointKey > 0.010 && !pause) // at most add point every 20 ms
     {
       double yAxis = counter;
-      counter++;
-      if(counter >= 250){
-          counter =0;
+
+      //check positive or negative
+      if(counterMax < 0){
+          counter--;
+          if(counter <= counterMax){
+              counter =0;
+          }
+          ui->widget->yAxis->setRange(50, counterMax - 50);
+      }else{
+          counter++;
+          if(counter >= counterMax){
+              counter =0;
+          }
+          ui->widget->yAxis->setRange(-50, counterMax + 50);
       }
+
       readySignal++;
       if(readySignal >= 5){
           emit writeNewData(xAxis, yAxis);
@@ -213,7 +242,11 @@ void RecordDialog::realtimeDataSlot(){
       lastPointKey = xAxis;
     }
     // make key axis range scroll with the data (at a constant range size of 20):
+    //ui->widget->yAxis->rescale(true);
+
+
     ui->widget->xAxis->setRange(xAxis + 5, 20, Qt::AlignRight);
+
     ui->widget->replot();
 }
 
@@ -223,8 +256,10 @@ void RecordDialog::on_btnStop_clicked()
         disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
         disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
         disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-        disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
+        //disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
         running = false;
+        pause = false;
+        ui->btnPause->setText("pauze: OFF");
         enableButtons(true);
         stopRecording();
     }
@@ -233,15 +268,10 @@ void RecordDialog::on_btnStop_clicked()
 void RecordDialog::on_btnChangeSettings_clicked()
 {
     CreateGraphDialog* graphDialog = new CreateGraphDialog(this);
-    connect(graphDialog, SIGNAL(properties(double,double,int,int,int,int,int,QString,QString)), this, SLOT(setProperties(double,double,int,int,int,int,int,QString,QString)));
+    connect(graphDialog, SIGNAL(setProperties(double,double,int,int,int,int,int,QString,QString)), this, SLOT(setProperties(double,double,int,int,int,int,int,QString,QString)));
     graphDialog->setProperties(recording.getFrequency(), recording.getAmplitude(), recording.getYAxisMax(), recording.getYAxisMin(), recording.getInterval(), recording.getGraphType(), recording.getSensor());
     graphDialog->setModal(true);
     graphDialog->exec();
-}
-
-void RecordDialog::on_sbCounter_valueChanged(const QString &arg1)
-{
-    int counterx = ui->sbCounter->value();
 }
 
 void RecordDialog::on_btnPause_clicked()
@@ -255,7 +285,7 @@ void RecordDialog::on_btnPause_clicked()
                 connect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
                 connect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
                 connect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-                connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
+                //connect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
                 pause = false;
                 ui->btnPause->setText("pauze: OFF");
             }
@@ -268,7 +298,7 @@ void RecordDialog::on_btnPause_clicked()
                 disconnect(dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
                 disconnect(this, SIGNAL(stopTimer()), dataTimer, SLOT(stop()));
                 disconnect(this, SIGNAL(writeNewData(double, double)), writeBuffer, SLOT(writeData(double, double)));
-                disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
+                //disconnect(writeBuffer, SIGNAL(bufferFull(QByteArray, QVector<TimePointer> vector)), writeFile, SLOT(writeBufferToFile(QByteArray, QVector<TimePointer> vector)));
                 pause = true;
                 ui->btnPause->setText("pauze : ON");
             }
@@ -279,4 +309,13 @@ void RecordDialog::on_btnPause_clicked()
 void RecordDialog::on_btnCancel_clicked()
 {
     this->close();
+}
+
+void RecordDialog::on_sbCounter_valueChanged(int arg1)
+{
+    emit newCounterMax(arg1);
+}
+
+void RecordDialog::setNewCounterMax(int max){
+    counterMax = max;
 }

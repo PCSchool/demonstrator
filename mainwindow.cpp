@@ -125,11 +125,23 @@ QDir MainWindow::getHomeDirectory(){
 
 //open directory of current selectedPatient
 void MainWindow::on_btnSelectDirPatient_clicked(){
-    const QString path =  QFileDialog::getOpenFileName(
-                    this,
-                    "Open Document",
-                    system->selectedPatient->userDir.path(),
-                    "All files (*.*) ;; Document files (*.doc *.rtf *.txt);; PNG files (*.png)");
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select recording file"),
+                                                system->getPatient()->getRecordingDir().path(), QFileDialog::DontUseNativeDialog);
+
+    QString control = path.right(path.length() - path.lastIndexOf("/"));
+    if(path.contains(system->getPatient()->getRecordingDir().path())){
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Remove recording", "Are you sure you wish to remove this recording? \n  ..." + control, QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::Yes){
+            if(path.contains("/recording_")){
+                QDir dir(path);
+                dir.removeRecursively();
+            }
+        }
+    }else if(path.length() > 3){
+        QMessageBox::warning(this, "Wrong directory selected", "Make sure to select a directory within the active patients recordings.", QMessageBox::Ok);
+    }
+
 }
 
 void MainWindow::on_btnAddNotes_clicked(){

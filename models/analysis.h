@@ -10,6 +10,7 @@ class Analysis
 {
 public:
     Analysis();
+    QVector<TimePointer> points;
     QString filterDefault;
     QString designDefault;
 public:
@@ -47,7 +48,6 @@ private:
     QList<TimePointer> pointerList;
     QVector<double> Xaxis, yaxis;
     QList<QString> recordingPathList;
-
 };
 
 #endif // ANALYSIS_H

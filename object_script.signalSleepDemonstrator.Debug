@@ -21,6 +21,7 @@ INPUT(
 ./debug\system.o
 ./debug\user.o
 ./debug\dsp_filters.o
+./debug\demonstratorstyle.o
 ./debug\moc_analysisdialog.o
 ./debug\moc_binaryreader.o
 ./debug\moc_binarywriter.o
@@ -34,4 +35,5 @@ INPUT(
 ./debug\moc_userdialog.o
 ./debug\moc_exporting.o
 ./debug\moc_plot.o
+./debug\moc_demonstratorstyle.o
 );

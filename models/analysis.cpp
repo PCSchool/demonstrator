@@ -68,7 +68,7 @@ QVector<TimePointer> Analysis::readDir(QString path){
                     file.read(buffer, 8);
                     QByteArray save(buffer, 8);
                     memcpy(&x, save, 8);
-                    std::cout << x << " - ";
+                    //std::cout << x << " - ";
                     int size = save.size();
                     QByteArray ss(buffer, 8);
                     if(save.size() == 8){
@@ -92,7 +92,7 @@ QVector<TimePointer> Analysis::readDir(QString path){
     } catch(...){
         qFatal("Error occured within method Analysis::readDir(QString path)");
     }
-    std::cout << endl << " final : " << vector.count();
+    //std::cout << endl << " final : " << vector.count();
     return vector;
 }
 
@@ -107,7 +107,7 @@ QVector<TimePointer> Analysis::castToLowPass(QVector<TimePointer> points){
         tp.x = points[i].x;
         returnVector.append(tp);
     }
-
+    points = returnVector;
     return returnVector;
 }
 
@@ -147,8 +147,47 @@ QVector<double> Analysis::splitXY(QVector<TimePointer> points, bool xAxis){
 }
 
 QVector<TimePointer> Analysis::castToBandPass(QVector<TimePointer> points){
-    return points;
+    double dividedBy = 50.0;
+
+    QVector<TimePointer> newvalues;
+    TimePointer tpMax, tpMin, tpAvg;
+    tpMax.x = 0;
+    tpMax.y = 0;
+    tpMin.x = 0;
+    tpMin.y = 10;
+    newvalues.append(tpMax);
+    tpMax.x = 0;
+    tpMax.y = 0;
+
+    double count = 0;
+    for(int z = 0; z < points.size(); z++){
+        count++;
+        if(count < dividedBy){
+            if(points.at(z).y > tpMax.y){
+                tpMax.x = points.at(z).x;
+                tpMax.y = points.at(z).y;
+            }
+            if(points.at(z).y < tpMin.y){
+                tpMin.x = points.at(z).x;
+                tpMin.y = points.at(z).y;
+            }
+        }else{
+            tpAvg.x = points.at(z).x;
+            /*if(tpMin.x > tpMax.x){
+                tpAvg.x = tpMin.x;
+            }else{
+                tpAvg.x = tpMax.x;
+            }*/
+            tpAvg.y = (tpMax.y + tpMin.y) / 2;
+            newvalues.push_back(tpAvg);
+            count = 0;
+            tpMin.y = 10;
+            tpMax.y = 10;
+        }
+    }
+    return newvalues;
 }
+
 QVector<TimePointer> Analysis::castToBandStop(QVector<TimePointer> points){
     return points;
 }
