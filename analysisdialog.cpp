@@ -105,33 +105,6 @@ void AnalysisDialog::drawGraph(QVector<TimePointer> vector){
     }
 }
 
-void AnalysisDialog::on_btnSaveFile_clicked()
-{
-    QSettings settings;
-    QString filename = QFileDialog::getSaveFileName(this, tr("Save graph"), settings.value("Plot Image Export Directory").toString(), "PNG (*.png);;PDF (*.PDF");
-    if(!filename.isEmpty()){
-        try{
-            settings.setValue("Plot Image Export Directory", QFileInfo(filename).absolutePath());
-            QString control = filename.right(filename.lastIndexOf('/'));
-            QString control2 = dir.path().right(dir.path().lastIndexOf('/'));
-            if(control == control2){
-                throw ExceptionInvalidPathChosen();
-            }
-            ui->widget->savePng(filename, 500, 500, 1.0, -1);
-        }
-        catch(ExceptionInvalidPathChosen e){
-            QMessageBox messageBox;
-            messageBox.warning(0, "Error", e.error);
-            messageBox.show();
-        }
-        catch(...){
-            QMessageBox messageBox;
-            messageBox.warning(0, "Error", "Exception: The selected path isnt available. Please try something another, available directory.");
-            messageBox.show();
-        }
-    }
-}
-
 void AnalysisDialog::on_btnCancel_clicked(){
     this->deleteLater();
 }
@@ -151,7 +124,6 @@ void AnalysisDialog::on_btnReadSpecificFile_clicked()
     //select one file
     points = analysis.readFile(QFileDialog::getOpenFileName(this, "Open Document",
                                     dir.path(), "All files (*.*) ;; Document files (*.doc *.rtf);; PNG files (*.png)"));
-
     drawGraph(points);
     enableButtons(true);
 }
@@ -203,12 +175,6 @@ void AnalysisDialog::on_btnScaleGraph_clicked()
 
 void AnalysisDialog::on_btnFilterRecording_clicked()
 {
-    /*int size = points.size();
-    QVector<TimePointer> newvalues(size);
-    newvalues = analysis.castToBandPass(points);
-    drawGraph(newvalues);*/
-
-
    int numSamples = points.size();
    QVector<TimePointer> newvalues(numSamples);
    double* info[numSamples];
@@ -217,11 +183,42 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
        info[z] = d;
    }
 
-   Dsp::Filter* f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
+   Dsp::Filter* f;
    Dsp::Params params;
-   params[0] = 44100;
-   params[1] = 4000;
-   params[2] = 1.25;
+   //"butterworth", "chebyshev", "elliptic", "bessel"   "low-pass", "high-pass", "band-pass", "band-stop"
+   if(analysis.designDefault == "butterworth"){
+       params[0] = 65; //sample rate
+       params[1] = numSamples / 2;  //center frequency
+       params[2] = 1.25;  //riple db
+       if(analysis.filterDefault == "low-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
+       }else if(analysis.filterDefault == "high-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::HighPass, 2>(1024);
+       }else if(analysis.filterDefault == "band-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::BandPass1, 2>(1024);
+       }else{
+            f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::BandStop, 2>(1024);
+       }
+   }else if(analysis.designDefault == "chebyshev"){
+       params[0] = 2;       //order
+       params[1] = 65;   // sample rate == amount of signals in 5 seconds
+       params[1] = numSamples / 2;    //center frequency
+       params[2] = 880;     //band width
+       params[3] = 1;       //ripple db
+       if(analysis.filterDefault == "low-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
+       }else if(analysis.filterDefault == "high-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::HighPass, 2>(1024);
+       }else if(analysis.filterDefault == "band-pass"){
+           f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::BandPass1, 2>(1024);
+       }else{
+            f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::BandStop, 2>(1024);
+       }
+   }
+
+   std::cout << endl << analysis.filterDefault.toLocal8Bit().constData() << " " << analysis.designDefault.toLocal8Bit().constData();
+   //Dsp::Filter* f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
+
    f->setParams(params);
    f->process(numSamples, info);
 
@@ -293,7 +290,7 @@ void AnalysisDialog::on_cbShowScale_stateChanged(int arg1)
 }
 
 void AnalysisDialog::enableButtons(bool active){
-    ui->btnSaveFile->setEnabled(active);
+    ui->btnAverage->setEnabled(active);
     ui->btnScaleGraph->setEnabled(active);
     ui->btnFilterRecording->setEnabled(active);
 }
@@ -309,11 +306,41 @@ void AnalysisDialog::mouseMoveEvent(QMouseEvent *event){
 void AnalysisDialog::showContextMenu(const QPoint& pos){
     QPoint globalPos = ui->widget->mapToGlobal(pos);
     QMenu qmenu;
-    qmenu.addAction("create graph");
+    qmenu.addAction("save as image");
     qmenu.addAction("exit");
 
     QAction* selectedItem = qmenu.exec(globalPos);
     if(selectedItem){
-        std::cout << "click menu";
+        QSettings settings;
+        QString filename = QFileDialog::getSaveFileName(this, tr("Save graph"), settings.value("Plot Image Export Directory").toString(), "PNG (*.png);;PDF (*.PDF");
+        if(!filename.isEmpty()){
+            try{
+                settings.setValue("Plot Image Export Directory", QFileInfo(filename).absolutePath());
+                QString control = filename.right(filename.lastIndexOf('/'));
+                QString control2 = dir.path().right(dir.path().lastIndexOf('/'));
+                if(control == control2){
+                    throw ExceptionInvalidPathChosen();
+                }
+                ui->widget->savePng(filename, 500, 500, 1.0, -1);
+            }
+            catch(ExceptionInvalidPathChosen e){
+                QMessageBox messageBox;
+                messageBox.warning(0, "Error", e.error);
+                messageBox.show();
+            }
+            catch(...){
+                QMessageBox messageBox;
+                messageBox.warning(0, "Error", "Exception: The selected path isnt available. Please try something another, available directory.");
+                messageBox.show();
+            }
+        }
     }
+}
+
+void AnalysisDialog::on_btnAverage_clicked()
+{
+    int size = points.size();
+    QVector<TimePointer> newvalues(size);
+    newvalues = analysis.castToBandPass(points);
+    drawGraph(newvalues);
 }

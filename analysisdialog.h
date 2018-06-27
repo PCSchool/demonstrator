@@ -42,16 +42,13 @@ private slots:
     void on_btnReadSpecificFile_clicked();
     void on_cbShowScale_stateChanged(int arg1);
     void on_cbShowLegend_stateChanged(int arg1);
-    void on_btnSaveFile_clicked();
     void on_cbMouseTrack_stateChanged(int arg1);
     void mouseMoveEvent(QMouseEvent *event);
     void on_cbDesign_currentIndexChanged(const QString &arg1);
-
     void on_cbFilter_currentIndexChanged(const QString &arg1);
-
     void on_btnScaleGraph_clicked();
-
     void on_btnFilterRecording_clicked();
+    void on_btnAverage_clicked();
 
 private:
     void enableButtons(bool active);
