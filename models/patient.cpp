@@ -74,7 +74,7 @@ bool Patient::validationFormCheck(QString control, controlType type){
         break;
     case controlType::email:  //must contain @ and one or more .
     {
-        QRegExp re("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+.([a-zA-Z0-9_-])+");
+        QRegExp re("^([a-zA-Z0-9_-.])+@([a-zA-Z0-9_-])+.([a-zA-Z0-9_-])+");
         char must = '.';
         int maximumA = 0;
         int maximumB = 0;
@@ -219,7 +219,6 @@ void Patient::setDirectory(QString dir, QString recordingPath, QString infoPath,
     this->recordingDir = QDir(dir + pathPatientRecordingDefault);
     this->pathNotes = dir + pathPatientNotesDefault;
     this->pathPersonalInfo = dir + pathPatientPersonalInfoDefault;
-
 }
 
 bool Patient::writeProfileToBinary(){

@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <property name="styleSheet">
    <string notr="true">QToolTip
 {
@@ -610,7 +613,7 @@ QFormLayout::indicator {
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter email&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="toolTipDuration">
-        <number>5</number>
+        <number>-1</number>
        </property>
       </widget>
      </item>
@@ -627,7 +630,7 @@ QFormLayout::indicator {
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter street&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="toolTipDuration">
-        <number>5</number>
+        <number>-1</number>
        </property>
       </widget>
      </item>
@@ -644,7 +647,7 @@ QFormLayout::indicator {
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter housenummer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="toolTipDuration">
-        <number>5</number>
+        <number>-1</number>
        </property>
        <property name="text">
         <string/>
@@ -663,6 +666,9 @@ QFormLayout::indicator {
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter zipcode with four numbers and two letters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="7" column="0">
@@ -677,6 +683,9 @@ QFormLayout::indicator {
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter phone number with only numbers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
       </widget>
      </item>
      <item row="8" column="0">
@@ -689,10 +698,16 @@ QFormLayout::indicator {
      <item row="8" column="1">
       <widget class="QDoubleSpinBox" name="spHeight">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height in cm&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select your height in cm&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
        </property>
        <property name="decimals">
         <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>50.000000000000000</double>
        </property>
        <property name="maximum">
         <double>250.000000000000000</double>
@@ -701,7 +716,7 @@ QFormLayout::indicator {
         <double>1.000000000000000</double>
        </property>
        <property name="value">
-        <double>150.000000000000000</double>
+        <double>170.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -721,10 +736,16 @@ QFormLayout::indicator {
         </size>
        </property>
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Weight &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select your rounded weight in kg&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
        </property>
        <property name="decimals">
         <number>0</number>
+       </property>
+       <property name="minimum">
+        <double>30.000000000000000</double>
        </property>
        <property name="maximum">
         <double>500.000000000000000</double>

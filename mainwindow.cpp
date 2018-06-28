@@ -75,17 +75,33 @@ void MainWindow::on_btnOpenDeviceDialog_clicked()
 void MainWindow::on_btnOpenRecordingDialog_clicked()
 {
 
-    if(system->hasPatient){
-        RecordDialog* recordDialog = new RecordDialog(this);
-        recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
-        recordDialog->setModal(true);
-        recordDialog->exec();
+    if(test == 1){
+        if(system->hasPatient){
+            RecordDialog* recordDialog = new RecordDialog(this);
+            recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
+            recordDialog->setModal(true);
+            recordDialog->exec();
+        }else{
+            RecordDialog* recordDialog = new RecordDialog(this);
+            recordDialog->setUserDir(system->getHomeLocation());
+            recordDialog->setModal(true);
+            recordDialog->exec();
+        }
     }else{
-        RecordDialog* recordDialog = new RecordDialog(this);
-        recordDialog->setUserDir(system->getHomeLocation());
-        recordDialog->setModal(true);
-        recordDialog->exec();
+        if(system->hasPatient){
+            RecordDialog* recordDialog = new RecordDialog(this);
+            recordDialog->setUserDir(system->selectedPatient->getRecordingDir());
+            recordDialog->setModal(true);
+            recordDialog->exec();
+        }else{
+            RecordDialog* recordDialog = new RecordDialog(this);
+            recordDialog->setUserDir(system->getHomeLocation());
+            recordDialog->setModal(true);
+            recordDialog->exec();
+        }
+        test++;
     }
+
 }
 
 void MainWindow::on_btnOpenAnalysisDialog_clicked()

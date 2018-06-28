@@ -187,9 +187,9 @@ void AnalysisDialog::on_btnFilterRecording_clicked()
    Dsp::Params params;
    //"butterworth", "chebyshev", "elliptic", "bessel"   "low-pass", "high-pass", "band-pass", "band-stop"
    if(analysis.designDefault == "butterworth"){
-       params[0] = 65; //sample rate
-       params[1] = numSamples / 2;  //center frequency
-       params[2] = 1.25;  //riple db
+       params[0] = 400; //sample rate
+       params[1] = 400;  //center frequency
+       params[2] = 1;  //riple db
        if(analysis.filterDefault == "low-pass"){
            f = new Dsp::SmoothedFilterDesign <Dsp::RBJ::Design::LowPass, 2>(1024);
        }else if(analysis.filterDefault == "high-pass"){

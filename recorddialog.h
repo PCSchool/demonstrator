@@ -27,7 +27,7 @@ public:
     void clear();
     QDir userDir;
     static const QSemaphore semaphore;
-    double counter, readySignal;
+    double counter, oldCounter, readySignal;
     QElapsedTimer qTimer, mainTimer;
     qint64 qAccumulator;
     QByteArray *shared_buffer;
@@ -49,6 +49,8 @@ private slots:
 
     void setNewCounterMax(int max);
     void on_sbCounter_valueChanged(int arg1);
+
+    void on_sbCounter_editingFinished();
 
 private:
     void enableButtons(bool enable);

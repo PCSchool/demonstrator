@@ -30,7 +30,7 @@ RecordDialog::RecordDialog(QWidget *parent) :
     }
     //default frequency =  1/65'2 = 4,225
     //method to calculate and show freq will be added soon
-    counter = 0;index = 0; readySignal = 0; counterMax = 250;
+    counter = 0;index = 0; readySignal = 0; counterMax = 250; oldCounter =250;
     running = false; pause = false;
     shared_buffer = new QByteArray[bufferSize];
     setProperties(frequencyDefault, amplitudeDefault, yAxisMaxDefault, yAxisMinDefault, xAxisMaxDefault, xAxisMinDefault, intervalDefault, graphDefault, sensorDefault);
@@ -45,6 +45,8 @@ void RecordDialog::clear(){
     }
     ui->widget->clearGraphs();
     lastPointKey = 0; counter = 0; readySignal = 0;
+    oldCounter = ui->sbCounter->value();
+    counterMax = ui->sbCounter->value();
 
     //empty current recording directory
     this->userDir.setNameFilters(QStringList() << "*.*");
@@ -219,18 +221,18 @@ void RecordDialog::realtimeDataSlot(){
       double yAxis = counter;
 
       //check positive or negative
-      if(counterMax < 0){
+      if(oldCounter < 0){
           counter--;
-          if(counter <= counterMax){
+          if(counter <= oldCounter){
               counter =0;
           }
-          ui->widget->yAxis->setRange(50, counterMax - 50);
+          ui->widget->yAxis->setRange(50, oldCounter - 50);
       }else{
           counter++;
-          if(counter >= counterMax){
+          if(counter >= oldCounter){
               counter =0;
           }
-          ui->widget->yAxis->setRange(-50, counterMax + 50);
+          ui->widget->yAxis->setRange(-50, oldCounter + 50);
       }
 
       readySignal++;
@@ -238,12 +240,20 @@ void RecordDialog::realtimeDataSlot(){
           emit writeNewData(xAxis, yAxis);
           readySignal = 0;
       }
+
+      if(counterMax != oldCounter && counter == 0){
+          oldCounter = counterMax;
+      }
+
       ui->widget->graph(index)->addData(xAxis, yAxis);
       lastPointKey = xAxis;
     }
     // make key axis range scroll with the data (at a constant range size of 20):
     //ui->widget->yAxis->rescale(true);
 
+    ui->lblAmplitude->setText(QString::number(oldCounter));
+
+    ui->lblFrequency->setText(QString::number(counterMax));
 
     ui->widget->xAxis->setRange(xAxis + 5, 20, Qt::AlignRight);
 
@@ -313,9 +323,14 @@ void RecordDialog::on_btnCancel_clicked()
 
 void RecordDialog::on_sbCounter_valueChanged(int arg1)
 {
-    emit newCounterMax(arg1);
+    //
 }
 
 void RecordDialog::setNewCounterMax(int max){
     counterMax = max;
+}
+
+void RecordDialog::on_sbCounter_editingFinished()
+{
+    emit newCounterMax(ui->sbCounter->value());
 }

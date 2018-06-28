@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
+    <width>949</width>
     <height>410</height>
    </rect>
   </property>
@@ -512,7 +512,7 @@ QFormLayout::indicator {
     <rect>
      <x>30</x>
      <y>320</y>
-     <width>411</width>
+     <width>901</width>
      <height>16</height>
     </rect>
    </property>
@@ -525,7 +525,7 @@ QFormLayout::indicator {
     <rect>
      <x>30</x>
      <y>280</y>
-     <width>671</width>
+     <width>901</width>
      <height>20</height>
     </rect>
    </property>
@@ -538,7 +538,7 @@ QFormLayout::indicator {
     <rect>
      <x>20</x>
      <y>80</y>
-     <width>551</width>
+     <width>911</width>
      <height>161</height>
     </rect>
    </property>
@@ -598,10 +598,10 @@ QFormLayout::indicator {
   <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>530</x>
      <y>360</y>
      <width>141</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -617,10 +617,10 @@ QFormLayout::indicator {
   <widget class="QPushButton" name="btnExport">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>360</x>
      <y>360</y>
      <width>141</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -636,10 +636,10 @@ QFormLayout::indicator {
   <widget class="QPushButton" name="btnSelectExportFiles">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>190</x>
      <y>360</y>
      <width>141</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -656,9 +656,9 @@ QFormLayout::indicator {
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>340</y>
+     <y>360</y>
      <width>141</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="minimumSize">
